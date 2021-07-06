@@ -16,31 +16,32 @@ The following is an initial conceptual design approach to how such a protocol co
 
 Consumer->Authorized Agent: Registration Request     
 Consumer->Authorized Agent: Do-Not-Sell Request     
-Authorized Agent->+Company: Do-Not-Sell Request     
-Company-->-Authorized Agent: Do-Not-Sell Request Ticket Opened     
-note right of Company: Company Matches Consumer     
-Company-->-Authorized Agent: Do-Not-Sell Response     
+Authorized Agent->+Business: Do-Not-Sell Request     
+Business-->-Authorized Agent: Do-Not-Sell Request Ticket Opened     
+note right of Business: Business Matches Consumer     
+Business-->-Authorized Agent: Do-Not-Sell Response     
 Authorized Agent-->-Consumer: Do-Not-Sell Response     
-Authorized Agent-->-Company: Do-Not-Sell Ticket Closed     
+Authorized Agent-->-Business: Do-Not-Sell Ticket Closed     
 
 
 Consumer->Authorized Agent: Data Deletion Request     
-Authorized Agent->+Company: Data Deletion Request     
-Company-->-Authorized Agent: Data Deletion Ticket Opened     
-note right of Company: Company Matches Consumer     
-Company-->-Authorized Agent: Data Deletion Response     
+Authorized Agent->+Business: Data Deletion Request     
+Business-->-Authorized Agent: Data Deletion Ticket Opened     
+note right of Business: Business Matches Consumer     
+Business-->-Authorized Agent: Data Deletion Response     
 Authorized Agent-->-Consumer: Data Deletion Response     
-Authorized Agent-->-Company: Data DeletionTicket Closed     
+Authorized Agent-->-Business: Data DeletionTicket Closed     
 
 
 Consumer->Authorized Agent: Data Access Request     
-Authorized Agent->+Company: Data Access  Request     
-Company-->-Authorized Agent: Data Access Ticket Opened     
-note right of Company: Company Matches Consumer     
-Company-->-Authorized Agent: Data Access Response     
-Company-->-Consumer: Data Access Package Delivery     
-Company->Authorized Agent: Data Access Package Delivery Confirmed     
-Authorized Agent-->-Company: Data Access Ticket Closed    
+Authorized Agent->+Business: Data Access  Request     
+Business-->-Authorized Agent: Data Access Ticket Opened     
+note right of Business: Business Matches Consumer     
+Business-->-Authorized Agent: Data Access Response     
+Business-->-Consumer: Data Access Package Delivery     
+Business->Authorized Agent: Data Access Package Delivery Confirmed     
+Authorized Agent-->-Business: Data Access Ticket Closed     
+
 
 
 - - - - - - - - - - - -
