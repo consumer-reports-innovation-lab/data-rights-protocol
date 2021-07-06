@@ -10,6 +10,10 @@ The interface specified by the protocol focuses on the data exchange, including 
 
 The following is an initial conceptual design approach to how such a protocol could work and is intended primarily as a starting point from which to elicit questions, identify potential alternatives, and catalyze new ideas.
 
+
+![DRIP-Swimlane-V 0 0 3](https://user-images.githubusercontent.com/2357755/124527699-36f89c80-ddd4-11eb-8a02-015066345e34.png)
+
+
 Consumer->Authorized Agent: Registration Request     
 Consumer->Authorized Agent: Do-Not-Sell Request     
 Authorized Agent->+Company: Do-Not-Sell Request     
