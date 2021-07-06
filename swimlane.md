@@ -46,4 +46,4 @@ Authorized Agent-->-Business: Data Access Ticket Closed
 
 - - - - - - - - - - - -
 
-*NOTE: The above swimlane diagram aims to describe fundamentally legal processes.  For more background on using swimlane diagrams for legal engineering and for legal process description and design see: [https://github.com/mitmedialab/CoreID/blob/master/diagrams/README.md](https://github.com/mitmedialab/CoreID/blob/master/diagrams/README.md)
+*NOTE: The above swimlane diagram aims to describe fundamentally legal processes.  For more background on using swimlane diagrams for legal engineering and for legal process description and design see: [https://github.com/mitmedialab/CoreID/blob/master/diagrams/README.md](https://github.com/mitmedialab/CoreID/blob/master/diagrams/README.md)*
