@@ -1,0 +1,40 @@
+/*  Data Access Request */
+/*  Originally concieved by Tom Plagge of Brighthive.io and Dazza Greenwood on behalf of Consumer Reports Labs  */
+/*  Consumer/agent POSTs: */
+
+
+{
+    "subject": {
+        "name": "Susie User",
+        "email": "suser@gmail.com",
+        "phone": "111-111-1111",
+        "userid": "susie.user.1"
+    },
+    "controller": {
+        "name": "Facebook",
+        "url": "https://facebook.com"
+    },
+    "request_authority": "ccpa",
+    "request_type": "right_to_know",
+}
+
+Response:
+{
+    "request_id": "ausdfh4938ijh",
+    "status": "pending",
+}
+
+Subsequent poll:
+{
+     "request_type": "status",
+     "request_id": "ausdfh4938ijh"
+}
+
+Subsequent response:
+{
+    "request_id": "ausdfh4938ijh",
+    "status": "closed",
+    "dispensation": "success",
+    "response_timestamp": "20210622T03:07:25.000UTC",
+    "response_url": "https://facebook.com/ccpr/request/ausdfh4938ijh"
+}
