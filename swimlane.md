@@ -1,6 +1,6 @@
 # Data Rights Interface Protocol Swimlane
 *V.0.03*      
-*[Feedback](https://forms.gle/YC7nKRs3ZQMWLvw27)*.    
+*[Feedback](https://forms.gle/YC7nKRs3ZQMWLvw27)*     
 
 The Data Rights Interface Protocol, fully realized, would cover each key functional rights request authorized under the California Consumer Privacy Act (CCPA), including:
 * The so-called "right to opt-out" (Cal. Civ. Code § 1798.120(a));
