@@ -5,14 +5,6 @@
 * Data Model: [https://github.com/dazzaji/DRIP/blob/main/data-request.json](https://github.com/dazzaji/DRIP/blob/main/data-request.json)
 
 
-The Data Rights Interface Protocol, fully realized, would cover each key functional rights request authorized under the California Consumer Privacy Act (CCPA), including:
-
-* The so-called "right to opt-out" (Cal. Civ. Code § 1798.120(a));
-* The so-called "right to delete"  (Cal. Civ. Code § 1798.105(a)) subject to denial for certain statutory business reasons (Cal. Civ. Code § 1798.105(d)); and 
-* The so-called "right to know" what personal information a business has, including the categories of third parties purchasing or receiving their data and the specific pieces of personal information held (Cal. Civ. Code §§ 1798.100, 1798.110, 1798.115, and 1798.130; (Cal. Code Regs tit. 11, §§ 999.313(c) and 999.318).
-
-The interface specified by the protocol focuses on the data exchange, including requests, replies, and ticket tracking, between Consumers and Businesses, including intermediation by an Authorized Agent acting on behalf of the Consumer and by a DSAR Provider acting on behalf of the business.
-
 ## Goal
 
 The goal for this protocol is an open specification for issuing and processing data subject requests. We therefore seek to define a voluntary specification that describes a legally-conformant machine interface for users to exercise their data rights. This would seek to provide the missing foundation for industry self-organization and greater certainty needed to process requests at high scale and low cost.
@@ -31,6 +23,17 @@ However, while both GDPR and CCPA require that companies honor requests from aut
 [In process]
 
 ![DRIP-Swimlane-V 0 0 3](https://user-images.githubusercontent.com/2357755/124527699-36f89c80-ddd4-11eb-8a02-015066345e34.png)
+
+
+### Scope of Transactions
+
+The Data Rights Interface Protocol, fully realized, would cover each key functional rights request authorized under the California Consumer Privacy Act (CCPA), including:
+
+* The so-called "right to opt-out" (Cal. Civ. Code § 1798.120(a));
+* The so-called "right to delete"  (Cal. Civ. Code § 1798.105(a)) subject to denial for certain statutory business reasons (Cal. Civ. Code § 1798.105(d)); and 
+* The so-called "right to know" what personal information a business has, including the categories of third parties purchasing or receiving their data and the specific pieces of personal information held (Cal. Civ. Code §§ 1798.100, 1798.110, 1798.115, and 1798.130; (Cal. Code Regs tit. 11, §§ 999.313(c) and 999.318).
+
+The interface specified by the protocol focuses on the data exchange, including requests, replies, and ticket tracking, between Consumers and Businesses, including intermediation by an Authorized Agent acting on behalf of the Consumer and by a DSAR Provider acting on behalf of the business.
 
 
 ## Further Reading
