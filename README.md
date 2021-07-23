@@ -33,4 +33,6 @@ However, while both GDPR and CCPA require that companies honor requests from aut
 
 ## How to Contribute
 
-**Feedback Form: [https://forms.gle/YC7nKRs3ZQMWLvw27](https://forms.gle/YC7nKRs3ZQMWLvw27)**
+* Make a [new issue](https://github.com/dazzaji/data-rights-protocol/issues/new) in the repository
+* Make a [pull request](https://github.com/dazzaji/data-rights-protocol/pulls) in this repository
+* Provide feedback through our form: [https://forms.gle/YC7nKRs3ZQMWLvw27](https://forms.gle/YC7nKRs3ZQMWLvw27)
