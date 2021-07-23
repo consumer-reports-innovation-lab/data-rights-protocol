@@ -47,13 +47,19 @@ Businesses may host a .well-known/drip.json resource that defines an API endpoin
 
 ### Do Not Sell Request
 
+#### Legal Basis and Requirements
+
 [In Process]
 
 ### Deletion Request
 
+#### Legal Basis and Requirements
+
 [In Process]
 
 ### Data Access Request
+
+#### Legal Basis and Requirements
 
 [In Process]
 
@@ -94,6 +100,10 @@ Subsequent response:
     "response_url": "https://facebook.com/ccpr/request/ausdfh4938ijh"
 }
 ```
+
+## Consumer Identity and Authorization
+
+### OAuth 2
 
 ## Legal Effects
 
