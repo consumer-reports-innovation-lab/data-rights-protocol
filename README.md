@@ -26,6 +26,12 @@ A new class of consumer data rights—created by privacy laws like Europe’s GD
 
 However, while both GDPR and CCPA require that companies honor requests from authorized agents, the utility of these services are limited. First, most companies have not established any machine interfaces for data subject access requests, so request issuing and processing is handled through laborious manual processes. It’s as if consumers gained a “right to connect” but were lacking in a protocol like TCP/IP. Though companies have access to enterprise DSAR Subject Request Management Solutions, which manage workflows of all tasks & activities associated with processing requests from consumers, the cost and friction involved in processing agent requests is still significant.
 
+## Architecture
+
+[In process]
+
+![DRIP-Swimlane-V 0 0 3](https://user-images.githubusercontent.com/2357755/124527699-36f89c80-ddd4-11eb-8a02-015066345e34.png)
+
 
 ## Further Reading
 
