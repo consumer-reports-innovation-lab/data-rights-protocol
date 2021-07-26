@@ -1,8 +1,9 @@
 # Data Rights Interface Protocol
 
 * README: [https://github.com/dazzaji/DRIP](https://github.com/dazzaji/DRIP)
-* Swimlane Diagram: [https://github.com/dazzaji/DRIP/blob/main/swimlane.md](https://github.com/dazzaji/DRIP/blob/main/swimlane.md)
-* Data Model: [https://github.com/dazzaji/DRIP/blob/main/data-request.json](https://github.com/dazzaji/DRIP/blob/main/data-request.json)
+* Swimlane Diagram: [https://github.com/dazzaji/data-rights-protocol/blob/main/swimlane.md](https://github.com/dazzaji/data-rights-protocol/blob/main/swimlane.md)
+* 
+* Data Model: [https://github.com/dazzaji/data-rights-protocol/blob/main/data-request.json](https://github.com/dazzaji/data-rights-protocol/blob/main/data-request.json)
 
 
 ## Goal
