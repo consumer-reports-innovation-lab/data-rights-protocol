@@ -7,6 +7,12 @@ The following is an initial conceptual design approach to how such a protocol co
 
 ![DRIP-Swimlane-V 0 0 3](https://github.com/dazzaji/data-rights-protocol/blob/main/DRIP-Key-Life-Cycle-Interactions.png)
 
+## Alternative Path
+
+*Direct Verification of Consumer by Business*
+
+![DRIP-Swimlane-V 0 0 3](https://github.com/dazzaji/data-rights-protocol/blob/main/DRIP-Alt-Path-Business-Requests-Direct-Consumer-Verification.png)
+
 
 
 
