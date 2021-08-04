@@ -26,7 +26,7 @@ However, while both GDPR and CCPA require that companies honor requests from aut
 
 [In process]
 
-![DRIP-Swimlane-V 0 0 3](https://user-images.githubusercontent.com/2357755/124527699-36f89c80-ddd4-11eb-8a02-015066345e34.png)
+![DRIP-Swimlane-V 0 0 3](https://github.com/dazzaji/data-rights-protocol/blob/main/DRIP-Key-Life-Cycle-Interactions.png)
 
 
 ### Scope of Transactions
