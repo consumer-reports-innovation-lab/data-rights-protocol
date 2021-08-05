@@ -22,6 +22,8 @@ However, while both GDPR and CCPA require that companies honor requests from aut
 
 ## Definitions
 
+[In process]
+
 ## Architecture
 
 [In process]
