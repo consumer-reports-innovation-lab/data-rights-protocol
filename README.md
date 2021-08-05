@@ -3,7 +3,7 @@
 *DRAFT FOR COMMENT*
 
 * README: [https://github.com/dazzaji/DRIP](https://github.com/dazzaji/DRIP)
-* Swimlane Diagram: [https://github.com/dazzaji/data-rights-protocol/blob/main/swimlane.md](https://github.com/dazzaji/data-rights-protocol/blob/main/swimlane.md)
+* HTML Version: [https://dazzaji.github.io/data-rights-protocol](https://dazzaji.github.io/data-rights-protocol/). 
 * Data Model: [https://github.com/dazzaji/data-rights-protocol/blob/main/data-request.json](https://github.com/dazzaji/data-rights-protocol/blob/main/data-request.json)
 
 
@@ -26,7 +26,7 @@ However, while both GDPR and CCPA require that companies honor requests from aut
 
 [In process]
 
-![DRIP-Key-Life-Cycle-Interactions-v-0-1-3](https://github.com/dazzaji/data-rights-protocol/blob/main/DRIP-Key-Life-Cycle-Interactions-v-0-1-3.png)
+![DRIP-Key-Life-Cycle-Interactions-v-0-1-3](https://user-images.githubusercontent.com/2357755/128425848-5f5eeeaa-8f68-4c53-a798-f5fc06a77ca9.png)
 
 Consumer->Authorized Agent: 0. Registration Request   
 Authorized Agent->Consumer: Onboard Consumer   
@@ -62,7 +62,7 @@ Authorized Agent-->-DSAR Provider: Data Access Ticket Closed
 
 **Alternative Path: Direct Verfification of Consumer** 
 
-![DRIP-Alt-Path-Business-Requests-Direct-Consumer-Verification-v-0-0-2](https://github.com/dazzaji/data-rights-protocol/blob/main/DRIP-Alt-Path-Business-Requests-Direct-Consumer-Verification-v-0-0-2.png)
+![DRIP-Alt-Path-Business-Requests-Direct-Consumer-Verification-v-0-0-2](https://user-images.githubusercontent.com/2357755/128425895-eb7c467d-95be-468b-9d51-dd0c7dabf384.png)
 
 Consumer->Authorized Agent: Deletion or Data Access Request   
 Authorized Agent->DSAR Provider: Deletion or Data Access Request   
