@@ -28,6 +28,49 @@ However, while both GDPR and CCPA require that companies honor requests from aut
 
 ![DRIP-Swimlane-V 0 0 3](https://github.com/dazzaji/data-rights-protocol/blob/main/DRIP-Key-Life-Cycle-Interactions-v-0-1-3.png)
 
+Consumer->Authorized Agent: 0. Registration Request   
+Authorized Agent->Consumer: Onboard Consumer   
+Consumer->Authorized Agent: Verify Identity and Authorization   
+Consumer->Authorized Agent: 1. Do-Not-Sell Request   
+Authorized Agent->+DSAR Provider: Do-Not-Sell Request   
+DSAR Provider-->-Authorized Agent: Do-Not-Sell Request Ticket Opened   
+note right of DSAR Provider: Business Matches Consumer   
+DSAR Provider-->-Authorized Agent: Do-Not-Sell Response   
+Authorized Agent-->-Consumer: Do-Not-Sell Response   
+Authorized Agent-->-DSAR Provider: Do-Not-Sell Ticket Closed   
+
+
+Consumer->Authorized Agent: 2. Data Deletion Request   
+Authorized Agent->+DSAR Provider: Data Deletion Request   
+DSAR Provider-->-Authorized Agent: Data Deletion Ticket Opened   
+note right of DSAR Provider: Business Matches Consumer   
+note right of DSAR Provider: Alt Path: Direct Consumer Verification Required   
+DSAR Provider-->-Authorized Agent: Data Deletion Response   
+Authorized Agent-->-Consumer: Data Deletion Response   
+Authorized Agent-->-DSAR Provider: Data DeletionTicket Closed   
+
+
+Consumer->Authorized Agent: 3. Data Access Request   
+Authorized Agent->+DSAR Provider: Data Access  Request   
+DSAR Provider-->-Authorized Agent: Data Access Ticket Opened   
+note right of DSAR Provider: Business Matches Consumer   
+note right of DSAR Provider: Alt Path:Direct Consumer Verification Required   
+DSAR Provider-->-Authorized Agent: Data Access Response   
+Covered Business-->-Consumer: Data Access Package Delivery   
+DSAR Provider->Authorized Agent: Data Access Package Delivery Confirmed   
+Authorized Agent-->-DSAR Provider: Data Access Ticket Closed   
+
+**Direct Verfification of Consumer** 
+
+
+
+Consumer->Authorized Agent: Consumer Logs Into AA App   
+Consumer->Authorized Agent: Consumer Chooses to Verify for a Business   
+Consumer->Covered Business: Consumer Grants OAuth2/OIDC Authorization between AA and Business Endpoints   
+Covered Business->Authorized Agent: Business Confirms Consumer Verification Success   
+Authorized Agent->+Covered Business: Data Access Request   
+Covered Business-->-Consumer: Data Access Response   
+
 
 ### Scope of Transactions
 
