@@ -64,6 +64,9 @@ Authorized Agent-->-DSAR Provider: Data Access Ticket Closed
 
 ![DRIP-Direct-Verification](https://github.com/dazzaji/data-rights-protocol/blob/main/DRIP-Alt-Path-Business-Requests-Direct-Consumer-Verification-v-0-0-2.png)
 
+Consumer->Authorized Agent: Do-Not-Sell or Data Access Request   
+Authorized Agent->Covered Business: Do-Not-Sell or Data Access Request   
+DSAR Provider-->-Authorized Agent: Do-Not-Sell Request Ticket Opened   
 Covered Business->Authorized Agent: Requires Direct Verification of Consumer   
 Consumer->Authorized Agent: Consumer Logs Into AA App   
 Consumer->Authorized Agent: Consumer Chooses to Verify for a Business   
@@ -71,6 +74,8 @@ Consumer->Covered Business: Consumer Grants OAuth2/OIDC Authorization between AA
 Covered Business->Authorized Agent: Business Confirms Consumer Verification Success   
 Authorized Agent->+Covered Business: Data Access Request   
 Covered Business-->-Consumer: Data Access Response   
+
+
 
 
 ### Scope of Transactions
