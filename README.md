@@ -60,7 +60,7 @@ Covered Business-->-Consumer: Data Access Package Delivery
 DSAR Provider->Authorized Agent: Data Access Package Delivery Confirmed   
 Authorized Agent-->-DSAR Provider: Data Access Ticket Closed   
 
-**Alternative Path: Direct Verfification of Consumer** 
+**Alternative Path: Direct Verification of Consumer** 
 
 ![DRIP-Alt-Path-Business-Requests-Direct-Consumer-Verification-v-0-0-2](https://user-images.githubusercontent.com/2357755/128425895-eb7c467d-95be-468b-9d51-dd0c7dabf384.png)
 
