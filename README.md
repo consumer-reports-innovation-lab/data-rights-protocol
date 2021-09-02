@@ -1,4 +1,4 @@
-# Data Rights Interface Protocol
+# Data Rights Protocol
 
 *DRAFT FOR COMMENT*
 
@@ -85,7 +85,7 @@ Covered Business-->-Consumer: Data Access Response
 
 ### Scope of Transactions
 
-The Data Rights Interface Protocol, fully realized, would cover each key functional rights request authorized under the California Consumer Privacy Act (CCPA), including:
+The Data Rights Protocol, fully realized, would cover each key functional rights request authorized under the California Consumer Privacy Act (CCPA), including:
 
 * The so-called "right to opt-out" (Cal. Civ. Code § 1798.120(a));
 * The so-called "right to delete"  (Cal. Civ. Code § 1798.105(a)) subject to denial for certain statutory business reasons (Cal. Civ. Code § 1798.105(d)); and 
