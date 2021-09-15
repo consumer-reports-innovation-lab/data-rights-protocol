@@ -20,6 +20,6 @@ By providing a shared protocol and vocabulary for expressing these data rights, 
 
 # How to Contribute
 
-* Make a [new issue](https://github.com/dazzaji/data-rights-protocol/issues/new) in the repository
-* Make a [pull request](https://github.com/dazzaji/data-rights-protocol/pulls) in this repository
+* Make a [new issue](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/new) in the repository
+* Make a [pull request](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pulls) in this repository
 * Provide feedback through our form: [https://forms.gle/YC7nKRs3ZQMWLvw27](https://forms.gle/YC7nKRs3ZQMWLvw27)
