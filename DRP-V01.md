@@ -2,9 +2,11 @@
 
 *DRAFT FOR COMMENT*
 
-* README: [https://github.com/dazzaji/data-rights-protocol](https://github.com/dazzaji/data-rights-protocol)
-* HTML Version: [https://dazzaji.github.io/data-rights-protocol](https://dazzaji.github.io/data-rights-protocol/)
+* README: [DataRightsProtocol.org](http://datarightsprotocol.org)
+* Data Rights Protocol Version 0.1: [https://github.com/dazzaji/data-rights-protocol/blob/main/DRP-V01.md](https://github.com/dazzaji/data-rights-protocol/blob/main/DRP-V01.md)
 * Data Model: [https://github.com/dazzaji/data-rights-protocol/blob/main/data-request.json](https://github.com/dazzaji/data-rights-protocol/blob/main/data-request.json)
+
+**NOTE: Version 0.1 of the Data Rights Protocol is intended solely as a conversation starter.  We expect to post an updated version in early October 2021 based on a collaborative drafting effort among a multistakeholder group and to present and discuss the direction of this emerging protocol at the Data Rights Summit hosted by MIT on October 19th, 2021.  Information about and a link to register to attend the Data Rights Summit will be posted here in late September, 2021.**
 
 
 ## Goal
