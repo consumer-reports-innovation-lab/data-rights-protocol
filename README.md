@@ -3,7 +3,7 @@
 *DRAFT FOR COMMENT*
 
 * README: [https://github.com/dazzaji/data-rights-protocol](https://github.com/dazzaji/data-rights-protocol)
-* HTML Version: [https://dazzaji.github.io/data-rights-protocol](https://dazzaji.github.io/data-rights-protocol/)
+* Data Rights Protocol Version 0.1: [https://github.com/dazzaji/data-rights-protocol/blob/main/DRP-V01.md](https://github.com/dazzaji/data-rights-protocol/blob/main/DRP-V01.md)
 * Data Model: [https://github.com/dazzaji/data-rights-protocol/blob/main/data-request.json](https://github.com/dazzaji/data-rights-protocol/blob/main/data-request.json)
 
 
