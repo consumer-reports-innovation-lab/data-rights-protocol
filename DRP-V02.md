@@ -26,39 +26,64 @@ By providing a shared protocol and vocabulary for expressing these data rights, 
 ### Actors
 
 ## Trust Models
-“level 1”: Authorized Agent in a trust-relationship with Covered Businesses
-“Level 2”: Covered Business verifies End-User identity
-“Level ‘0’”: Trust-less systems
+
+### “level 1”: Authorized Agent in a trust-relationship with Covered Businesses
+
+### “Level 2”: Covered Business verifies End-User identity
+
+### “Level ‘0’”: Trust-less systems
 
 ## Data Flows
-Agent - DSR Provider
-Agent - Covered Business
-End User - DSR Provider
-End User - Covered Business
-End User Verification step
-Login Claims
+
+### Agent - DSR Provider
+
+### Agent - Covered Business
+
+### End User - DSR Provider
+
+### End User - Covered Business
+
+### End User Verification step
+
+#### Login Claims
 
 ## Data Schemas
-Supported Rights Actions
-Request Statuses
-Schema: Status of a Data Subject Exercise Request
-Schema: Identity encapsulation
-Identity Elements
-Error States
+
+### Supported Rights Actions
+
+### Request Statuses
+
+### Schema: Status of a Data Subject Exercise Request
+
+### Schema: Identity encapsulation
+
+#### Identity Elements
+
+### Error States
 
 ## Endpoints
-GET /.well-known/data-rights
-POST /exercise
-Response
-GET /status
-GET /status Response
-POST $status_callback
-POST /cancel
-Semantics of Canceling a Request
+
+### GET /.well-known/data-rights
+
+### POST /exercise
+
+#### Response
+
+### GET /status
+
+#### GET /status Response
+
+### POST $status_callback
+
+### POST /cancel
+
+#### Semantics of Canceling a Request
 
 ## future roadmap
-To-considers
-Footnotes
+
+### To-considers
+
+### Footnotes
 
 
 # How to Contribute
