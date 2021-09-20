@@ -46,5 +46,17 @@ DRP’s first implementers are Consumer Reports Digital Lab, DataGrail, Ethyca, 
 * Registration: [https://forms.gle/xJifpswrddxXNbhs7](https://forms.gle/xJifpswrddxXNbhs7) 
 * Hosts: Consumer Reports Digital Lab & MIT Media Lab
 
+## Agenda:
+
+12:00 PM ET: Welcome and Overview - Professor Sandy Pentland, MIT. 
+
+12:15 PM ET: Comments on Data Rights Implementation. 
+
+12:50 PM ET: Looking ahead to DRP evolution. 
+
+## Register:
+
+* [https://forms.gle/xJifpswrddxXNbhs7](https://forms.gle/xJifpswrddxXNbhs7)
+* Contact: Dazza Greenwood <dazza.greenwood.consultant AT consumer.org>
 
 <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdYUkVYVlY3efUp7oN9cbdSy2dD_hwP71jwaFq4BfrhmSd7Cg/viewform?embedded=true" width="640" height="1413" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
