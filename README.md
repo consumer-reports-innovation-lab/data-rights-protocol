@@ -24,6 +24,8 @@ By providing a shared protocol and vocabulary for expressing these data rights, 
 * Provide feedback through our form: [https://forms.gle/YC7nKRs3ZQMWLvw27](https://forms.gle/YC7nKRs3ZQMWLvw27)
 
 
+----------------------
+
 # Data Rights Summit by Consumer Reports & MIT Media Lab
 
 The Data Rights Summit hosted by Consumer Reports and MIT Media Lab is an event focused on exploring how to better execute consumer data rights under CCPA. [Register here](https://forms.gle/xJifpswrddxXNbhs7).
