@@ -1,4 +1,4 @@
-<img width="809" alt="Screen Shot 2021-09-20 at 4 50 15 PM" src="https://user-images.githubusercontent.com/2357755/134075853-c2e6ec17-d7d0-4a3b-a066-b71b2694023b.png">
+<img width="639" alt="Screen Shot 2021-09-23 at 3 00 58 PM" src="https://user-images.githubusercontent.com/2357755/134567840-7d41b497-0771-473a-8563-2544b1c32a1e.png">
 
 # Data Rights Public Working Group by Consumer Reports & MIT Media Lab
 
