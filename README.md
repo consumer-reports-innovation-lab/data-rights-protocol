@@ -1,8 +1,8 @@
 <img width="639" alt="Screen Shot 2021-09-23 at 3 00 58 PM" src="https://user-images.githubusercontent.com/2357755/134567840-7d41b497-0771-473a-8563-2544b1c32a1e.png">
 
-# Data Rights Public Working Group by Consumer Reports & MIT Media Lab
+# Data Rights Roundtable by Consumer Reports & MIT Media Lab
 
-The Data Rights Working Group hosted by Consumer Reports and MIT Media Lab is an event focused on exploring how to better execute consumer data rights under CCPA. [Register here](https://forms.gle/xJifpswrddxXNbhs7).
+The Data Rights Roundtable, hosted by Consumer Reports and MIT Media Lab is an event focused on exploring how to better execute consumer data rights under CCPA. [Register here](https://forms.gle/xJifpswrddxXNbhs7).
 
 Event attendees will preview and comment on a draft technical specification of a Data Rights Protocol (DRP). This specification defines a web protocol encoding a set of standardized request/response data flows such that End-Users can exercise Personal Data Rights provided under regulations like the California Consumer Privacy Act and other regulatory or voluntary bases, and receive affirmative responses in standardized formats.
 
@@ -44,7 +44,7 @@ DRP’s first implementers are Consumer Reports Digital Lab, DataGrail, Ethyca, 
 * README: [DataRightsProtocol.org](http://datarightsprotocol.org)
 * Data Rights Protocol Version 0.2: [https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/DRP-V02.md](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/DRP-V02.md)
 
-**Version 0.2 of the Data Rights Protocol is intended as an intial draft.  We expect to post an updated version in early October 2021 based on a collaborative drafting effort among a multistakeholder group and to present and discuss the direction of this emerging protocol at the Data Rights Working Group event hosted by MIT on October 19th, 2021.**
+**Version 0.2 of the Data Rights Protocol is intended as an intial draft.  We expect to post an updated version in early October 2021 based on a collaborative drafting effort among a multistakeholder group and to present and discuss the direction of this emerging protocol at the Data Rights Roundtable event hosted by MIT on October 19th, 2021.**
 
 ## Introduction
 
