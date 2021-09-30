@@ -18,7 +18,7 @@ By providing a shared protocol and vocabulary for expressing these data rights, 
 ### 0.02 Scope
 In this initial phase of the Data Rights Protocol, we want to enable a group of peers to form a voluntary trust network while expanding the protocol to support wider trust models and additional data flows.
 
-Version 0.3 encodes the provisions of the California Code bla bla section bla as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA” and intends to encode the following rights. This is further enumerated in the [Supported Rights Actions]() section of this document below.
+Version 0.3 encodes the provisions of the California Code bla bla section bla as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA” and intends to encode the following rights. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
 
 ### 0.03 Terminology
 
@@ -55,7 +55,7 @@ This `well-known` resource SHOULD be registered with IANA before 1.0 specificati
 
 - `version` field is a string carrying the version of the protocol implemented. Currently this should read "0.3"
 - `api_base` field is a URI under which the rest of the Data Rights Protocol is accessible under.
-- `actions` is a list of strings enumerating the rights which may be exercised, as outlined in [Supported Rights Actions]()
+- `actions` is a list of strings enumerating the rights which may be exercised, as outlined in [Supported Rights Actions](#301-supported-rights-actions)
 
 ### 2.02 `POST /exercise` ("Data Rights Exercise" endpoint)
 
@@ -87,7 +87,7 @@ See section 3.04 regarding identity encapsulation.
 
 #### 2.02.1 `POST /exercise` Response
 
-Responses to this request MUST adhere to the [Exercise Status Schema]().
+Responses to this request MUST adhere to the [Exercise Status Schema](#303-schema-status-of-a-data-subject-exercise-request).
 
 ### 2.03 `GET /status` ("Data Rights Status" endpoint)
 
@@ -95,14 +95,14 @@ This is the Data Rights Status endpoint which End-Users and Authorized Agents ca
 
 #### 2.03.1 `GET /status` Response
 
-Responses to this request MUST adhere to the [Exercise Status Schema]().
+Responses to this request MUST adhere to the [Exercise Status Schema](#303-schema-status-of-a-data-subject-exercise-request).
 
 
 ### 2.04 `POST $status_callback` ("Data Rights Status Callback" endpoint)
 
-The Status Callback endpoint SHOULD be implemented by Authorized Agents which will be exercising data rights for multiple users. This endpoint exists to remove the need for Authorized Agents to query the Data Rights Status endpoint and instead allow a “push model” where AAs are notified when a request's status changes. The destination for a Status Callback URL is specified in the initial [Data Rights Request]().
+The Status Callback endpoint SHOULD be implemented by Authorized Agents which will be exercising data rights for multiple users. This endpoint exists to remove the need for Authorized Agents to query the Data Rights Status endpoint and instead allow a “push model” where AAs are notified when a request's status changes. The destination for a Status Callback URL is specified in the initial [Data Rights Exercise](#202-post-exercise-data-rights-exercise-endpoint) request.
 
-The request body MUST adhere to the Exercise Status Schema. 
+The request body MUST adhere to the [Exercise Status Schema](#303-schema-status-of-a-data-subject-exercise-request). 
 
 #### 2.04.1 `POST $status_callback` Response
 
@@ -125,7 +125,7 @@ Requests to this endpoint contain a single field:
 
 #### 2.05.1 `POST /cancel` response
 
-Responses to this request MUST adhere to the [Exercise Status Schema](). Responses MUST contain the *new* state.
+Responses to this request MUST adhere to the [Exercise Status Schema](#303-schema-status-of-a-data-subject-exercise-request). Responses MUST contain the *new* state.
 
 #### 2.05.2 Semantics of Canceling a Request
 
@@ -184,8 +184,8 @@ A single JSON entity is used to describe any existing Data Exercise Request, the
 }
 ```
 
-* `request_id` MUST contain a string that is the universal ID returned in the initial [Data Rights Exercise request]().[1] 
-* `status` MUST contain a string which is one of the state’s a request to be in as defined in [Request Statuses]().
+* `request_id` MUST contain a string that is the universal ID returned in the initial [Data Rights Exercise request](#202-post-exercise-data-rights-exercise-endpoint).[1] 
+* `status` MUST contain a string which is one of the state’s a request to be in as defined in [Request Statuses](#302-request-statuses).
 * `received_at` MUST contain a string which is the [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339)-encoded time which the initial request was registered by the Covered Business.
 * `user_verification_url` MAY contain a URI which can be presented in a User Agent for identity verification.
 * `expires_at` MAY contain an [RFC 3339]-encoded time after which time the **Covered Business** will no longer oblige themselves to record-keep the request under consideration.
