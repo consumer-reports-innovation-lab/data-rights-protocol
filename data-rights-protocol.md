@@ -1,5 +1,9 @@
 # Data Rights Protocol v.0.3
 
+**DRAFT FOR COMMENT**
+
+[Data Rights Protocol](https://github.com/consumer-reports-digital-lab/data-rights-protocol)
+
 ## 0.0 Introduction
 This specification defines a web protocol encoding a set of standardized request/response data flows such that End-Users can exercise Personal Data Rights provided under regulations like the California Consumer Privacy Act, General Data Protection Regulation, and other regulatory or voluntary bases, and receive affirmative responses in standardized formats.
 
