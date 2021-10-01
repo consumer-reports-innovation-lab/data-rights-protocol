@@ -1,3 +1,19 @@
+# Data Rights Protocol
+
+* README: [DataRightsProtocol.org](http://datarightsprotocol.org)
+
+* Data Rights Protocol Version 0.3: [data-rights-protocol.html](./data-rights-protocol.md) | [data-rights-protocol.md](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md)
+
+## How to Contribute
+
+* Make a [new issue](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/new) in the repository
+* Make a [pull request](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pulls) in this repository
+* Provide feedback through our form: [https://forms.gle/YC7nKRs3ZQMWLvw27](https://forms.gle/YC7nKRs3ZQMWLvw27)
+
+
+----------------------
+
+
 <img width="639" alt="Screen Shot 2021-09-23 at 3 00 58 PM" src="https://user-images.githubusercontent.com/2357755/134567840-7d41b497-0771-473a-8563-2544b1c32a1e.png">
 
 # Data Rights Roundtable by Consumer Reports & MIT Media Lab
@@ -38,18 +54,3 @@ DRP’s first implementers are Consumer Reports Digital Lab, DataGrail, Ethyca, 
 <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdYUkVYVlY3efUp7oN9cbdSy2dD_hwP71jwaFq4BfrhmSd7Cg/viewform?embedded=true" width="640" height="1413" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
 
 --------------------------
-
-# Data Rights Protocol
-
-* README: [DataRightsProtocol.org](http://datarightsprotocol.org)
-
-* Data Rights Protocol Version 0.3: [data-rights-protocol.md](./data-rights-protocol.md)
-
-## How to Contribute
-
-* Make a [new issue](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/new) in the repository
-* Make a [pull request](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pulls) in this repository
-* Provide feedback through our form: [https://forms.gle/YC7nKRs3ZQMWLvw27](https://forms.gle/YC7nKRs3ZQMWLvw27)
-
-
-----------------------
