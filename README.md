@@ -42,19 +42,8 @@ DRP’s first implementers are Consumer Reports Digital Lab, DataGrail, Ethyca, 
 # Data Rights Protocol
 
 * README: [DataRightsProtocol.org](http://datarightsprotocol.org)
-* Data Rights Protocol Version 0.3: [https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md)
 
-## Introduction
-
-This specification defines a web protocol encoding a set of standardized request/response data flows such that End-Users can exercise Personal Data Rights provided under regulations like the California Consumer Privacy Act, General Data Protection Regulation, and other regulatory or voluntary bases, and receive affirmative responses in standardized formats.
-
-We aim to make the data rights protocol integrable with an ecosystem of data rights middlewares, agent services, automation tool kits, and privacy-respecting businesses which empower and build trust with consumers while driving the cost of compliance towards zero.
-
-## Motivation
-
-Data Rights are increasingly becoming universal, but the method of request and protocol for communicating those requests varies and there is no universal interchange format. Companies operating under these regulatory regimes face not only technical challenges in collecting and delivering responses to users’ data rights requests but also face significant process burdens as consumers increasingly make use of these rights. At the same time, consumers find it tough to execute their data rights under new privacy laws, partially due to a lack of standardization among companies.
-
-By providing a shared protocol and vocabulary for expressing these data rights, we aim to minimize the administrative burdens on consumers and businesses while providing a basis of trust for verifiable identity attestation which can be used by (individual) consumers (or by an agent intermediating the relationship on behalf of consumers) and businesses.
+## Data Rights Protocol Version 0.3: [https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md)
 
 ## How to Contribute
 
