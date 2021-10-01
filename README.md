@@ -2,7 +2,7 @@
 
 * README: [DataRightsProtocol.org](http://datarightsprotocol.org)
 
-* Data Rights Protocol Version 0.3: [data-rights-protocol.html](./data-rights-protocol.md) and [data-rights-protocol.md](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md)
+* Data Rights Protocol Version 0.3: [data-rights-protocol.html](http://datarightsprotocol.org/data-rights-protocol.html) and [data-rights-protocol.md](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md)
 
 ## How to Contribute
 
