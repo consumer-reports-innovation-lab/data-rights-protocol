@@ -42,9 +42,7 @@ DRP’s first implementers are Consumer Reports Digital Lab, DataGrail, Ethyca, 
 # Data Rights Protocol
 
 * README: [DataRightsProtocol.org](http://datarightsprotocol.org)
-* Data Rights Protocol Version 0.2: [https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/DRP-V02.md](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/DRP-V02.md)
-
-**Version 0.2 of the Data Rights Protocol is intended as an intial draft.  We expect to post an updated version in early October 2021 based on a collaborative drafting effort among a multistakeholder group and to present and discuss the direction of this emerging protocol at the Data Rights Roundtable event hosted by MIT on October 19th, 2021.**
+* Data Rights Protocol Version 0.3: [https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md)
 
 ## Introduction
 
