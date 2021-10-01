@@ -10,6 +10,7 @@ Changes from v0.2
 - Request status chart
 - identity tiger team recommendations
 - API Authentication details
+- Moved non-essential sections out of protocol spec
 
 ## 1.0 Introduction
 
