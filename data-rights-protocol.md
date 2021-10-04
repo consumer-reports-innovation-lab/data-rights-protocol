@@ -33,19 +33,18 @@ Version 0.3 encodes the provisions of the California Code bla bla section bla as
 
 The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all capitals, as shown here.
 
-[XXX: move to bottom]
-distinguish actors from components
+- *User* is the individual who is trying to exercise their rights. This User may or may not have a direct business relationship or login credentials with the Covered Business.
+- *User Agent* (**UA**) is the application, software, or browser which is used by the User to mediate their interaction with the *Data Rights Protocol*. 
 
-- User (/consumer/subject)
-- User Agent
-- Authorized Agent
-- AAi
+- *Authorized Agent* (**AA**) is a business entity which provides software and process automation to enable Users to exercise their rights through their *User Agent*.
+- *Authorized Agent Interface* (**AAi**) is the software component managed by an Authorized Agent to accept ["Data Rights Status Callback" endpoint](#2041-post-status_callback-response) calls.
 
-- PIP
-- PIPi
+- *Privacy Infrastructure Provider* (**PIP**) is a business entity which provides software and process automation to enabled Covered Businesses to receive and process Data Rights Requests.
+- *PIP Interface* (**PIPi**) is the software component managed by a PIP which is responsible for providing the endpoints specified in sections 2.02, 2.03, and 2.05. In cases where the Covered Business is operating without a PIP, these components will be operated by the *Covered Business*
 
-- CB
-- CBi
+- *Covered Business* (**CB**) is the business entity which the *User* is exercising their rights with.
+- *Covered Business Interface* (**CBi**) is the software component managed by a Covered Business to provide the [Data Rights Discovery endpoint](#201-get-well-knowndata-rightsjson-data-rights-discovery-endpoint) and MAY also provide services for user identity verification.
+
 
 ## 2.0 HTTP Endpoint Specification
 
