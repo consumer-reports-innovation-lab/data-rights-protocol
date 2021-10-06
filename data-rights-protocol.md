@@ -59,16 +59,15 @@ For instance, an User looking to exercise their data rights for Example, Inc. wh
   "version": "0.3",
   "api_base": "https://example.com/data-rights",
   "actions": ["sale:opt-out", "sale:opt-in", "access", "deletion"],
-  "user_relationships": ["customer", "marketing", "student", "employee", ... ]
+  "user_relationships": [ ... ]
 }
 ```
 
 - `version` field is a string carrying the version of the protocol implemented. Currently this MUST read "0.3"
 - `api_base` field is a URI under which the rest of the Data Rights Protocol is accessible. This endpoint MAY be run by a Privacy Infrastructure Provider but SHOULD be accessible under the Covered Business's domains for legibility's sake.
 - `actions` is a list of strings enumerating the rights which may be exercised, as outlined in [Supported Rights Actions](#301-supported-rights-actions)
-- `user_relationships` is a list of strings enumerating the contexts by which a User may have a relationship with the Covered Business.[1]
+- `user_relationships` is a list of strings enumerating the contexts by which a User may have a relationship with the Covered Business. The enumeration of possible relationships is left unspecified and future versions of the protocol may have more to say about them.
 
-[XXX] [1] For example, a User may have a customer relationship with the Business providing general account and sales and over-arching data, but may also process requests for employment data, or removing users from marketing lists. The full enumeration and meaning of these relationships is currently out of scope of the protocol specification until more use cases and implications are understood.
 
 ### 2.02 `POST /exercise` ("Data Rights Exercise" endpoint)
 
@@ -93,7 +92,7 @@ This is the Data Rights Exercise endpoint which Users and Authorized Agents can 
 - `regime` MAY contain a string specifying the legal regime under which the Data Request is being taken.  Requests which do not supply a `regime` MAY be considered for voluntary processing.
   - The legal regime is a system of applicable rules, whether enforceable by statute, regulations, voluntary contract, or other legal frameworks which prescribe data rights to the User. See [3.01 Supported Rights Actions](#301-supported-rights-actions) for more discussion.
 - `exercise` MUST contain a list of rights to exercise.
-- `relationships` MAY contain a list of string 'hints' for the Covered Business that the User requesting rights may have data outside of the expected Customer/Business relationship which the User would like to be considered as part of this Data Rights Exercise.
+- `relationships` MAY contain a list of string 'hints' for the Covered Business signaling that the Covered Business may have data of the User's outside of the expected Customer/Business relationship, and which the User would like to be considered as part of this Data Rights Exercise.
 - `identity` MUST contain an [RFC7515 JWT](https://datatracker.ietf.org/doc/html/rfc7515) conforming to one of the following specifications:
   - a string containing a JWT serialized in the Compact Serialization format [RFC7515 Section 3.1]
   - a document object containing a JWT serialized in the JSON Serialization formation [RFC7515 Section 3.2]
