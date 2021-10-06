@@ -159,22 +159,22 @@ These Schemas are referenced in Section 2 outlining the HTTP endpoints and their
 
 ### 3.01 Supported Rights Actions
 
-These are the rights which are encoded in v0.3 of the protocol:
+These are the CCPA rights which are encoded in v0.3 of the protocol:
 
-* `sale:opt_out` - [RIGHT TO OPT-OUT OF SALE](https://oag.ca.gov/privacy/ccpa#sectionb)
-* `sale:opt_in` - RECONSENT OR OPT-IN TO DATA SALE
-* `deletion` - [RIGHT TO DELETE](https://oag.ca.gov/privacy/ccpa#sectione)
-* `access` -  [RIGHT TO KNOW](https://oag.ca.gov/privacy/ccpa#sectionc)
-* `access:categories` -  [RIGHT TO KNOW](https://oag.ca.gov/privacy/ccpa#sectionc)
-  * Implementers SHOULD define this action before v1.0
-* `access:specific` -  [RIGHT TO KNOW](https://oag.ca.gov/privacy/ccpa#sectionc)
-  * Implementers SHOULD define this action before v1.0
-  
-Requests to these rights SHALL be made under either a processing `regime` of "ccpa", or on a voluntary basis.
-
-[XXX] access:categories, access:specific encoding, how tightly do the rights map to CCPA? talk about what these rights loo like with the larger group
+| Regime | Right               | Details                                                              |
+|--------|---------------------|----------------------------------------------------------------------|
+| ccpa   | `sale:opt_out`      | [RIGHT TO OPT-OUT OF SALE](https://oag.ca.gov/privacy/ccpa#sectionb) |
+| ccpa   | `sale:opt_in`       | RECONSENT OR OPT-IN TO DATA SALE                                     |
+| ccpa   | `deletion`          | [RIGHT TO DELETE](https://oag.ca.gov/privacy/ccpa#sectione)          |
+| ccpa   | `access`            | [RIGHT TO KNOW](https://oag.ca.gov/privacy/ccpa#sectionc)            |
+| ccpa   | `access:categories` | [RIGHT TO KNOW](https://oag.ca.gov/privacy/ccpa#sectionc)[☆]         |
+| ccpa   | `access:specific`   | [RIGHT TO KNOW](https://oag.ca.gov/privacy/ccpa#sectionc)[☆]         |
 
 **Covered Businesses** specify which rights they support in the [Data Rights Discovery](#201-get-well-knowndata-rightsjson-data-rights-discovery-endpoint) endpoint while consumers and their agents can specify the rights they are making use of in the [Data Rights Exercise](#202-post-exercise-data-rights-exercise-endpoint) endpoint.
+
+Requests to exercise these rights SHALL be made under either a processing `regime` of "ccpa", or on a voluntary basis by leaving the regime unspecified. The encoding of CCPA rights in this section is not to be interpreted to exclude requests made under GDPR statutes or other regional privacy or accessibility legislation; other legal regimes shall be encoded in to the protocol in future iterations.
+
+[☆] The schema and semantics of the `access:categories` and `access:specific` rights shall be declared at a later date. Discussion in [GitHub issue #9](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/9).
 
 ### 3.02 Request Statuses
 
