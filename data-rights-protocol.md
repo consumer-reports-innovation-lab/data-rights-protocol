@@ -97,7 +97,8 @@ This is the Data Rights Exercise endpoint which End-Users and Authorized Agents 
 ```
 
 - `meta` MUST contain only a single key `version` which contains a string referencing the current protocol version “0.3”.
-- `regime` MAY contain a string specifying the regulatory regime under which the Data Request is being taken. Requests which do not supply a `regime` MAY be considered for voluntary processing. See [3.01 Supported Rights Actions](#301-supported-rights-actions). 
+- `regime` MAY contain a string specifying the legal regime under which the Data Request is being taken.  Requests which do not supply a `regime` MAY be considered for voluntary processing.
+  - The legal regime is a system of applicable rules, whether enforceable by statute, regulations, voluntary contract, or other legal frameworks which prescribe data rights to the User. See [3.01 Supported Rights Actions](#301-supported-rights-actions) for more discussion.
 - `exercise` MUST contain a list of rights to exercise.
 - `identity` MUST contain an [RFC7515 JWT](https://datatracker.ietf.org/doc/html/rfc7515) conforming to one of the following specifications:
   - a string containing a JWT serialized in the Compact Serialization format [RFC7515 Section 3.1]
