@@ -14,7 +14,7 @@ The program will highlight the progress of DRP implementers and provide a forum 
 
 >> You can register here: [https://forms.gle/xJifpswrddxXNbhs7](https://forms.gle/xJifpswrddxXNbhs7)
 
-DRP’s first implementers are Consumer Reports Digital Lab, DataGrail, Ethyca, OneTrust, Spokeo, Surfshark, and Transcend. See [http://DataRightsProtocol.org](http://DataRightsProtocol.org) and [https://github.com/consumer-reports-digital-lab/data-rights-protocol](https://github.com/consumer-reports-digital-lab/data-rights-protocol) for more information.
+DRP’s first implementers are Consumer Reports Digital Lab, DataGrail, Ethyca, Mine, OneTrust, Spokeo, Surfshark, and Transcend. See [https://DataRightsProtocol.org](https://DataRightsProtocol.org) and [https://github.com/consumer-reports-digital-lab/data-rights-protocol](https://github.com/consumer-reports-digital-lab/data-rights-protocol) for more information.
 
 * Date: October 19 2021
 * Time: Noon - 12 pm Eastern Time
