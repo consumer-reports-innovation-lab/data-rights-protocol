@@ -1,8 +1,6 @@
-# Data Rights Protocol v.0.3
+# [Data Rights Protocol](https://github.com/consumer-reports-digital-lab/data-rights-protocol) v.0.3
 
 **DRAFT FOR COMMENT**: Visit the [Data Rights Protocol](https://datarightsprotocol.org/) home page for details on our Data Rights Roundtable on October 19th, 2021.
-
-[Data Rights Protocol](https://github.com/consumer-reports-digital-lab/data-rights-protocol)
 
 ## 1.0 Introduction
 
