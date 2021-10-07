@@ -1,1 +1,1 @@
-/home/rrix/Code/data-rights-protocol/data-rights-protocol.md
+data-rights-protocol.md
