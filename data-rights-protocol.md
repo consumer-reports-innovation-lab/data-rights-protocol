@@ -4,7 +4,7 @@
 
 ## 1.0 Introduction
 
-This specification defines a web protocol encoding a set of standardized request/response data flows such that End-Users can exercise Personal Data Rights provided under regulations like the California Consumer Privacy Act, General Data Protection Regulation, and other regulatory or voluntary bases, and receive affirmative responses in standardized formats.
+This specification defines a web protocol encoding a set of standardized request/response data flows such that Users can exercise Personal Data Rights provided under regulations like the California Consumer Privacy Act, General Data Protection Regulation, and other regulatory or voluntary bases, and receive affirmative responses in standardized formats.
 
 We aim to make the data rights protocol integrable with an ecosystem of data rights middlewares, agent services, automation tool kits, and privacy-respecting businesses which empower and build trust with consumers while driving the cost of compliance towards zero.
 
@@ -46,9 +46,9 @@ DRP 0.3 implementors MUST support application/json request and response bodies.
 
 ### 2.01 `GET /.well-known/data-rights.json` ("Data Rights Discovery" endpoint)
 
-This is the Data Rights Discovery endpoint, responding at a well-known endpoint on the Covered Business’s primary End-User focused domain. This [RFC8615] URI will return a JSON document conforming to this schema. This endpoint exists for End-Users and Authorized Agents to be able to take Data Rights Actions.
+This is the Data Rights Discovery endpoint, responding at a well-known endpoint on the Covered Business’s primary User focused domain. This [RFC8615] URI will return a JSON document conforming to this schema. This endpoint exists for Users and Authorized Agents to be able to take Data Rights Actions.
 
-For instance, an End-User looking to exercise their data rights for Example, Inc. whose homepage is https://example.com/ MUST be able to GET https://example.com/.well-known/data-rights.json without knowledge of the Covered Business’s relationship to any Privacy Infrastructure Provider. 
+For instance, an User looking to exercise their data rights for Example, Inc. whose homepage is https://example.com/ MUST be able to GET https://example.com/.well-known/data-rights.json without knowledge of the Covered Business’s relationship to any Privacy Infrastructure Provider. 
 
 [XXX] ^ is this a MUST?
 
@@ -70,7 +70,7 @@ For instance, an End-User looking to exercise their data rights for Example, Inc
 
 ### 2.02 `POST /exercise` ("Data Rights Exercise" endpoint)
 
-This is the Data Rights Exercise endpoint which End-Users and Authorized Agents can use to exercise enumerated data rights.
+This is the Data Rights Exercise endpoint which Users and Authorized Agents can use to exercise enumerated data rights.
 
 ```
 {
@@ -106,7 +106,7 @@ Responses to this request MUST adhere to the [Exercise Status Schema](#303-schem
 
 ### 2.03 `GET /status` ("Data Rights Status" endpoint)
 
-This is the Data Rights Status endpoint which End-Users and Authorized Agents can use to query for the status of an existing data rights request. Requests to this endpoint MUST provide a single URL parameter request_id which is the Request ID for the Data Rights Request.
+This is the Data Rights Status endpoint which Users and Authorized Agents can use to query for the status of an existing data rights request. Requests to this endpoint MUST provide a single URL parameter request_id which is the Request ID for the Data Rights Request.
 
 `GET /status?request_id=c789ff35-7644-4ceb-9981-4b35c264aac3`
 
