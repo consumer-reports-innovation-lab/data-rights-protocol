@@ -1,16 +1,8 @@
 # Data Rights Protocol v.0.3
 
-**DRAFT FOR COMMENT**
+**DRAFT FOR COMMENT**: Visit the [Data Rights Protocol](https://datarightsprotocol.org/) home page for details on our Data Rights Roundtable on October 19th, 2021.
 
 [Data Rights Protocol](https://github.com/consumer-reports-digital-lab/data-rights-protocol)
-
-Changes from v0.2
-- donotsell -> sale:opt-in opt-out
-- terminology changes
-- Request status chart
-- identity tiger team recommendations
-- API Authentication details
-- Moved non-essential sections out of protocol spec
 
 ## 1.0 Introduction
 
@@ -266,6 +258,18 @@ In short:
   - the intention is to eventually leverage OAuth2 to secure these resources, either in concert with OIDC or out of band
 - Each party MUST include an HTTP `Authorization` header in each response containing the SHA-512 hash of their secret.
 - Requests which do not have an `Authorization` header MUST receive an `401` HTTP response.
+
+## Specification Change Log
+
+In general, please put major change log items at the top of the file. When a new protocol version is "cut", move the previous versions' change log down here.
+
+Changes in v0.2 to v0.3:
+- donotsell -> sale:opt-in opt-out
+- terminology changes
+- Request status chart
+- identity tiger team recommendations
+- API Authentication details
+- Moved non-essential sections out of protocol spec
 
 ## Footnotes and Errata
 
