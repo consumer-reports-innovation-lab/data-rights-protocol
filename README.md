@@ -1,1 +1,0 @@
-data-rights-protocol.md
