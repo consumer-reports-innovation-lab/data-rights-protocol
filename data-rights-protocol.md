@@ -77,7 +77,7 @@ This is the Data Rights Exercise endpoint which Users and Authorized Agents can 
   "meta": {
     "version": "0.3"
   },
-  "legal_basis": "ccpa",
+  "regime": "ccpa",
   "exercise": [
     "sale:opt-out"
   ],
@@ -87,14 +87,13 @@ This is the Data Rights Exercise endpoint which Users and Authorized Agents can 
 ```
 
 - `meta` MUST contain only a single key `version` which contains a string referencing the current protocol version “0.3”.
-- `legal_basis` MUST contain a string referencing the legal basis under which the Data Request is being taken. See [3.01 Supported Rights Actions](#301-supported-rights-actions).
+- `regime` MAY contain a string specifying the legal regime under which the Data Request is being taken.  Requests which do not supply a `regime` MAY be considered for voluntary processing.
+  - The legal regime is a system of applicable rules, whether enforceable by statute, regulations, voluntary contract, or other legal frameworks which prescribe data rights to the User. See [3.01 Supported Rights Actions](#301-supported-rights-actions) for more discussion.
 - `exercise` MUST contain a list of rights to exercise.
 - `identity` MUST contain an [RFC7515 JWT](https://datatracker.ietf.org/doc/html/rfc7515) conforming to one of the following specifications:
   - a string containing a JWT serialized in the Compact Serialization format [RFC7515 Section 3.1]
   - a document object containing a JWT serialized in the JSON Serialization formation [RFC7515 Section 3.2]
 - `status_callback` MAY be specified with a URL that the Status Callback can be sent to. See ["Data Rights Status Callback" endpoint](#204-post-status_callback-data-rights-status-callback-endpoint).
-
-[XXX] replace `regulatory_authority` with `legal_basis` -> support contract/voluntary bases?
 
 [XXX] is exercise a list? is making multiple "requests" in a single request valid?
 
@@ -150,20 +149,22 @@ These Schemas are referenced in Section 2 outlining the HTTP endpoints and their
 
 ### 3.01 Supported Rights Actions
 
-Requests made under the `legal_basis` “ccpa” can take the following actions:
+These are the CCPA rights which are encoded in v0.3 of the protocol:
 
-* `sale:opt_out` - [RIGHT TO OPT-OUT OF SALE](https://oag.ca.gov/privacy/ccpa#sectionb)
-* `sale:opt_in` - RECONSENT OR OPT-IN TO DATA SALE
-* `deletion` - [RIGHT TO DELETE](https://oag.ca.gov/privacy/ccpa#sectione)
-* `access` -  [RIGHT TO KNOW](https://oag.ca.gov/privacy/ccpa#sectionc)
-* `access:categories` -  [RIGHT TO KNOW](https://oag.ca.gov/privacy/ccpa#sectionc)
-  * Implementers SHOULD define this action before v1.0
-* `access:specific` -  [RIGHT TO KNOW](https://oag.ca.gov/privacy/ccpa#sectionc)
-  * Implementers SHOULD define this action before v1.0
-
-[XXX] access:categories, access:specific encoding, how tightly do the rights map to CCPA? talk about what these rights loo like with the larger group
+| Regime | Right               | Details                                                              |
+|--------|---------------------|----------------------------------------------------------------------|
+| ccpa   | `sale:opt_out`      | [RIGHT TO OPT-OUT OF SALE](https://oag.ca.gov/privacy/ccpa#sectionb) |
+| ccpa   | `sale:opt_in`       | RECONSENT OR OPT-IN TO DATA SALE                                     |
+| ccpa   | `deletion`          | [RIGHT TO DELETE](https://oag.ca.gov/privacy/ccpa#sectione)          |
+| ccpa   | `access`            | [RIGHT TO KNOW](https://oag.ca.gov/privacy/ccpa#sectionc)            |
+| ccpa   | `access:categories` | [RIGHT TO KNOW](https://oag.ca.gov/privacy/ccpa#sectionc)[☆]         |
+| ccpa   | `access:specific`   | [RIGHT TO KNOW](https://oag.ca.gov/privacy/ccpa#sectionc)[☆]         |
 
 **Covered Businesses** specify which rights they support in the [Data Rights Discovery](#201-get-well-knowndata-rightsjson-data-rights-discovery-endpoint) endpoint while consumers and their agents can specify the rights they are making use of in the [Data Rights Exercise](#202-post-exercise-data-rights-exercise-endpoint) endpoint.
+
+Requests to exercise these rights SHALL be made under either a processing `regime` of "ccpa", or on a voluntary basis by leaving the regime unspecified. The encoding of CCPA rights in this section is not to be interpreted to exclude requests made under GDPR statutes or other regional privacy or accessibility legislation; other legal regimes shall be encoded in to the protocol in future iterations.
+
+[☆] The schema and semantics of the `access:categories` and `access:specific` rights shall be declared at a later date. Discussion in [GitHub issue #9](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/9).
 
 ### 3.02 Request Statuses
 
@@ -187,7 +188,7 @@ This table shows valid states for Data Rights Requests, along with the criteria 
 | denied      | other                  | some other unspecified failure state reached                        | details?                          | x      |
 | expired     |                        | the time is currently after the `expires_at` in the request.         |                                   | x      |
 
-[XXX] in the case of claim_not_covered, this may be about asking for categories of data which Covered Businesses are not required to present to the User. in the case of outside_jurisdiction, this may be because the business is not honoring CCPA requests for non-California residents
+[XXX] in the case of claim_not_covered, this may be about asking for categories of data which Covered Businesses are not required to present to the User. in the case of outside_jurisdiction, this may be because the business is not honoring CCPA requests for non-California residents and there is no other basis on which to honor the request.
 
 ### 3.03 Schema: Status of a Data Subject Exercise Request
 
