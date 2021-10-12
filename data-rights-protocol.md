@@ -50,10 +50,6 @@ This is the Data Rights Discovery endpoint, responding at a well-known endpoint 
 
 For instance, an User looking to exercise their data rights for Example, Inc. whose homepage is https://example.com/ MUST be able to GET https://example.com/.well-known/data-rights.json without knowledge of the Covered Business’s relationship to any Privacy Infrastructure Provider. 
 
-[XXX] ^ is this a MUST?
-
-[XXX] This `well-known` resource SHOULD be registered with IANA before 1.0 specification.
-
 ```
 {
   "version": "0.3",
@@ -189,6 +185,20 @@ This table shows valid states for Data Rights Requests, along with the criteria 
 | expired     |                        | the time is currently after the `expires_at` in the request.         |                                   | x      |
 
 [XXX] in the case of claim_not_covered, this may be about asking for categories of data which Covered Businesses are not required to present to the User. in the case of outside_jurisdiction, this may be because the business is not honoring CCPA requests for non-California residents and there is no other basis on which to honor the request.
+
+#### 3.02.1: `need_user_verification` State Flow Semantics
+
+When a Data Rights Request enters the `in_progress`/`need_user_verification` state, the PIPi SHALL inform the Agent through either the [Data Rights Status Callback](#2041-post-status_callback-response) or the [Data Rights Status endpoint](#203-get-status-data-rights-status-endpoint). A Data Rights Request can enter this state if the identity tokens are not already sufficiently verifiable by the Covered Business, or they could not unambiguously match the User to an account based on those tokens.
+
+These request statuses MUST contain a `user_verification_url` string which is an HTTPS or otherwise secure URL; the user's identity token will be included in requests to that URL. The Authorized Agent is responsible for presenting the URL in the Status's `user_verification_url` with some URL parameters attached to it:
+
+- `identity` MUST contain the same identity token presented in the original Data Rights Request, or a JWT containing the same claims
+- `redirect_to` MUST contain a URL-safe encoded URL which the PIPi will redirect to upon successful identity verification.
+- `request_id` MUST contain the `request_id` of the Data Rights Request under consideration.
+
+The PIPi SHOULD provide a `user_verification_url` which refers to a unique Data Rights Request and then SHALL verify that the `request_id` specified by the Authorized Agent refers to the same Data Rights Request before presenting a verification.
+
+The PIPi SHOULD NOT redirect the user back to the Authorized Agent's `redirect_to` URL when the user verification fails or is canceled, but the Authorized Agent SHOULD NOT assume that loading that URL is enough to assume the verification is complete and request is ready to proceed; they should query the [Data Rights Status endpoint](#203-get-status-data-rights-status-endpoint) or wait for a Status callback.
 
 ### 3.03 Schema: Status of a Data Subject Exercise Request
 
