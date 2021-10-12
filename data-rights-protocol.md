@@ -247,7 +247,24 @@ Covered Businesses SHALL determine for themselves the level of reliance they wil
 
 ### 3.06 Error States
 
-[XXX] Todo, error states in processing, error states in POST exercise, etc...
+Servers SHALL respond with HTTP 200 response codes when requests are processed successfully. In exceptional cases, servers SHALL respond with non-200 response codes and an `application/json` body with the following keys:
+
+- `code` MUST contain a string encoding of the HTTP response code for clients which cannot process the headers. 
+- `message` MUST contain a string explaining the nature of the error.
+- `fatal` MAY contain a Boolean value of `true` if the request will move to a `denied`/`other` state. Requests which are not `fatal` shall be assumed to be retryable.
+
+```
+{
+  "code": "400",
+  "message": "Unsupported rights actions submitted."
+}
+```
+
+PIPi servers MAY signal that an existing request will no longer be processed due to this error. PIPi SHOULD move the request to a `denied`/`other` state and call the [Status Callback endpoint](#204-post-status_callback-data-rights-status-callback-endpoint) accordingly.
+
+Error codes are purposefully under-specified at the moment -- servers SHALL make a best effort to map to known 4XX and 5XX codes.
+
+Note that these error states only represent *request errors*; workflow errors SHOULD be specified in the request status fields.
 
 ### 3.07 API Authentication
 
