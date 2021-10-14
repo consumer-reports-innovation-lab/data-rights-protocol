@@ -183,10 +183,10 @@ This table shows valid states for Data Rights Requests, along with the criteria 
 | denied      | suspected_fraud        | CB or PIP believes this request was made fraudulently               |                                   | x      |
 | denied      | insuf_verification     | the [in_progress, need_user_verification] stage failed or timed out |                                   | x      |
 | denied      | no_match               | CB could not match user identity to data subject                    |                                   | x      |
-| denied      | claim_not_covered      | user requesting data not covered under legal bases[XXX]                  |                                   | x      |
-| denied      | outside_jurisdiction   | user requesting data under bases they are not covered by[XXX]            |                                   | x      |
+| denied      | claim_not_covered      | user requesting data not covered under legal bases[XXX]             |                                   | x      |
+| denied      | outside_jurisdiction   | user requesting data under bases they are not covered by[XXX]       |                                   | x      |
 | denied      | other                  | some other unspecified failure state reached                        | details?                          | x      |
-| expired     |                        | the time is currently after the `expires_at` in the request.         |                                   | x      |
+| expired     |                        | the time is currently after the `expires_at` in the request.        |                                   | x      |
 
 [XXX] in the case of claim_not_covered, this may be about asking for categories of data which Covered Businesses are not required to present to the User. in the case of outside_jurisdiction, this may be because the business is not honoring CCPA requests for non-California residents and there is no other basis on which to honor the request.
 
@@ -234,7 +234,7 @@ Subject to further refinement of trust mechanisms and authorization workflow, JW
 | `sub`                                     | if known, subject claim SHALL contain the Covered Business's preferred public identifier for the user.                                                                                            |
 | `name`                                    | if known, claim SHALL contain the user's full name most likely known by the Covered Business                                                                                                      |
 | `email` or `email_verified`               | if known, claim SHALL contain the user's email address. `email_verified` MUST only contain a value if this address was verified by the agent                                                      |
-| `phone_number` of `phone_number_verified` | if known, claim SHALL contain the user's phone number. `phone_number_verified` MUST only contain a value if this address was verified by the agent through a phone call or SMS one-time password. |
+| `phone_number` or `phone_number_verified` | if known, claim SHALL contain the user's phone number. `phone_number_verified` MUST only contain a value if this address was verified by the agent through a phone call or SMS one-time password. |
 | `address`                                 | if known, claim SHALL contain the user's preferred address.                                                                                                                                       |
 | `address_verified`                        | this custom claim SHALL contain the user's preferred address, if that was affirmatively verified by the issuing party                                                                             |
 | `power_of_attorney`                       | this custom claim MAY contain a reference to a User-signed document delegating power of attorney to the submitting AA. Implementation details of this claim will be defined later.       |
