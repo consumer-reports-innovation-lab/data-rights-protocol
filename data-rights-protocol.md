@@ -260,6 +260,16 @@ In short:
 - Each party MUST include an HTTP `Authorization` header in each response containing the SHA-512 hash of their secret.
 - Requests which do not have an `Authorization` header MUST receive an `401` HTTP response.
 
+## 4.0 Protocol Roadmap
+
+In its current implementation, DRP should not be used to process data of Users who are not involved in the implementers group. There are known shortcomings in security, privacy, and identity verification that will need to be solved before a "1.0" protocol version which is suitable for production-ready systems.
+
+- Governance and operating model
+- Protocol Compliance suite
+- OIDC identity provider flows
+- Secure OAuth2 client authentication (eg [FAPI baseline security profile](https://openid.net/specs/openid-financial-api-part-1-1_0.html))
+- Successful DRP pilot between multiple Agents and Covered Businesses
+
 ## Specification Change Log
 
 In general, please put major change log items at the top of the file. When a new protocol version is "cut", move the previous versions' change log down here.
