@@ -23,7 +23,7 @@ By providing a shared protocol and vocabulary for expressing these data rights, 
 ### 1.02 Scope
 In this initial phase of the Data Rights Protocol, we want to enable a group of peers to form a voluntary trust network while expanding the protocol to support wider trust models and additional data flows.
 
-Version 0.4 encodes the provisions of the California Code bla bla section bla as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA” and intends to encode the following rights. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
+Version 0.4 encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
 
 ### 1.03 Terminology
 
