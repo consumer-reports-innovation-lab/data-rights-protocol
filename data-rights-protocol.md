@@ -185,10 +185,10 @@ This table shows valid states for Data Rights Requests, along with the criteria 
 | denied      | suspected_fraud        | CB or PIP believes this request was made fraudulently               |                                   | x      |
 | denied      | insuf_verification     | the [in_progress, need_user_verification] stage failed or timed out |                                   | x      |
 | denied      | no_match               | CB could not match user identity to data subject                    |                                   | x      |
-| denied      | claim_not_covered      | user requesting data not covered under legal bases[XXX]                  |                                   | x      |
-| denied      | outside_jurisdiction   | user requesting data under bases they are not covered by[XXX]            |                                   | x      |
+| denied      | claim_not_covered      | user requesting data not covered under legal bases[XXX]             |                                   | x      |
+| denied      | outside_jurisdiction   | user requesting data under bases they are not covered by[XXX]       |                                   | x      |
 | denied      | other                  | some other unspecified failure state reached                        | details?                          | x      |
-| expired     |                        | the time is currently after the `expires_at` in the request.         |                                   | x      |
+| expired     |                        | the time is currently after the `expires_at` in the request.        |                                   | x      |
 
 [XXX] in the case of claim_not_covered, this may be about asking for categories of data which Covered Businesses are not required to present to the User. in the case of outside_jurisdiction, this may be because the business is not honoring CCPA requests for non-California residents and there is no other basis on which to honor the request.
 
@@ -236,7 +236,7 @@ Subject to further refinement of trust mechanisms and authorization workflow, JW
 | `sub`                                     | if known, subject claim SHALL contain the Covered Business's preferred public identifier for the user.                                                                                            |
 | `name`                                    | if known, claim SHALL contain the user's full name most likely known by the Covered Business                                                                                                      |
 | `email` or `email_verified`               | if known, claim SHALL contain the user's email address. `email_verified` MUST only contain a value if this address was verified by the agent                                                      |
-| `phone_number` of `phone_number_verified` | if known, claim SHALL contain the user's phone number. `phone_number_verified` MUST only contain a value if this address was verified by the agent through a phone call or SMS one-time password. |
+| `phone_number` or `phone_number_verified` | if known, claim SHALL contain the user's phone number. `phone_number_verified` MUST only contain a value if this address was verified by the agent through a phone call or SMS one-time password. |
 | `address`                                 | if known, claim SHALL contain the user's preferred address.                                                                                                                                       |
 | `address_verified`                        | this custom claim SHALL contain the user's preferred address, if that was affirmatively verified by the issuing party                                                                             |
 | `power_of_attorney`                       | this custom claim MAY contain a reference to a User-signed document delegating power of attorney to the submitting AA. Implementation details of this claim will be defined later.       |
@@ -249,7 +249,24 @@ Covered Businesses SHALL determine for themselves the level of reliance they wil
 
 ### 3.06 Error States
 
-[XXX] Todo, error states in processing, error states in POST exercise, etc...
+Servers SHALL respond with HTTP 200 response codes when requests are processed successfully. In exceptional cases, servers SHALL respond with non-200 response codes and an `application/json` body with the following keys:
+
+- `code` MUST contain a string encoding of the HTTP response code for clients which cannot process the headers. 
+- `message` MUST contain a string explaining the nature of the error.
+- `fatal` MAY contain a Boolean value of `true` if the request will move to a `denied`/`other` state. Requests which are not `fatal` shall be assumed to be retryable.
+
+```
+{
+  "code": "400",
+  "message": "Unsupported rights actions submitted."
+}
+```
+
+PIPi servers MAY signal that an existing request will no longer be processed due to this error. PIPi SHOULD move the request to a `denied`/`other` state and call the [Status Callback endpoint](#204-post-status_callback-data-rights-status-callback-endpoint) accordingly.
+
+Error codes are purposefully under-specified at the moment -- servers SHALL make a best effort to map to known 4XX and 5XX codes.
+
+Note that these error states only represent *request errors*; workflow errors SHOULD be specified in the request status fields.
 
 ### 3.07 API Authentication
 
