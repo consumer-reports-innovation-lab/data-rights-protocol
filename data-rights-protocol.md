@@ -189,10 +189,11 @@ This table shows valid states for Data Rights Requests, along with the criteria 
 | denied      | no_match               | CB could not match user identity to data subject                    |                                   | x      |
 | denied      | claim_not_covered      | user requesting data not covered under legal bases[XXX]             |                                   | x      |
 | denied      | outside_jurisdiction   | user requesting data under bases they are not covered by[XXX]       |                                   | x      |
+| denied      | too_many_requests      | user has submitted more requests than the CB is legally obliged to process | details?
 | denied      | other                  | some other unspecified failure state reached                        | details?                          | x      |
 | expired     |                        | the time is currently after the `expires_at` in the request.        |                                   | x      |
 
-[XXX] in the case of claim_not_covered, this may be about asking for categories of data which Covered Businesses are not required to present to the User. in the case of outside_jurisdiction, this may be because the business is not honoring CCPA requests for non-California residents and there is no other basis on which to honor the request.
+[XXX] in the case of claim_not_covered, this may be about asking for categories of data which Covered Businesses are not required to present to the User. in the case of outside_jurisdiction, this may be because the business is not honoring CCPA requests for non-California residents and there is no other basis on which to honor the request. [#28](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/28) for discussion on `too_many_requests`
 
 #### 3.02.1: `need_user_verification` State Flow Semantics
 

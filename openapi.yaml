@@ -1,0 +1,251 @@
+# [[file:../../org/data_rights_interface_protocol.org::*Tangle][Tangle:1]]
+openapi: 3.0.0
+info:
+  version: 0.4
+  title: Data Rights Protocol - PIP Interface
+
+components:
+  schemas:
+    JSONWebToken:
+      oneOf:
+        # - $ref: "#/components/schemas/JSONSerializedJWT"
+        - $ref: "#/components/schemas/FlattenedJSONSerializedJWT"
+        - $ref: "#/components/schemas/StringSerializedJWT"
+    
+    JWTClaims:
+      type: object
+      format: base64
+      required:
+        - iss
+        - aud
+      properties:
+        iss:
+          type: string
+        aud:
+          type: string
+        sub:
+          type: string
+        # user claims
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        email_verified:
+          type: string
+          format: email
+        phone_number:
+          type: string
+        phone_number_verified:
+          type: string
+        address:
+          type: string
+        address_verified:
+          type: string
+        power_of_attorney:
+          type: string
+    
+    StringSerializedJWT:
+      type: byte
+      format: base64
+      description: JWS Compact Serialization JWT -  https://datatracker.ietf.org/doc/html/rfc7515#section-7.1
+    
+    # https://github.com/OAI/OpenAPI-Specification/issues/1971
+    FlattenedJSONSerializedJWT:
+      type: object
+      description: JWS Flattened JSON Serialized JWT - https://datatracker.ietf.org/doc/html/rfc7515#section-7.2
+      properties:
+        payload:
+          $ref: "#/components/schemas/JWTClaims"
+        signatures:
+          type: array
+          items:
+            type: object
+        protected:
+          type: string
+        header:
+          type: object            
+    DataRightsRequest:
+      type: object
+      required:
+        - meta
+        - regime
+        - exercise
+        - identity
+      properties:
+        meta:
+          type: object
+          required:
+          - version
+          properties:
+            version:
+              type: string
+              description: the version of the DRP API as implemented. 
+              example: "0.4"
+              enum: [ 0.4 ]
+        regime:
+          type: string
+          example: ccpa
+          enum: [ ccpa ]
+        exercise:
+          type: array
+          items:
+            type: string
+          enum: 
+            - "sale:opt-out"
+            - "sale:opt-in"
+            - "deletion"
+            - "access"
+            - "access:categories"
+            - "access:specific"
+        identity:
+          oneOf:
+            - $ref: '#/components/schemas/JSONWebToken'
+        relationships:
+          type: array
+          items:
+            type: string
+        # https://swagger.io/docs/specification/callbacks/
+        status_callback:
+          type: string
+          format: uri
+    DataRightsStatus:
+      type: object
+      required:
+      - request_id
+      - received_at
+      - status
+      properties:
+        request_id:
+          type: string
+          format: uuid
+        received_at:
+          type: date-time
+        results_url:
+          type: string
+          format: uri
+        # how to express how these compose together?
+        status:
+          type: string
+          enum:
+          - in_progress
+          - open
+          - fulfilled
+          - revoked
+          - denied
+          - expired
+        reason:
+          type: string
+          enum:
+          - need_user_verification
+          - suspected_fraud
+          - insuf_verification
+          - no_match
+          - claim_not_covered
+          - too_many_requests
+          - other
+
+  responses:
+    ValidDRRStatus:
+      description: The Data Rights Request was captured by the PIP.
+      content:
+        application/json:
+          schema: 
+            $ref: '#/components/schemas/DataRightsStatus'
+      links:
+        GetDRRStatus:
+          operationId: exerciseStatus
+          description: Status's requestId can be used to get the status again.
+          parameters:
+            requestId: '$response.body#/request_id'
+        RevokeDRR:
+          operationId: revokeRequest
+          description: Status's requestId can be used to revoke open DRRs
+          parameters:
+            requestId: '$response.body#/request_id'
+    
+    InvalidDRRStatus:
+      description: The submitted or queried Data Rights Request is in an invalid state
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - code
+              - message
+            properties:
+              code:
+                description: This must be the same as the HTTP status code for clients which cannot process the headers.
+                type: string
+              message:
+                type: string
+              fatal:
+                type: boolean
+
+paths:
+  /exercise:
+    post:
+      summary: Submit a new Data Rights Request
+      operationId: exerciseRequest
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataRightsRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ValidDRRStatus'
+        '4XX':
+          $ref: '#/components/responses/InvalidDRRStatus'
+        '5XX':
+          $ref: '#/components/responses/InvalidDRRStatus'
+
+  /status:
+    get:
+      summary: Query the PIP interface for the status of an existing request
+      operationId: exerciseStatus
+      parameters:
+        - in: query
+          name: requestId
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: the Request ID returned in exerciseRequest
+      responses:
+        '200':
+          $ref: '#/components/responses/ValidDRRStatus'
+        '4XX':
+          $ref: '#/components/responses/InvalidDRRStatus'
+        '5XX':
+          $ref: '#/components/responses/InvalidDRRStatus'
+
+  /revoke:
+    post:
+      summary: Cancel or revoke an in-progress Data Rights Request
+      description: >-
+        This endpoint will instruct the PIP to cancel or revoke a Data
+        Rights Request which is still in a non-terminal state.
+      operationId: revokeRequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - request_id
+              properties:
+                request_id:
+                  description: The ID of the request to revoke
+                  type: string
+                  format: uuid
+                reason:
+                  description: MAY contain a user-provided reason for the request to not be processed
+                  type: string
+            
+      responses:
+        '200':
+          $ref: '#/components/responses/ValidDRRStatus'
+# Tangle:1 ends here
