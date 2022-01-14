@@ -8,8 +8,9 @@ license = "Apache 2"
 [tool.poetry.dependencies]
 python = "^3.9"
 pyjwt = "^2.3.0"
-uuid = "^1.30"
 hypothesis = "^6.35.0"
+click = "^8.0.3"
+black = "^21.12b0"
 
 [tool.poetry.dependencies.pydantic]
 extras = ["email"]
