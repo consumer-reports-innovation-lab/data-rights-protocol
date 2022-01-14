@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import List, Optional, Set
 from pydantic import HttpUrl, UUID4, validator, root_validator
 
 from .base import BaseModel
@@ -9,11 +9,11 @@ from .identity import IdentityPayload
 class DataRightsRequest(BaseModel):
     request_id: Optional[UUID4]
     meta: RequestMD = RequestMD()
-    relationships: List[str]
+    relationships: Set[str]
     status_callback: Optional[HttpUrl]
 
     regime: Regime = Regime.ccpa
-    exercise: Action
+    exercise: Set[Action]
 
     identity: IdentityPayload
 
@@ -36,7 +36,7 @@ class DataRightsStatus(BaseModel):
         if values.get('status') != RequestStatus.fulfilled:
             if values.get('results_url') != None:
                 raise ValueError("cannot have results_url for unfulfilled request!")
-        
+
     @root_validator
     def reason_valid_for_status(cls, values):
         status = values.get('status')
