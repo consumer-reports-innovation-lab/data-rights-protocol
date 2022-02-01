@@ -1,4 +1,3 @@
-# [[file:../../org/data_rights_interface_protocol.org::*Tangle][Tangle:1]]
 openapi: 3.0.0
 info:
   version: 0.4
@@ -248,4 +247,3 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ValidDRRStatus'
-# Tangle:1 ends here
