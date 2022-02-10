@@ -9,7 +9,7 @@ from .identity import IdentityPayload
 class DataRightsRequest(BaseModel):
     request_id: Optional[UUID4]
     meta: RequestMD = RequestMD()
-    relationships: Set[str]
+    relationships: Optional[Set[str]]
     status_callback: Optional[HttpUrl]
 
     regime: Regime = Regime.ccpa
