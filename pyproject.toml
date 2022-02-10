@@ -13,6 +13,7 @@ click = "^8.0.3"
 black = "^21.12b0"
 fastapi = "^0.73.0"
 uvicorn = "^0.17.4"
+pytest = "^7.0.0"
 
 [tool.poetry.dependencies.pydantic]
 extras = ["email"]
