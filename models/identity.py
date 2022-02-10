@@ -1,25 +1,26 @@
 from .base import BaseModel
+from typing import Optional
 from pydantic import EmailStr,  validator
 
 class IdentityPayload(BaseModel):
     iss: str
     aud: str
-    sub: str
+    sub: Optional[str]
 
-    name: str
+    name: Optional[str]
 
-    email: EmailStr
-    verified_email: bool = False
+    email: Optional[EmailStr]
+    verified_email: Optional[bool] = False
 
-    phone_number: str
-    verified_phone_number: bool = False
+    phone_number: Optional[str]
+    verified_phone_number: Optional[bool] = False
 
-    address: str
-    verified_address: bool = False
+    address: Optional[str]
+    verified_address:Optional[bool] = False
     
-    power_of_attorney: str
+    power_of_attorney: Optional[str]
 
-    def dict(self):
+    def dict(self, **kwargs):
         # construct base dict
         ret = dict(
             iss=self.iss,
@@ -31,16 +32,22 @@ class IdentityPayload(BaseModel):
 
         if self.verified_email:
             ret['email_verified'] = self.email
+        elif self.email is None:
+            pass
         else:
             ret['email'] = self.email
 
         if self.verified_phone_number:
             ret['phone_number_verified'] = self.phone_number
+        elif self.phone_number is None:
+            pass
         else:
             ret['phone_number'] = self.phone_number
 
         if self.verified_address:
             ret['address_verified'] = self.address
+        elif self.address is None:
+            pass
         else:
             ret['address'] = self.address
 
@@ -50,8 +57,10 @@ class IdentityPayload(BaseModel):
     def issuer_set(cls, v):
         if v is None:
             raise ValueError("Must set issuer claim")
+        return v
 
     @validator('aud')
     def audience_set(cls, v):
         if v is None:
             raise ValueError("Must set audience claim")
+        return v

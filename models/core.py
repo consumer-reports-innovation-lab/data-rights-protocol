@@ -17,11 +17,12 @@ class DataRightsRequest(BaseModel):
 
     identity: IdentityPayload
 
-    def as_json(self):
-        return self.json(
+    def json(self):
+        return super().json(
             models_as_dict=False,
             exclude_none=True,
         )
+
 
 class DataRightsStatus(BaseModel):
     request_id: UUID4
