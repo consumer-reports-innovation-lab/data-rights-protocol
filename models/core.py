@@ -36,6 +36,7 @@ class DataRightsStatus(BaseModel):
         if values.get('status') != RequestStatus.fulfilled:
             if values.get('results_url') != None:
                 raise ValueError("cannot have results_url for unfulfilled request!")
+        return values
 
     @root_validator
     def reason_valid_for_status(cls, values):
@@ -43,3 +44,4 @@ class DataRightsStatus(BaseModel):
         reason = values.get('reason')
         if not is_valid_state_reason(status, reason):
             raise ValueError("reason not valid for state")
+        return values
