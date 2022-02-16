@@ -2,6 +2,7 @@ from .base import BaseModel
 from typing import Optional
 from pydantic import EmailStr,  validator
 
+
 class IdentityPayload(BaseModel):
     iss: str
     aud: str

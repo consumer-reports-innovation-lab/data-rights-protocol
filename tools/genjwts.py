@@ -1,18 +1,29 @@
-from pydantic import BaseSettings
 import jwt
 
-class Settings(BaseSettings):
-    jwt_algo: str = "HS256"
-    jwt_secret: str = "lolchangeme"
+from models import IdentityPayload
 
-settings = Settings()
+import click
 
-def dumps(value: 'IdentityPayload') -> str:
-    """
-    Serialize a JWT to a compact encoding
-    """
-    return jwt.encode(
-        value.dict(),
-        settings.jwt_secret,
-        settings.jwt_algo
-    )
+@click.command(help="Small utility function to generate an IdentityPayload and serialize it.")
+@click.option('--secret', default="lolchangeme", help="JWT HS256 signing key")
+@click.option('--iss', default="drp-test", help="JWT iss Field")
+@click.option('--aud', default="the-pip", help="JWT aud Field")
+@click.option('--sub', default="the-consumer", help="JWT sub Field")
+@click.option('--email', help="JWT email Field")
+@click.option('--phone', help="JWT phone_number Field")
+@click.option('--address', help="JWT address Field")
+@click.option('--poa-id', help="JWT power_of_attorney Field")
+def generate(iss: str,
+             aud: str,
+             sub: str,
+             email: str,
+             phone: str,
+             address: str,
+             poa_id: str,
+             secret: str):
+    constructed = models.IdentityPayload(
+        )
+    pass
+
+if __name__ == "__main__":
+    generate()

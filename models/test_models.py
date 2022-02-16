@@ -1,7 +1,7 @@
-import models
 import jwt
 import json
-import tools.genjwts
+
+import models
 
 def test_DRR_init():
     jwt_audience = 'pip'
@@ -28,7 +28,7 @@ def test_DRR_init():
     assert "exercise" in  reloaded.keys()
     assert reloaded["exercise"][0] == models.Action.opt_out
 
-    settings = tools.genjwts.settings
+    settings = models.base.settings
     decoded = jwt.decode(
         reloaded["identity"],
         settings.jwt_secret,
