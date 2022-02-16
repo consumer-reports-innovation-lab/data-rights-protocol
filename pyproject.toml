@@ -1,9 +1,13 @@
 [tool.poetry]
-name = "data-rights-protocol"
+name = "datarightsprotocol"
 version = "0"
 description = "datarightsprotocol.org"
 authors = ["Ryan Rix <ryan.rix.consultant@consumer.org>"]
 license = "Apache 2"
+packages = [
+    { include = "models" },
+    { include = "tools" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.9"
