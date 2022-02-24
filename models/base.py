@@ -10,8 +10,8 @@ class Settings(BaseSettings):
 settings = Settings()
 
 def jwt_dumps(value: 'IdentityPayload',
-          algo: str = settings.jwt_algo,
-          secret: str = settings.jwt_secret) -> str:
+              secret: str = settings.jwt_secret,
+              algo: str = settings.jwt_algo) -> str:
     """
     Serialize a JWT to a compact encoding
     """

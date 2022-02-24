@@ -1,6 +1,19 @@
 from .base import BaseModel
 from typing import Optional
 from pydantic import EmailStr,  validator
+from enum import Enum
+
+
+class IdentityClaims(str, Enum):
+    issuer = "iss"
+    audience = "aud"
+    subject = "sub"
+    name_ = "name"
+    email = "email"
+    phone_number = "phone_number"
+    address = "address"
+    poa = "power_of_attorney"
+
 
 
 class IdentityPayload(BaseModel):
@@ -20,6 +33,11 @@ class IdentityPayload(BaseModel):
     verified_address:Optional[bool] = False
     
     power_of_attorney: Optional[str]
+
+    def json(self):
+        encoder = BaseModel.Config.json_encoders['IdentityPayload']
+        return encoder(self)
+
 
     def dict(self, **kwargs):
         # construct base dict
