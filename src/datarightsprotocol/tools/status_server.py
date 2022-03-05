@@ -51,3 +51,8 @@ def process_status_callback(request_id: UUID, status: DataRightsStatus):
     request_path.write_text(status.json())
 
     return request_path
+
+import uvicorn
+def start(host="0.0.0.0", port="8000"):
+    uvicorn.run("tools.status_server:app", host=host, port=port)
+    

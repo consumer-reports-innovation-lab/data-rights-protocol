@@ -4,10 +4,6 @@ version = "0"
 description = "datarightsprotocol.org"
 authors = ["Ryan Rix <ryan.rix.consultant@consumer.org>"]
 license = "Apache 2"
-packages = [
-    { include = "models" },
-    { include = "tools" },
-]
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -30,5 +26,6 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-genjwts = "tools.genjwts:cmd"
-genreqs = "tools.genreqs:cmd"
+genjwts = 'datarightsprotocol.tools.genjwts:cmd'
+genreqs = 'datarightsprotocol.tools.genreqs:cmd'
+statusserver = 'datarightsprotocol.tools.status_server:start'
