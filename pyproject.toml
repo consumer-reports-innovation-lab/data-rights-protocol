@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "datarightsprotocol"
-version = "0"
+version = "0.4.0"
 description = "datarightsprotocol.org"
 authors = ["Ryan Rix <ryan.rix.consultant@consumer.org>"]
 license = "Apache 2"
@@ -8,9 +8,7 @@ license = "Apache 2"
 [tool.poetry.dependencies]
 python = "^3.9"
 pyjwt = "^2.3.0"
-hypothesis = "^6.35.0"
 click = "^8.0.3"
-black = "^21.12b0"
 fastapi = "^0.73.0"
 uvicorn = "^0.17.4"
 pytest = "^7.0.0"
@@ -19,13 +17,12 @@ pytest = "^7.0.0"
 extras = ["email"]
 version = "^1.9.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.scripts]
+genjwts = 'datarightsprotocol.tools.genjwts:cmd'
+genreqs = 'datarightsprotocol.tools.genreqs:cmd'
+statusserver = 'datarightsprotocol.tools.status_server:start'
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.poetry.scripts]
-genjwts = 'datarightsprotocol.tools.genjwts:cmd'
-genreqs = 'datarightsprotocol.tools.genreqs:cmd'
-statusserver = 'datarightsprotocol.tools.status_server:start'
