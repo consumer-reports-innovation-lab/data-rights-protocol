@@ -203,7 +203,7 @@ the [[https://www.openapis.org/][OpenAPI]] specification is a machine-readable d
 
 [[file:openapi.yaml]] provides a PIP-interface YAML, it needs to be wired up to a Swagger server though.
 
-* DONE Status Callback Server
+* Status Callback Server
 :PROPERTIES:
 :ID:       20220209T183517.086963
 :END:
@@ -218,23 +218,15 @@ To test this flow, though, we need a server which has two endpoints:
 - an HTTP POST receiver which can be set as the callback server in the =/exercise= request, it does nothing but log the Data Rights Status to a local database with a 2-3 day retention policy applied to the data.
 - =GET /status?request_id=FOO= which can be queried by the certifier to list all of the state transitions recorded for the given request ID.
 
-I think I can do this in less than 100 lines of Python, and host it for marginally-zero cost, but it's at the bottom of the priority list for this project.
-
-The PIP needs to be able to contact this server over the internet, so this tool will need to be deployed on a free Heroku or [[https://ngrok.com/][ngrok]] account.
-
-*** Implementation
-
 In [[file:status_server.py][status_server.py]] there is a dead-simple FastAPI server in less than 100 lines of Python which will behave as a status callback server and persist DRP status updates to disk.
-
-*** Usage
 
 [nb: i know i should provide better/stronger guidance here, this will "boil up" to a setup doc at the top of this with a full set of recommendations perhaps getting it running in a Docker container which can be hosted or run locally ...]
 
-Consult the [[https://python-poetry.org/docs/][Poetry]] documentation for help getting the project up and running. The author runs the [[https://nixos.org/][Nix]] package manager and a [[file:shell.nix]] is provided for =nix-shell= which will build a shell with all Python packages for the test suite's tools installed.
-
-Invoke it thus, from the DRP git checkout: =uvicorn status_server:app= and browse to [[http://localhost:8000]].
+Invoke it from the DRP git checkout: =uvicorn status_server:app= and browse to [[http://localhost:8000]].
 
 Now, somehow, this needs to be hosted on the World Wide Web so that your PIP implementation can contact it. [[https://ngrok.com/][ngrok]] and [[https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup][cloudflared tunnel]] are the best recommendations the author has for this at the moment, both offer free accounts, but you may consider hosting this somewhere.
+
+*** NEXT provide better guidance on tunneling setup
 
 * INPROGRESS The [[id:20220209T171652.987733][Test Plan]] document
 :LOGBOOK:
