@@ -1,4 +1,5 @@
-from typing import TextIO
+from typing import TextIO, List
+from collections.abc import Iterable
 import click
 import json
 import os
@@ -10,6 +11,9 @@ from models.identity import IdentityPayload
 from tools.genjwts import generate as genjwts
 
 def with_claims_from_stdin(drr: DataRightsRequest, input: TextIO) -> str:
+    '''
+    Augment a partially-constructed DRR with a serialized JWT read from input, probably stdin.
+    '''
     jwt_ser = input.read()
     click.echo("Read JWT... {}".format(jwt_ser), err=True)
     # being very lazy here; serialize it, deserialize it, replace the identity, serialize it... really??
@@ -18,11 +22,17 @@ def with_claims_from_stdin(drr: DataRightsRequest, input: TextIO) -> str:
     reloaded["identity"] = jwt_ser
     return json.dumps(reloaded, indent=2)
 
-def with_claims_from_generator(drr: DataRightsRequest, jwt: FilePath, secret: str) -> str:
+
+def with_claims_from_generator(drr: DataRightsRequest, jwt: FilePath) -> str:
+    '''
+    Augment a partially constructed DRR with a JWT instantiated with a default-ish call to ./genjwts.py
+    The JWT signing secret will need to be provided using JWT_SECRET environment variable to operationalize this.
+    '''
     identity_payload = genjwts(template=jwt, override=[], verify=[])
     click.echo("Read JWT... {}".format(identity_payload), err=True)
     drr.identity = identity_payload
     return drr.json()
+
 
 @click.command(help="Small utility function to generate a DataRightsRequest and serialize it.")
 @click.option('--template', '-t', default="reqs/donotsell.json",
@@ -32,9 +42,25 @@ def with_claims_from_generator(drr: DataRightsRequest, jwt: FilePath, secret: st
               help="Generate a JWT using the specified template, otherwise read a serialized JWT from stdin (& probably out of genjwts.py)",
               type=click.File('r'),
               default="-")
-def generate(template: TextIO, jwt: TextIO):
+@click.option('--override', '-o', default=[], multiple=True,
+              help='''Specify overrides to DRR values.
+              Values specified as a list will be overwritten on first override, then appended to after, if that makes sense.''')
+def generate(template: TextIO, jwt: TextIO, override: List[str]):
     click.echo("Constructing DRR against template `{}`.".format(template.name), err=True)
     tmpl = json.loads(template.read())
+
+    overrides = [pair.split("=") for pair in override]
+    has_overridden: set[str] = set()
+    click.echo("Overriding template: {}".format(overrides), err=True)
+    for (claim, value) in iter(overrides):
+        if isinstance(tmpl[claim], Iterable):
+            if claim in has_overridden:
+                tmpl[claim].append(value)
+            else:
+                tmpl[claim] = [value]
+        else:
+            tmpl[claim] = value
+        has_overridden.add(claim)
 
     drr = DataRightsRequest.construct(**tmpl)
     drr_ser = ""
