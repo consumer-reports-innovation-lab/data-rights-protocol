@@ -1,0 +1,11 @@
+{
+    "meta": {
+        "version": "0.4"
+    },
+    "regime": "ccpa",
+    "exercise": [
+        "sale:opt-out"
+    ],
+    "relationships": [],
+    "identity": ""
+}

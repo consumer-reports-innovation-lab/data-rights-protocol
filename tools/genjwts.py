@@ -1,35 +1,15 @@
-import os
 import json
 
 from models.identity import IdentityPayload, IdentityClaims
-from models import BaseModel
 
 from pydantic import FilePath
 from typing import List
 import click
+import os
 
-VERIFIABLE_CLAIMS = [
-    IdentityClaims.email,
-    IdentityClaims.address,
-    IdentityClaims.name_,
-    IdentityClaims.phone_number
-]
-
-@click.command(help="Small utility function to generate an IdentityPayload and serialize it.")
-@click.option('--secret', '-s', default="lolchangeme",
-              help="JWT HS256 signing key")
-@click.option('--template', '-t', default="jwts/simple.json",
-              help="JWT template to populate")
-@click.option('--override', '-o', default=[], multiple=True,
-              help="specify overrides to the JWT template in the form of 'claim=val'. can be specified repeatedly.")
-@click.option('--verify', '-v', default=[], multiple=True,
-              help="specify claims to mark as 'verified'.")
-def generate(secret: str,
-             template: FilePath,
+def generate(template: FilePath,
              override: List[str],
-             verify: List[str]):
-    os.environ['JWT_SECRET'] = secret
-
+             verify: List[str]) -> IdentityPayload:
     click.echo("Constructing claim.", err=True)
     tmpl = None
     with open(template) as f:
@@ -44,19 +24,42 @@ def generate(secret: str,
 
     click.echo("Verifying claims: {}".format(verify), err=True)
     for claim in verify:
-        if claim == "email":
+        if claim == IdentityClaims.email:
             pl.verified_email = True
-        elif claim == "phone_number":
+        elif claim == IdentityClaims.phone_number:
             pl.verified_phone_number = True
-        elif claim == "address":
+        elif claim == IdentityClaims.address:
             pl.verified_address = True
+        elif claim == IdentityClaims.name_:
+            pl.verified_name = True
         else:
             raise Exception("Cannot mark '{}' as verified".format(claim))
 
-    encoded = pl.json()
-    click.echo("Your JWT has arrived.", err=True)
-    click.echo(encoded)
+    return pl
     
 
+@click.command(help="Small utility function to generate an IdentityPayload and serialize it.")
+@click.option('--secret', '-s', default="lolchangeme",
+              envvar="JWT_SECRET",
+              help="JWT HS256 signing key")
+@click.option('--template', '-t', default="jwts/simple.json",
+              help="JWT template to populate")
+@click.option('--override', '-o', default=[], multiple=True,
+              help="specify overrides to the JWT template in the form of 'claim=val'. can be specified repeatedly.")
+@click.option('--verify', '-v', default=[], multiple=True,
+              help="specify claims to mark as 'verified'.")
+def cmd(secret: str,
+        template: FilePath,
+        override: List[str],
+        verify: List[str]):
+    ip = generate(template, override, verify)
+    click.echo("", err=True)
+
+    encoded = ip.json(secret=secret)
+    click.echo("Your JWT has arrived.", err=True)
+    click.echo(encoded)
+
+    return encoded
+
 if __name__ == "__main__":
-    generate()
+    cmd()

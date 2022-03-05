@@ -5,6 +5,9 @@ from enum import Enum
 
 
 class IdentityClaims(str, Enum):
+    """
+    This class enumerates the fields which go in an IdentityPayload.
+    """
     issuer = "iss"
     audience = "aud"
     subject = "sub"
@@ -13,7 +16,6 @@ class IdentityClaims(str, Enum):
     phone_number = "phone_number"
     address = "address"
     poa = "power_of_attorney"
-
 
 
 class IdentityPayload(BaseModel):
@@ -34,9 +36,11 @@ class IdentityPayload(BaseModel):
     
     power_of_attorney: Optional[str]
 
-    def json(self):
+    def json(self, secret: Optional[str] = None) -> str:
+        if secret is None:
+            secret = os.environ["JWT_SECRET"]
         encoder = BaseModel.Config.json_encoders['IdentityPayload']
-        return encoder(self)
+        return encoder(self, secret=secret)
 
 
     def dict(self, **kwargs):
