@@ -34,17 +34,6 @@ def with_claims_from_generator(drr: DataRightsRequest, jwt: FilePath) -> str:
     return drr.json()
 
 
-@click.command(help="Small utility function to generate a DataRightsRequest and serialize it.")
-@click.option('--template', '-t', default="reqs/donotsell.json",
-              help='DRR template to populate.',
-              type=click.File('r'))
-@click.option('--jwt', '-j',
-              help="Generate a JWT using the specified template, otherwise read a serialized JWT from stdin (& probably out of genjwts.py)",
-              type=click.File('r'),
-              default="-")
-@click.option('--override', '-o', default=[], multiple=True,
-              help='''Specify overrides to DRR values.
-              Values specified as a list will be overwritten on first override, then appended to after, if that makes sense.''')
 def generate(template: TextIO, jwt: TextIO, override: List[str]):
     click.echo("Constructing DRR against template `{}`.".format(template.name), err=True)
     tmpl = json.loads(template.read())
@@ -63,23 +52,32 @@ def generate(template: TextIO, jwt: TextIO, override: List[str]):
         has_overridden.add(claim)
 
     drr = DataRightsRequest.construct(**tmpl)
-    drr_ser = ""
-
     if jwt.name == "<stdin>":
         click.echo("Reading serialized JWT from stdin...", err=True)
-        drr_ser = with_claims_from_stdin(drr, jwt)
-        click.echo("Generating DRR:", err=True)
-        click.echo(drr_ser)
+        return with_claims_from_stdin(drr, jwt)
     else:
         click.echo("Loading JWT", err=True)
         secret = os.environ.get("JWT_SECRET", "lolchangeme")
         jwt_filename = jwt.name
-        drr_ser = with_claims_from_generator(drr, jwt_filename)
-        click.echo("Generating DRR:", err=True)
-        click.echo(drr_ser)
+        return with_claims_from_generator(drr, jwt_filename)
 
-    return drr_ser
+
+@click.command(help="Small utility function to generate a DataRightsRequest and serialize it.")
+@click.option('--template', '-t', default="reqs/donotsell.json",
+              help='DRR template to populate.',
+              type=click.File('r'))
+@click.option('--jwt', '-j',
+              help="Generate a JWT using the specified template, otherwise read a serialized JWT from stdin (& probably out of genjwts.py)",
+              type=click.File('r'),
+              default="-")
+@click.option('--override', '-o', default=[], multiple=True,
+              help='''Specify overrides to DRR values.
+              Values specified as a list will be overwritten on first override, then appended to after, if that makes sense.''')
+def cmd(template: TextIO, jwt: TextIO, override: List[str]):
+    click.echo("Generating DRR:", err=True)
+    drr_ser = generate(template, jwt, override)
+    click.echo(drr_ser)
 
 
 if __name__ == "__main__":
-    generate()
+    cmd()
