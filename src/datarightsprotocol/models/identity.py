@@ -1,7 +1,8 @@
-from .base import BaseModel
 from typing import Optional
 from pydantic import EmailStr,  validator
 from enum import Enum
+
+from datarightsprotocol.models.base import BaseModel
 
 
 class IdentityClaims(str, Enum):

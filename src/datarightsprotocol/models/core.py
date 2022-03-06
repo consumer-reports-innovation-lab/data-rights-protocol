@@ -2,9 +2,9 @@ from datetime import datetime
 from typing import List, Optional, Set
 from pydantic import HttpUrl, UUID4, validator, root_validator
 
-from .base import BaseModel
-from .invariants import RequestMD, Action, Regime, RequestStatus, RequestReason, is_valid_state_reason
-from .identity import IdentityPayload
+from datarightsprotocol.models.base import BaseModel
+from datarightsprotocol.models.invariants import RequestMD, Action, Regime, RequestStatus, RequestReason, is_valid_state_reason
+from datarightsprotocol.models.identity import IdentityPayload
 
 class DataRightsRequest(BaseModel):
     request_id: Optional[UUID4]

@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from pydantic import BaseSettings, DirectoryPath
 
-from models import DataRightsStatus
+from datarightsprotocol.models import DataRightsStatus
 
 class Settings(BaseSettings):
     drp_request_cache: DirectoryPath = "./drp-request-cache"
@@ -53,6 +53,6 @@ def process_status_callback(request_id: UUID, status: DataRightsStatus):
     return request_path
 
 import uvicorn
-def start(host="0.0.0.0", port="8000"):
-    uvicorn.run("tools.status_server:app", host=host, port=port)
+def start(host="0.0.0.0", port=8000):
+    uvicorn.run("datarightsprotocol.tools.status_server:app", host=host, port=port)
     

@@ -1,6 +1,6 @@
 from typing import TypedDict, List
 from enum import Enum
-from .base import BaseModel
+from datarightsprotocol.models.base import BaseModel
 
 class RequestStatus(str, Enum):
     in_progress = "in_progress"

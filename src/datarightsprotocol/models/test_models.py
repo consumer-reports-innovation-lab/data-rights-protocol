@@ -1,7 +1,7 @@
 import jwt
 import json
 
-import models
+import datarightsprotocol.models as models
 
 def test_DRR_init():
     jwt_audience = 'pip'

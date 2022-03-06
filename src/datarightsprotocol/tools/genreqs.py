@@ -6,9 +6,9 @@ import os
 
 from pydantic import FilePath
 
-from models.core import DataRightsRequest
-from models.identity import IdentityPayload
-from tools.genjwts import generate as genjwts
+from datarightsprotocol.models.core import DataRightsRequest
+from datarightsprotocol.models.identity import IdentityPayload
+from datarightsprotocol.tools.genjwts import generate as genjwts
 
 def with_claims_from_stdin(drr: DataRightsRequest, input: TextIO) -> str:
     '''

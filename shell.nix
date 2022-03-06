@@ -1,10 +1,12 @@
 { pkgs ? import <nixpkgs> {} }:
 
 let
-  myAppEnv = (import ./default.nix {}).dependencyEnv;
+  myAppEnv = (import ./default.nix {}).editableEnv;
 in pkgs.mkShell {
   packages = [
     myAppEnv
-    pkgs.poetry
+    pkgs.python39
+    (pkgs.poetry.override { python = pkgs.python39; })
   ];
 }
+

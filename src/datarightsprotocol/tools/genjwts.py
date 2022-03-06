@@ -1,6 +1,6 @@
 import json
 
-from models.identity import IdentityPayload, IdentityClaims
+from datarightsprotocol.models.identity import IdentityPayload, IdentityClaims
 
 from pydantic import FilePath
 from typing import List
