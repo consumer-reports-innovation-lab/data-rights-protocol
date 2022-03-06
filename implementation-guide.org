@@ -11,29 +11,57 @@ What are the minimal logical components of a DRP stack? What would it take to im
 
 We should be careful when and consider not crafting specific user-flows in to the protocol to allow for the development of a healthy community of Authorized Agents and Privacy Infrastructure Providers, comprehensive and niche. This advice maybe flies in the face of the =needs_user_verification= semantics as a theoretical manhole-cover in to a world of cumbersome identity verification stages.
 
+DRP doesn't aim to define the shape of the Privacy Infrastructure Provider's product as far as their interaction with Covered Businesses entail, nor the consumer flow of an Authorized Agent. The goal of DRP is simply to make sure the AA and PIP and CB are speaking the same language and can trust their sources.
+
+the Covered Business is the one who is ultimately operating a product the PIP is responsible for enacting the request. It could be a CSV download of DSRs and an SFTP upload provided to the business, or it could be a full cloud automation suite, or it could send emails to paralegals. Be innovative!
+
+a covered business can implement DRP on their own and work to be included in the DRP implementer's group.
+
 * A Minimal Authorized Agent
+
+An authorized agent is responsible for verifying the identity attributes of a user, presenting them with one or more covered businesses, their supported actions, and to submit requests to those covered businesses with those identity attributes and actions embedded in to them using a few HTTP endpoints described in the PIP section below.
 
 ** User Identity Verification system
 
+=JWT= tokens are signed by the submitting Authorized Agent but no real assurances can be attested right now; in theory eKYC and even self-sovereign "decentralized identity" solutions could bring real value to this system in the future.
+
+Until then, an Authorized Agent is responsible for verifying the identity of a consumer, and to use "verified" claims of email, address, or phone number only if they've been verified... Trust network, liability stuff, non-technical guard-rails will protect the network until truly decentralized solutions can arrive.
+
 ** User Agent
+
+DRP is not prescriptive here, at all
+
+but right now the protocol and especially the push-based call-back Status Tracking implies that there is a backend services
+
+*** user verification flows
+
+the user is expected to be able to go through a web-based verification flow [[https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md#3021-need_user_verification-state-flow-semantics][described in 3.02.1]], but basically involves redirecting the user to a PIP-specified URL with some extra URL parameters attached to it.
+
+This only has been designed in-theory and implementation may shift wildly.
+
+*** Auto-discovery
+
+DRP specifies that Covered Businesses choosing to implement DRP can signal this through the use of a [[https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md#201-get-well-knowndata-rightsjson-data-rights-discovery-endpoint][.well-known resource]], the Data Rights Discovery endpoint. The operative mode of this network is going to be a closed group of known implementers for a while, so I don't expect this to be necessary for quite a while, but is an important part of the long-term growth of this API.
 
 *** API Keys and Security Considerations
 
 ** Generating Identity Tokens
 
+Identity tokens need to be signed by a certificate that is never in un-trusted hands, as the certificate the token is signed against is the lynchpin of the trust network. [[https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md#304-schema-identity-encapsulation][3.04 of the protocol spec describes this in detail]].
+
 ** Status Tracking
+
+While there is a way to fetch the status for a data rights request from the PIP, PIPs are expected to support pushing request statuses to the Authorized Agent through an HTTP POST documented [[https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md#204-post-status_callback-data-rights-status-callback-endpoint][in 2.04 of the protocol specification]].
 
 ** Batching Backend
 
+We have been careful to avoid thinking about batching but in our prototyping phase it's possible that multiple requests may be submitted or queried in bulk.
+
 ** OIDC client -- fetching JWT identity tokens from covered business identity provider
 
+In a perfect world, JWTs provided by the Covered Business's identity provider could be used to attest 
+
 * A Minimal Privacy Infrastructure Provider
-
-DRP doesn't aim to define the shape of the Privacy Infrastructure Provider's product. It could be a CSV download of DSRs and an SFTP upload, or it could be a full cloud automation suite, or it could send emails to paralegals. Be innovative!
-
-the Covered Business is the one who is ultimately operating a product the PIP is responsible for.
-
-a covered business can implement DRP on their own and work to be included in the DRP implementer's group.
 
 ** HTTP API
 
@@ -61,12 +89,13 @@ A covered business may want to bring their own account verification system, but 
 
 *** The PIP "owns" the status of the request
 
-a covered business is basically moving the data request through a "unacknowledged → verifying → in-progress → end state" workflow
+a covered business is basically moving the data request through a "unacknowledged → verifying → in-progress → end state" workflow powered by the PIP's DSR tools, and the API reflects this in a standardized fashion.
 
 *** What information does the covered business have access to?
 
 - information about the authorized agent (provided out of band, extracted from JWT iss as that is signed)
 - identity attributes (there is a level of assurance/trust that has to be assured out of band. 🤞 for eKYC), ✌verified✌ attributes in the meantime
+- legal regime, actions requested
 - important dates (45 days after ack for CCPA)
 - 
 
@@ -79,3 +108,9 @@ a covered business is basically moving the data request through a "unacknowledge
 - 
   
 *** Status Tracking
+
+** OAuth2 client token handshake
+
+The current protocol specifies only a limited authentication method for the API, but this cannot survive forever.
+
+It's a reasonable assumption that sooner or later a Privacy Infrastructure Provider will need to act as an OAuth2 server which AAs get API keys from to sign/authenticate requests.
