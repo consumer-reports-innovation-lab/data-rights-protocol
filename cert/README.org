@@ -1,0 +1,9 @@
+#+TITLE: DRP Certification Test Suite and implementation tools
+
+Find:
+
+- [[file:conformance-tests.org][PIP Conformance Test Suite doc]] is used to guide the certification suite for PIPs
+- [[file:conformance-tools.org][Conformance Test Suite tools guide]] collects the "readme"s for the various little utilities which are used to support that doc.
+- [[file:src/datarightsprotocol/][src/datarightsprotocol]] contains a handful of Python 3 Pydantic modules which can be used to serialize and de-serialize DRP objects
+- [[file:jwts/][jwts directory]] contains example identity tokens
+- [[file:reqs/][reqs directory]] contains example Data Rights Requests
