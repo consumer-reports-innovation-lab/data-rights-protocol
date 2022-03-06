@@ -4,6 +4,7 @@
 :END:
 #+TITLE: Tools for the DRP Conformance Test Suite
 #+filetags: :Project:
+#+PROPERTY: header-args:shell :session *drp-conformance* :results drawer
 
 * Introduction and Setup
 
@@ -112,7 +113,30 @@ Your JWT has arrived.
 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwaXAtdGVzdC1zdWl0ZSIsImF1ZCI6InRoZS1waXAiLCJzdWIiOiJ0aGUtY29uc3VtZXIiLCJuYW1lIjoidGhlLWNvbnN1bWVyIiwicG93ZXJfb2ZfYXR0b3JuZXkiOm51bGwsImVtYWlsX3ZlcmlmaWVkIjoidGVzdGNvbnN1bWVyQGNvbnN1bWVyLm9yZyIsInBob25lX251bWJlciI6IjEgNjAyIDU1NSAxMjEyIn0.RtaiT4cU83F4CDEU9WvgjWBxBTy9rzdy6Gh0c_q6WXw
 :end:
 
-* Data Rights Request generation script
+** What about the secrets?
+
+This thing basically only supports =HS256= signature-only JWTs in its current implementation, and loads the secret from an environment variable =JWT_SECRET=. So:
+
+#+begin_src shell :exports both :results drawer
+export JWT_SECRET=''; echo secret is $JWT_SECRET # default embedded in the code!
+genjwts -t jwts/simple.json 2>/dev/null
+export JWT_SECRET='thisisdifferent!'; echo secret is $JWT_SECRET
+genjwts -t jwts/simple.json 2>/dev/null
+#+end_src
+
+#+results:
+:results:
+secret is
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwaXAtdGVzdC1zdWl0ZSIsImF1ZCI6InRoZS1waXAiLCJzdWIiOiJ0aGUtY29uc3VtZXIiLCJuYW1lIjoidGhlLWNvbnN1bWVyIiwicG93ZXJfb2ZfYXR0b3JuZXkiOm51bGwsImVtYWlsIjoidGVzdGNvbnN1bWVyQGNvbnN1bWVyLm9yZyIsInBob25lX251bWJlciI6IjEgNjAyIDU1NSAxMjEyIn0._CbiyDqnorHtPwl-Z81y9m6f3tuhKDzFXSVu2qoJK14
+secret is thisisdifferent!
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwaXAtdGVzdC1zdWl0ZSIsImF1ZCI6InRoZS1waXAiLCJzdWIiOiJ0aGUtY29uc3VtZXIiLCJuYW1lIjoidGhlLWNvbnN1bWVyIiwicG93ZXJfb2ZfYXR0b3JuZXkiOm51bGwsImVtYWlsIjoidGVzdGNvbnN1bWVyQGNvbnN1bWVyLm9yZyIsInBob25lX251bWJlciI6IjEgNjAyIDU1NSAxMjEyIn0.xf9KcMqiUE1x_JramIup5SVtAwWHcu_2EPTiSTT-ByA
+:end:
+
+It will need to be extended to support referring to an x509 certificate or multiple to support testing JWT encryption, and the x509 signatures which are required to enclose the trust network of a DRP implementers' network.
+
+*** NEXT develop an interface for configuring the JWT security algorithms
+
+* Rights Request generation script
 
 [[file:./tools/genreqs.py][tools/genreqs.py]] composes with the JWT generation script to create entire Data Rights Requests. Like the JWT generation script, =stderr= can be stuff in to =/dev/null= for cleaner output.
 
