@@ -120,6 +120,10 @@ components:
           format: uuid
         received_at:
           type: date-time
+        expected_by:
+          type: date-time
+        processing_details:
+          type: string
         results_url:
           type: string
           format: uri
