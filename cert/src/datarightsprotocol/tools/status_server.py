@@ -2,6 +2,7 @@ from uuid import UUID
 import pathlib
 import datetime
 import json
+import click
 
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
@@ -53,6 +54,10 @@ def process_status_callback(request_id: UUID, status: DataRightsStatus):
     return request_path
 
 import uvicorn
+
+@click.command(help="start the DRP status servlet")
+@click.option("--host", "-h", help="the host IP to listen on, defaults to all IPs/interfaces", default="0.0.0.0")
+@click.option("--port", "-p", help="port to listen on", default=8000)
 def start(host="0.0.0.0", port=8000):
     uvicorn.run("datarightsprotocol.tools.status_server:app", host=host, port=port)
     

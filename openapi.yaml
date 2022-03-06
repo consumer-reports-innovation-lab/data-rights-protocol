@@ -3,6 +3,9 @@ info:
   version: 0.4
   title: Data Rights Protocol - PIP Interface
 
+servers:
+- url: http://localhost:9000/drp
+
 components:
   schemas:
     JSONWebToken:
