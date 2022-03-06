@@ -247,7 +247,6 @@ The redirect URL is another thing for the little Heroku app? it's a "nice to hav
   - this depends on who issued the JWT:
     - AA-signed -> aud is the company, sub is the user's
 
-
 *** Validating "end states" of valid DRRs
 
 test case preflight:
