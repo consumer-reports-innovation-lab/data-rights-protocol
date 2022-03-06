@@ -184,12 +184,12 @@ This table shows valid states for Data Rights Requests, along with the criteria 
 | in_progress | need_user_verification | CB doesn't have sufficient ID verification                          | user_verification_url, expires_at            |        |
 | fulfilled   |                        | CB has finished data rights request process                         | results_url, expires_at                      | x      |
 | revoked     |                        | user has explicitly actioned to revoke the request                  |                                              | x      |
-| denied      | suspected_fraud        | CB or PIP believes this request was made fraudulently               |                                              | x      |
-| denied      | insuf_verification     | the [in_progress, need_user_verification] stage failed or timed out |                                              | x      |
-| denied      | no_match               | CB could not match user identity to data subject                    |                                              | x      |
-| denied      | claim_not_covered      | user requesting data not covered under legal bases[XXX]             |                                              | x      |
-| denied      | outside_jurisdiction   | user requesting data under bases they are not covered by[XXX]       |                                              | x      |
-| denied      | other                  | some other unspecified failure state reached                        | details?                                     | x      |
+| denied      | suspected_fraud        | CB or PIP believes this request was made fraudulently               | processing_details                           | x      |
+| denied      | insuf_verification     | the [in_progress, need_user_verification] stage failed or timed out | processing_details                           | x      |
+| denied      | no_match               | CB could not match user identity to data subject                    | processing_details                           | x      |
+| denied      | claim_not_covered      | user requesting data not covered under legal bases[XXX]             | processing_details                           | x      |
+| denied      | outside_jurisdiction   | user requesting data under bases they are not covered by[XXX]       | processing_details                           | x      |
+| denied      | other                  | some other unspecified failure state reached                        | processing_details                           | x      |
 | expired     |                        | the time is currently after the `expires_at` in the request.        |                                              | x      |
 
 [XXX] in the case of claim_not_covered, this may be about asking for categories of data which Covered Businesses are not required to present to the User. in the case of outside_jurisdiction, this may be because the business is not honoring CCPA requests for non-California residents and there is no other basis on which to honor the request.
