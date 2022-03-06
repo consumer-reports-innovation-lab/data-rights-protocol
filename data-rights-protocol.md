@@ -176,21 +176,21 @@ This table shows valid states for Data Rights Requests, along with the criteria 
 
 "Final" states are marked in the final field of the table. Requests which enter final state MAY be disregared after the lesser of the `expires_at` flag or 60 days, but no less than 7 days from when expiration was first specified.
 
-| state       | reason                 | entrance criteria                                                   | new fields                        | Final? |
-|-------------|------------------------|---------------------------------------------------------------------|-----------------------------------|--------|
-|             |                        | user has created request, but not submitted it                      | base fields                       |        |
-| open        |                        | user has submitted request to Data Rights Endpoint[1]               | request_id                        |        |
-| in_progress |                        | CB has acknowledge receipt of request OR User solves verification   | received_at                       |        |
-| in_progress | need_user_verification | CB doesn't have sufficient ID verification                          | user_verification_url, expires_at |        |
-| fulfilled   |                        | CB has finished data rights request process                         | results_url, expires_at           | x      |
-| revoked     |                        | user has explicitly actioned to revoke the request                  |                                   | x      |
-| denied      | suspected_fraud        | CB or PIP believes this request was made fraudulently               |                                   | x      |
-| denied      | insuf_verification     | the [in_progress, need_user_verification] stage failed or timed out |                                   | x      |
-| denied      | no_match               | CB could not match user identity to data subject                    |                                   | x      |
-| denied      | claim_not_covered      | user requesting data not covered under legal bases[XXX]             |                                   | x      |
-| denied      | outside_jurisdiction   | user requesting data under bases they are not covered by[XXX]       |                                   | x      |
-| denied      | other                  | some other unspecified failure state reached                        | details?                          | x      |
-| expired     |                        | the time is currently after the `expires_at` in the request.        |                                   | x      |
+| state       | reason                 | entrance criteria                                                   | new fields                                   | Final? |
+|-------------|------------------------|---------------------------------------------------------------------|----------------------------------------------|--------|
+|             |                        | user has created request, but not submitted it                      | base fields                                  |        |
+| open        |                        | user has submitted request to Data Rights Endpoint[1]               | request_id                                   |        |
+| in_progress |                        | CB has acknowledge receipt of request OR User solves verification   | received_at, expected_by, processing_details |        |
+| in_progress | need_user_verification | CB doesn't have sufficient ID verification                          | user_verification_url, expires_at            |        |
+| fulfilled   |                        | CB has finished data rights request process                         | results_url, expires_at                      | x      |
+| revoked     |                        | user has explicitly actioned to revoke the request                  |                                              | x      |
+| denied      | suspected_fraud        | CB or PIP believes this request was made fraudulently               |                                              | x      |
+| denied      | insuf_verification     | the [in_progress, need_user_verification] stage failed or timed out |                                              | x      |
+| denied      | no_match               | CB could not match user identity to data subject                    |                                              | x      |
+| denied      | claim_not_covered      | user requesting data not covered under legal bases[XXX]             |                                              | x      |
+| denied      | outside_jurisdiction   | user requesting data under bases they are not covered by[XXX]       |                                              | x      |
+| denied      | other                  | some other unspecified failure state reached                        | details?                                     | x      |
+| expired     |                        | the time is currently after the `expires_at` in the request.        |                                              | x      |
 
 [XXX] in the case of claim_not_covered, this may be about asking for categories of data which Covered Businesses are not required to present to the User. in the case of outside_jurisdiction, this may be because the business is not honoring CCPA requests for non-California residents and there is no other basis on which to honor the request.
 
@@ -216,6 +216,8 @@ A single JSON object is used to describe any existing Data Exercise Request and 
 {
   "request_id": "c789ff35-7644-4ceb-9981-4b35c264aac3",
   "received_at": "20210902T152725.403-0700",
+  "expected_by": "20211015T152725.403-0700",
+  "processing_details": "this user has many records",
   "status": "in_progress",
   "reason": "need_user_verification",
   "user_verification_url": "https://example.com/data-rights/verify/c789ff35-7644-4ceb-9981-4b35c264aac3"
@@ -227,6 +229,8 @@ A single JSON object is used to describe any existing Data Exercise Request and 
 * `reason` MAY contain a string containing additional information about the current state of the request according to the [Request Statuses](#302-request-statuses).
 * `received_at` SHOULD contain a string which is the [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339)-encoded time which the initial request was registered by the Covered Business.
   * When a Covered Business receives a request, this field MUST be present.
+* `expected_by` SHOULD contain a date before which the Authorized Agent can expect to see an update on the status of the Data Rights Request. This field should conform to the legal regime's deadline guidances, and may be amended by the PIP or Covered Business according to those same regulations. `processing_details` MUST be updated to reflect the reason for this extension. 
+* `processing_details` MAY contain a string reflecting the state of the Data Rights Request so that the Agent may communicate this state to the End User.
 * `user_verification_url` MAY contain a URI which can be presented in a User Agent for identity verification.
 * `expires_at` MAY contain an [RFC 3339]-encoded time after which time the **Covered Business** will no longer oblige themselves to record-keep the request under consideration.
 
@@ -292,6 +296,12 @@ In short:
   - the intention is to eventually leverage OAuth2 to secure these resources, either in concert with OIDC or out of band
 - Each party MUST include an HTTP `Authorization` header in each response containing the SHA-512 hash of their secret.
 - Requests which do not have an `Authorization` header MUST receive an `401` HTTP response.
+
+### 3.08 Processing Extensions & "Expected By" dates
+
+When a Covered Business acknowledges receipt of a Data Rights Request and moves it in to `in_progress` state, the request's `expected_by` field SHOULD be populated based on either an estimate provided by the Covered Business or the deadline prescribed by the legal regime the request is submitted under. Consider, for example, [California's legal regime](https://transcend.io/laws/cpra/#section-15) prescribes up to 90 days extension so long as they are made within 45 days; If a request is extended, this request must also be extended with a `processing_details` field detailing a reason for the Request's extension to notify the consumer of this delay. The intent of the `processing_details` field is to add additional color to already-defined `state`/`reason` combinations. States which cannot be encoded without reaching for free-form text should be integrated in to the state transition table.
+
+When applying changes to Data Rights Requests in this fashion, the Privacy Infrastructure Provider SHALL attempt to notify the Authorized Agent using the [Data Rights Status Callback](#2041-post-status_callback-response).
 
 ## 4.0 Protocol Roadmap
 
