@@ -29,6 +29,9 @@ class DataRightsStatus(BaseModel):
     received_at: datetime
     results_url: Optional[str]
 
+    expected_by: Optional[datetime]
+    processing_details: Optional[str]
+
     status: RequestStatus
     reason: RequestReason
 
