@@ -1,8 +1,0 @@
-{
-    "iss":"pip-test-suite",
-    "aud":"the-pip",
-    "sub":"the-consumer",
-    "email": "testconsumer@consumer.org",
-    "name":"the-consumer",
-    "phone_number": "1 602 555 1212"
-}
