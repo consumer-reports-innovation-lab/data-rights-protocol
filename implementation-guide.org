@@ -3,8 +3,11 @@
 :ROAM_ALIASES: "DRP Implementers' Guide"
 :END:
 #+TITLE: What Are the Logical Components of a minimal DRP stack?
+#+filetags: :Project:
 
 * Introduction
+
+In the last DRP Technical working group meeting someone raised a request for a sort of "implementation guide" for the DRP specification, and I took an attempt at outlining the "minimum viable product" components for both the Authorized Agent and PIP interfaces and tried to put to words some of the design philosophy which fed in to the specification's drafting. I plan on fleshing this out to be more legible this week since a lot of this is short hand, but it gives you a sort of broad understanding of the technical complexity involved and we wanted to share it out.
 
 The *primary consideration* of DRP as a technical solution is that it is a standard interchange format for Data Subject Requests.
 
@@ -97,6 +100,8 @@ This only has been designed in-theory and implementation may shift wildly.
 *** Auto-discovery
 
 DRP specifies that Covered Businesses choosing to implement DRP can signal this through the use of a [[https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md#201-get-well-knowndata-rightsjson-data-rights-discovery-endpoint][.well-known resource]], the Data Rights Discovery endpoint. The operative mode of this network is going to be a closed group of known implementers for a while, so I don't expect this to be necessary for quite a while, but is an important part of the long-term growth of this API.
+
+**** NEXT add a bit talking about how the closed network will fashion
 
 *** API Keys and Security Considerations
 
