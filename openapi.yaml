@@ -4,7 +4,7 @@ info:
   title: Data Rights Protocol - PIP Interface
 
 servers:
-  url: http://localhost:9000/drp
+- url: http://localhost:9000/drp
 
 components:
   schemas:
