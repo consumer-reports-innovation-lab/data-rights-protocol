@@ -1,0 +1,3 @@
+[submodule "cert"]
+	path = cert
+	url = https://github.com/consumer-reports-digital-lab/data-rights-protocol-cert/
