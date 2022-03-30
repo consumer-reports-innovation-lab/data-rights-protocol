@@ -2,11 +2,14 @@
 
 **DRAFT FOR COMMENT**: Visit the [Data Rights Protocol](https://datarightsprotocol.org/) home page for details on our Data Rights Roundtable on October 19th, 2021.  To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pulls) in this repository or you may provide feedback through this form: [https://forms.gle/YC7nKRs3ZQMWLvw27](https://forms.gle/YC7nKRs3ZQMWLvw27).
 
-Protocol Changes from 0.3 to 0.4:
+Protocol Changes from 0.4 to 0.5:
 
-- [relationship hints](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pull/17) allow users and agents to provide "hints" for the type of customer relationship, or a set of subsidiary brands to query.
-- [shift in language from regulatory framework to broader legal bases](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pull/16)
-- [medium-term protocol development road-map](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pull/21)
+- [new request state "denied/`too_many_requests`"](https://github.com/consumer-reports-digital-lab/data-rights-protocol/commit/14fea83a1b7856da55a2075a6233039f8a7c9c81)
+- [openapi.yaml](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/3b11ecfa7ea13b5a0cd1affc5ebff85bf636bea2/openapi.yaml) specification for PIP server interface
+- [encode time-extensions in to the request status, along with a `processing_details` field](https://github.com/consumer-reports-digital-lab/data-rights-protocol/commit/f758f164e33b862e990526b8a2aafba49d777862)
+- [draft minimal implementation guide](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/3580c81f4c9701886cc4c225e53dd247776b0804/implementation-guide.org)
+- [draft PIP certification/conformance suite](https://github.com/consumer-reports-digital-lab/data-rights-protocol-cert/)
+- [respecification of identity tokens to match OIDC Core 1.0](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pull/44)
 
 ## 1.0 Introduction
 
@@ -317,6 +320,12 @@ In its current implementation, DRP should not be used to process data of Users w
 ## Specification Change Log
 
 In general, please put major change log items at the top of the file. When a new protocol version is "cut", move the previous versions' change log down here.
+
+Protocol Changes from 0.3 to 0.4:
+
+- [relationship hints](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pull/17) allow users and agents to provide "hints" for the type of customer relationship, or a set of subsidiary brands to query.
+- [shift in language from regulatory framework to broader legal bases](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pull/16)
+- [medium-term protocol development road-map](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pull/21)
 
 Changes in v0.2 to v0.3:
 - donotsell -> sale:opt-in opt-out
