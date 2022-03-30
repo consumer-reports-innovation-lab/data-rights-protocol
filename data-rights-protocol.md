@@ -1,4 +1,4 @@
-# [Data Rights Protocol](https://github.com/consumer-reports-digital-lab/data-rights-protocol) v.0.4
+# [Data Rights Protocol](https://github.com/consumer-reports-digital-lab/data-rights-protocol) v.0.5
 
 **DRAFT FOR COMMENT**: Visit the [Data Rights Protocol](https://datarightsprotocol.org/) home page for details on our Data Rights Roundtable on October 19th, 2021.  To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pulls) in this repository or you may provide feedback through this form: [https://forms.gle/YC7nKRs3ZQMWLvw27](https://forms.gle/YC7nKRs3ZQMWLvw27).
 
@@ -26,7 +26,7 @@ By providing a shared protocol and vocabulary for expressing these data rights, 
 ### 1.02 Scope
 In this initial phase of the Data Rights Protocol, we want to enable a group of peers to form a voluntary trust network while expanding the protocol to support wider trust models and additional data flows.
 
-Version 0.4 encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
+Version 0.5 encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
 
 ### 1.03 Terminology
 
@@ -49,7 +49,7 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 [note about including schemas by-reference from below.]
 
-DRP 0.4 implementors MUST support application/json request and response bodies.
+DRP 0.5 implementors MUST support application/json request and response bodies.
 
 [expand endpoints with their failure states]
 
@@ -61,14 +61,14 @@ For instance, an User looking to exercise their data rights for Example, Inc. wh
 
 ```
 {
-  "version": "0.4",
+  "version": "0.5",
   "api_base": "https://example.com/data-rights",
   "actions": ["sale:opt-out", "sale:opt-in", "access", "deletion"],
   "user_relationships": [ ... ]
 }
 ```
 
-- `version` field is a string carrying the version of the protocol implemented. Currently this MUST read "0.4"
+- `version` field is a string carrying the version of the protocol implemented. Currently this MUST read "0.5"
 - `api_base` field is a URI under which the rest of the Data Rights Protocol is accessible. This endpoint MAY be run by a Privacy Infrastructure Provider but SHOULD be accessible under the Covered Business's domains for legibility's sake.
 - `actions` is a list of strings enumerating the rights which may be exercised, as outlined in [Supported Rights Actions](#301-supported-rights-actions)
 - `user_relationships` is a list of strings enumerating the contexts by which a User may have a relationship with the Covered Business. The enumeration of possible relationships is left unspecified and future versions of the protocol may have more to say about them.
@@ -81,7 +81,7 @@ This is the Data Rights Exercise endpoint which Users and Authorized Agents can 
 ```
 {
   "meta": {
-    "version": "0.4"
+    "version": "0.5"
   },
   "regime": "ccpa",
   "exercise": [
@@ -93,7 +93,7 @@ This is the Data Rights Exercise endpoint which Users and Authorized Agents can 
 }
 ```
 
-- `meta` MUST contain only a single key `version` which contains a string referencing the current protocol version “0.4”.
+- `meta` MUST contain only a single key `version` which contains a string referencing the current protocol version “0.5”.
 - `regime` MAY contain a string specifying the legal regime under which the Data Request is being taken.  Requests which do not supply a `regime` MAY be considered for voluntary processing.
   - The legal regime is a system of applicable rules, whether enforceable by statute, regulations, voluntary contract, or other legal frameworks which prescribe data rights to the User. See [3.01 Supported Rights Actions](#301-supported-rights-actions) for more discussion.
 - `exercise` MUST contain a list of rights to exercise.
@@ -156,7 +156,7 @@ These Schemas are referenced in Section 2 outlining the HTTP endpoints and their
 
 ### 3.01 Supported Rights Actions
 
-These are the CCPA rights which are encoded in v0.4 of the protocol:
+These are the CCPA rights which are encoded in v0.5 of the protocol:
 
 | Regime | Right               | Details                                                              |
 |--------|---------------------|----------------------------------------------------------------------|
@@ -297,7 +297,7 @@ Note that these error states only represent *request errors*; workflow errors SH
 ### 3.07 API Authentication
 
 In short:
-- for v.0.4 we specify that client shared secrets will be used for authentication to all endpoints except the Data rights Discovery endpoint.
+- for v.0.5 we specify that client shared secrets will be used for authentication to all endpoints except the Data rights Discovery endpoint.
 - Participating parties will need to exchange shared secrets out of band for now
   - the intention is to eventually leverage OAuth2 to secure these resources, either in concert with OIDC or out of band
 - Each party MUST include an HTTP `Authorization` header in each response containing the SHA-512 hash of their secret.
