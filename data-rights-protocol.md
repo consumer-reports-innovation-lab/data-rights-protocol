@@ -5,9 +5,9 @@
 Protocol Changes from 0.4 to 0.5:
 
 - [new request state "denied/`too_many_requests`"](https://github.com/consumer-reports-digital-lab/data-rights-protocol/commit/14fea83a1b7856da55a2075a6233039f8a7c9c81)
-- [openapi.yaml](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/3b11ecfa7ea13b5a0cd1affc5ebff85bf636bea2/openapi.yaml) specification for PIP server interface
+- [openapi.yaml](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/0.5/openapi.yaml) specification for PIP server interface
 - [encode time-extensions in to the request status, along with a `processing_details` field](https://github.com/consumer-reports-digital-lab/data-rights-protocol/commit/f758f164e33b862e990526b8a2aafba49d777862)
-- [draft minimal implementation guide](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/3580c81f4c9701886cc4c225e53dd247776b0804/implementation-guide.org)
+- [draft minimal implementation guide](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/0.5/implementation-guide.org)
 - [draft PIP certification/conformance suite](https://github.com/consumer-reports-digital-lab/data-rights-protocol-cert/)
 - [respecification of identity tokens to match OIDC Core 1.0](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pull/44)
 
