@@ -34,16 +34,15 @@ components:
           type: string
           format: email
         email_verified:
-          type: string
-          format: email
+          type: boolean
         phone_number:
           type: string
         phone_number_verified:
-          type: string
+          type: boolean
         address:
           type: string
         address_verified:
-          type: string
+          type: boolean
         power_of_attorney:
           type: string
     
