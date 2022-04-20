@@ -123,7 +123,7 @@ Responses to this request MUST adhere to the [Exercise Status Schema](#303-schem
 
 ### 2.04 `POST $status_callback` ("Data Rights Status Callback" endpoint)
 
-The Status Callback endpoint SHOULD be implemented by Authorized Agents which will be exercising data rights for multiple Users. This endpoint exists to remove the need for Authorized Agents to query the Data Rights Status endpoint and instead allow a “push model” where AAs are notified when a request's status changes. The destination for a Status Callback URL is specified in the initial [Data Rights Exercise](#202-post-exercise-data-rights-exercise-endpoint) request.
+The Status Callback endpoint SHOULD be implemented by Authorized Agents which will be exercising data rights for multiple Users. This endpoint exists to remove the need for Authorized Agents to query the Data Rights Status endpoint and instead allow a “push model” where AAs are notified when a request's status changes. The destination for a Status Callback URL is specified in the initial [Data Rights Exercise](#202-post-exercise-data-rights-exercise-endpoint) request. If a Data Rights Request specifies a `status_callback` field, the Privacy Infrastructure Provider SHALL use that mechanism to notify Authorized Agents of status updates.
 
 The request body MUST adhere to the [Exercise Status Schema](#303-schema-status-of-a-data-subject-exercise-request). 
 
