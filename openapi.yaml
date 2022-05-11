@@ -6,7 +6,15 @@ info:
 servers:
 - url: http://localhost:9000/drp
 
+security:
+  - basicAuth: []
+
 components:
+  securitySchemes:
+    basicAuth:
+      type: apiKey
+      in: header
+      name: Authorization
   schemas:
     JSONWebToken:
       oneOf:
