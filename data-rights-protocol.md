@@ -1,4 +1,4 @@
-# [Data Rights Protocol](https://github.com/consumer-reports-digital-lab/data-rights-protocol) v.0.5
+# [Data Rights Protocol](https://github.com/consumer-reports-digital-lab/data-rights-protocol) v.0.6
 
 **DRAFT FOR COMMENT**: Visit the [Data Rights Protocol](https://datarightsprotocol.org/) home page for details on our Data Rights Roundtable on October 19th, 2021.  To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pulls) in this repository or you may provide feedback through this form: [https://forms.gle/YC7nKRs3ZQMWLvw27](https://forms.gle/YC7nKRs3ZQMWLvw27).
 
@@ -38,7 +38,7 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 [note about including schemas by-reference from below.]
 
-DRP 0.5 implementors MUST support application/json request and response bodies.
+TKTK: DRP 0.5 implementors MUST support application/json request and response bodies.
 
 [expand endpoints with their failure states]
 
@@ -50,14 +50,14 @@ For instance, an User looking to exercise their data rights for Example, Inc. wh
 
 ```
 {
-  "version": "0.5",
+  "version": "0.6",
   "api_base": "https://example.com/data-rights",
   "actions": ["sale:opt-out", "sale:opt-in", "access", "deletion"],
   "user_relationships": [ ... ]
 }
 ```
 
-- `version` field is a string carrying the version of the protocol implemented. Currently this MUST read "0.5"
+- `version` field is a string carrying the version of the protocol implemented. Currently this MUST read "0.6"
 - `api_base` field is a URI under which the rest of the Data Rights Protocol is accessible. This endpoint MAY be run by a Privacy Infrastructure Provider but SHOULD be accessible under the Covered Business's domains for legibility's sake.
 - `actions` is a list of strings enumerating the rights which may be exercised, as outlined in [Supported Rights Actions](#301-supported-rights-actions)
 - `user_relationships` is a list of strings enumerating the contexts by which a User may have a relationship with the Covered Business. The enumeration of possible relationships is left unspecified and future versions of the protocol may have more to say about them.
@@ -161,7 +161,7 @@ These Schemas are referenced in Section 2 outlining the HTTP endpoints and their
 
 ### 3.01 Supported Rights Actions
 
-These are the CCPA rights which are encoded in v0.5 of the protocol:
+These are the CCPA rights which are encoded in v0.6 of the protocol:
 
 | Regime | Right               | Details                                                              |
 |--------|---------------------|----------------------------------------------------------------------|
