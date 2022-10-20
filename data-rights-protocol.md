@@ -2,14 +2,10 @@
 
 **DRAFT FOR COMMENT**: Visit the [Data Rights Protocol](https://datarightsprotocol.org/) home page for details on our Data Rights Roundtable on October 19th, 2021.  To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pulls) in this repository or you may provide feedback through this form: [https://forms.gle/YC7nKRs3ZQMWLvw27](https://forms.gle/YC7nKRs3ZQMWLvw27).
 
-Protocol Changes from 0.4 to 0.5:
+Protocol changes from 0.5 to 0.6:
 
-- [new request state "denied/`too_many_requests`"](https://github.com/consumer-reports-digital-lab/data-rights-protocol/commit/14fea83a1b7856da55a2075a6233039f8a7c9c81)
-- [openapi.yaml](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/0.5/openapi.yaml) specification for PIP server interface
-- [encode time-extensions in to the request status, along with a `processing_details` field](https://github.com/consumer-reports-digital-lab/data-rights-protocol/commit/f758f164e33b862e990526b8a2aafba49d777862)
-- [draft minimal implementation guide](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/0.5/implementation-guide.org)
-- [draft PIP certification/conformance suite](https://github.com/consumer-reports-digital-lab/data-rights-protocol-cert/)
-- [respecification of identity tokens to match OIDC Core 1.0](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pull/44)
+- Breaking data model changes to enable signed data rights requests
+- Elimination of distinction between technical actor and technical interface (CBi and PIPi and AAi terminology eliminated)
 
 ## 1.0 Introduction
 
@@ -26,7 +22,7 @@ By providing a shared protocol and vocabulary for expressing these data rights, 
 ### 1.02 Scope
 In this initial phase of the Data Rights Protocol, we want to enable a group of peers to form a voluntary trust network while expanding the protocol to support wider trust models and additional data flows.
 
-Version 0.5 encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
+Version 0.6 encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
 
 ### 1.03 Terminology
 
@@ -34,16 +30,9 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 - *User* is the individual who is exercising their rights. This User may or may not have a direct business relationship or login credentials with the Covered Business.
 - *User Agent* (**UA**) is the application, software, or browser which is used by the User to mediate their interaction with the *Data Rights Protocol*. 
-
-- *Authorized Agent* (**AA**) is a natural person or business entity that a User has authorized to act on their behalf to exercise the rights encoded in this protocol
-- *Authorized Agent Interface* (**AAi**) is the software component managed by an Authorized Agent to accept ["Data Rights Status Callback" endpoint](#2041-post-status_callback-response) calls.
-
-- *Privacy Infrastructure Provider* (**PIP**) is a business entity which provides software and process automation to enabled Covered Businesses to receive and process Data Rights Requests.
-- *PIP Interface* (**PIPi**) is the software component managed by a PIP which is responsible for providing the endpoints specified in sections [2.02](#202-post-exercise-data-rights-exercise-endpoint), [2.03](#203-get-status-data-rights-status-endpoint), and [2.05](#205-post-revoke-data-rights-revoke-endpoint). In cases where the Covered Business is operating without a PIP, these components will be operated by the *Covered Business*
-
+- *Authorized Agent* (**AA**) is a natural person or business entity that a User has authorized to act on their behalf to exercise the rights encoded in this protocol and to accept status callbcks by implementing the ["Data Rights Status Callback" endpoint](#2041-post-status_callback-response).
 - *Covered Business* (**CB**) is the business entity which the *User* is exercising their rights with.
-- *Covered Business Interface* (**CBi**) is the software component managed by a Covered Business to provide the [Data Rights Discovery endpoint](#201-get-well-knowndata-rightsjson-data-rights-discovery-endpoint) and MAY also provide services for user identity verification.
-
+- *Privacy Infrastucture Provider* (**PIP**) is the technical and business layer which processes incoming Data Rights Requests. For many Covered Businesses, this may be a service they contract to fulfill these requests, but it may also be implemented directly by the Covered Business. This component is responsible for providing the endpoints specified in sections [2.02](#202-post-exercise-data-rights-exercise-endpoint), [2.03](#203-get-status-data-rights-status-endpoint), [2.05](#205-post-revoke-data-rights-revoke-endpoint), and [Data Rights Discovery endpoint](#201-get-well-knowndata-rightsjson-data-rights-discovery-endpoint) 
 
 ## 2.0 HTTP Endpoint Specification
 
@@ -57,7 +46,7 @@ DRP 0.5 implementors MUST support application/json request and response bodies.
 
 This is the Data Rights Discovery endpoint, responding at a well-known endpoint on the Covered Business’s primary User focused domain. This [RFC8615] URI will return a JSON document conforming to this schema. This endpoint exists for Users and Authorized Agents to be able to take Data Rights Actions.
 
-For instance, an User looking to exercise their data rights for Example, Inc. whose homepage is https://example.com/ MUST be able to GET https://example.com/.well-known/data-rights.json without knowledge of the Covered Business’s relationship to any Privacy Infrastructure Provider. 
+For instance, an User looking to exercise their data rights for Example, Inc. whose homepage is https://example.com/ MUST be able to `GET https://example.com/.well-known/data-rights.json` without knowledge of the Covered Business’s relationship to any Privacy Infrastructure Provider. 
 
 ```
 {
@@ -74,37 +63,53 @@ For instance, an User looking to exercise their data rights for Example, Inc. wh
 - `user_relationships` is a list of strings enumerating the contexts by which a User may have a relationship with the Covered Business. The enumeration of possible relationships is left unspecified and future versions of the protocol may have more to say about them.
 
 
-### 2.02 `POST /exercise` ("Data Rights Exercise" endpoint)
+### 2.02 `POST /exercise?kid={aa-id}` ("Data Rights Exercise" endpoint)
 
-This is the Data Rights Exercise endpoint which Users and Authorized Agents can use to exercise enumerated data rights.
+This is the Data Rights Exercise endpoint which Users and Authorized Agents can use to exercise enumerated data rights. 
+
+A Data Rights Exercise request SHALL contain a JWT-encoded message body containing the following fields:
+
 
 ```
 {
-  "meta": {
-    "version": "0.5"
-  },
+  # 1
+  "iss": "aa-id",
+  "aud": "cb-id",
+  "exp": "<RFC 3339 Timestamp>",
+  "iat":  "<RFC 3339 Timestamp>",
+
+  # 2
+  "drp.version": "0.6"
   "regime": "ccpa",
   "exercise": [
     "sale:opt-out"
   ],
   "relationships": ["customer", "marketing"],
-  "identity": <jwt>... ,
   "status_callback": "https://dsr-agent.example.com/update_status"
+  
+  # 3
+  # claims in IANA JSON Web Token Claims page
+  # https://www.iana.org/assignments/jwt/jwt.xhtml#claims
 }
 ```
 
-- `meta` MUST contain only a single key `version` which contains a string referencing the current protocol version “0.5”.
+The first grouping are JWT security claims. Taken as a whole, these aim to constrain the scope of a Data Rights Request to a single AA-CB relationship to prevent mis-use or re-use by any party.
+- `iss` contains a string identifying the Authorized Agent which is submitting or **issuing** the JWT. 
+- `aud` contains a string identifying the *Covered Business* which the request is being sent to. These identifiers will be shared out-of-band by participants but will eventually be represented in a Service Directory managed by a DRP consortium or working group.
+- `exp` contains an RFC 3339-encoded timestamp expressing when the request should no longer be considered viable. This should be kept short, we recommend no more than 15 minute time windows to prevent re-use while still allowing for backend-processing delays in the Privacy Infrastructure Provider pipeline.
+- `iat` contains an RFC 3339-encoded timestamp expressing when the request was *created*.
+
+The second grouping contains metadata about the Data Rights Request.
+- `drp.version` which contains a string referencing the current protocol version "0.6".
 - `regime` MAY contain a string specifying the legal regime under which the Data Request is being taken.  Requests which do not supply a `regime` MAY be considered for voluntary processing.
   - The legal regime is a system of applicable rules, whether enforceable by statute, regulations, voluntary contract, or other legal frameworks which prescribe data rights to the User. See [3.01 Supported Rights Actions](#301-supported-rights-actions) for more discussion.
-- `exercise` MUST contain a list of rights to exercise.
+- `exercise` MUST contain a list of rights to exercise. [XXX] is exercise a list? is making multiple "requests" in a single request valid?
 - `relationships` MAY contain a list of string 'hints' for the Covered Business signaling that the Covered Business may have data of the User's outside of the expected Customer/Business relationship, and which the User would like to be considered as part of this Data Rights Exercise.
-- `identity` MUST contain an [RFC7515 JWT](https://datatracker.ietf.org/doc/html/rfc7515) conforming to one of the following specifications:
-  - a string containing a JWT serialized in the Compact Serialization format [RFC7515 Section 3.1]
-  - a document object containing a JWT serialized in the JSON Serialization formation [RFC7515 Section 3.2]
-  - See [section 3.04](#304-schema-identity-encapsulation) regarding identity encapsulation.
 - `status_callback` MAY be specified with a URL that the Status Callback can be sent to. See ["Data Rights Status Callback" endpoint](#204-post-status_callback-data-rights-status-callback-endpoint).
 
-[XXX] is exercise a list? is making multiple "requests" in a single request valid?
+The JWT may contain any other [IANA JSON Web Token Claims](https://www.iana.org/assignments/jwt/jwt.xhtml#claims) but minimally must contain the claims outlined in [section 3.04](#304-schema-identity-encapsulation) regarding identity encapsulation.
+
+The URL Parameter `kid` MUST contain an agreed-upon identifier which a Privacy Infrastructure Provider can use to identify the source of the request, and ultimately which Authorized Agent's signing key to use to verify the request. This identifier MUST match the `iss` field within the JWT itself.
 
 #### 2.02.1 `POST /exercise` Response
 
@@ -129,11 +134,11 @@ The request body MUST adhere to the [Exercise Status Schema](#303-schema-status-
 
 #### 2.04.1 `POST $status_callback` Response
 
-Covered Business SHOULD make a best effort to ensure that a 200 status is recorded for the most recent status update. The body of the callback's response SHOULD be discarded and not be considered for parsing by the Covered Business.
+Privacy Infrastructure Providers SHOULD make a best effort to ensure that a 200 status is recorded for the most recent status update. The body of the callback's response SHOULD be discarded and not be considered for parsing by the Covered Business.
 
 ### 2.05 `POST /revoke` ("Data Rights Revoke" endpoint)
 
-An Authorized Agent SHALL provide Users with a mechanism to request cancellation of an open or in progress request by sending a Data Rights Revoke request with the following body parameters:
+An Authorized Agent SHALL provide Users with a mechanism to request cancellation of an open or in progress request by sending a Data Rights Revoke request with the following JSON object encoded as a signed JSON Web Token:
 
 ```
 {
@@ -190,27 +195,30 @@ This table shows valid states for Data Rights Requests, along with the criteria 
 | denied      | suspected_fraud        | CB or PIP believes this request was made fraudulently               | processing_details                           | x      |
 | denied      | insuf_verification     | the [in_progress, need_user_verification] stage failed or timed out | processing_details                           | x      |
 | denied      | no_match               | CB could not match user identity to data subject                    | processing_details                           | x      |
-| denied      | claim_not_covered      | user requesting data not covered under legal bases[XXX]             | processing_details                           | x      |
-| denied      | outside_jurisdiction   | user requesting data under bases they are not covered by[XXX]       | processing_details                           | x      |
+| denied      | claim_not_covered      | user requesting data not covered under legal bases[2]             | processing_details                           | x      |
+| denied      | outside_jurisdiction   | user requesting data under bases they are not covered by[2]       | processing_details                           | x      |
 | denied      | too_many_requests      | user has submitted more requests than the CB is legally obliged to process | details?
 | denied      | other                  | some other unspecified failure state reached                        | processing_details                           | x      |
 | expired     |                        | the time is currently after the `expires_at` in the request.        |                                              | x      |
 
-[XXX] in the case of claim_not_covered, this may be about asking for categories of data which Covered Businesses are not required to present to the User. in the case of outside_jurisdiction, this may be because the business is not honoring CCPA requests for non-California residents and there is no other basis on which to honor the request. [#28](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/28) for discussion on `too_many_requests`
+[2]: in the case of claim_not_covered, this may be about asking for categories of data which Covered Businesses are not required to present to the User. in the case of outside_jurisdiction, this may be because the business is not honoring CCPA requests for non-California residents and there is no other basis on which to honor the request. [#28](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/28) for discussion on `too_many_requests`
 
 #### 3.02.1: `need_user_verification` State Flow Semantics
 
-When a Data Rights Request enters the `in_progress`/`need_user_verification` state, the PIPi SHALL inform the Agent through either the [Data Rights Status Callback](#2041-post-status_callback-response) or the [Data Rights Status endpoint](#203-get-status-data-rights-status-endpoint). A Data Rights Request can enter this state if the identity tokens are not already sufficiently verifiable by the Covered Business, or they could not unambiguously match the User to an account based on those tokens.
+*This has not been implemented or explored by any DRP implementers. If the need for this arises in your implementation, please reach out to DRP protocol developers to work towards implementation and improvement.* There is a alternate proposal for machine-legible signaling preferred/required attributes before the request is submitted in [github #52](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/52).
+
+This `need_user_verification` flow allows a Covered Business to signal to the User that additional User attributes or actions are necessary to confirm or match the identity of the User to an account. The Authorized Agent will navigate the User to a URL specified by the Privacy Infrastructure Provider which will provide the necessary interface to resolve this identification issue.
+
+When a Data Rights Request enters the `in_progress`/`need_user_verification` state, the PIP SHALL inform the Agent through either the [Data Rights Status Callback](#2041-post-status_callback-response) or the [Data Rights Status endpoint](#203-get-status-data-rights-status-endpoint). A Data Rights Request can enter this state if the identity tokens are not already sufficiently verifiable by the Covered Business, or they could not unambiguously match the User to an account based on those tokens.
 
 These request statuses MUST contain a `user_verification_url` string which is an HTTPS or otherwise secure URL; the user's identity token will be included in requests to that URL. The Authorized Agent is responsible for presenting the URL in the Status's `user_verification_url` with some URL parameters attached to it:
 
-- `identity` MUST contain the same identity token presented in the original Data Rights Request, or a JWT containing the same claims
-- `redirect_to` MUST contain a URL-safe encoded URL which the PIPi will redirect to upon successful identity verification.
+- `redirect_to` MUST contain a URL-safe encoded URL which the PIP will redirect to upon successful identity verification.
 - `request_id` MUST contain the `request_id` of the Data Rights Request under consideration.
 
-The PIPi SHOULD provide a `user_verification_url` which refers to a unique Data Rights Request and then SHALL verify that the `request_id` specified by the Authorized Agent refers to the same Data Rights Request before presenting a verification.
+The PIP SHOULD provide a `user_verification_url` which refers to a unique Data Rights Request and then SHALL verify that the `request_id` specified by the Authorized Agent refers to the same Data Rights Request before presenting a verification.
 
-The PIPi SHOULD NOT redirect the user back to the Authorized Agent's `redirect_to` URL when the user verification fails or is canceled, but the Authorized Agent SHOULD NOT assume that loading that URL is enough to assume the verification is complete and request is ready to proceed; they should query the [Data Rights Status endpoint](#203-get-status-data-rights-status-endpoint) or wait for a Status callback.
+The PIP SHOULD NOT redirect the user back to the Authorized Agent's `redirect_to` URL when the user verification fails or is canceled, but the Authorized Agent SHOULD NOT assume that loading that URL is enough to assume the verification is complete and request is ready to proceed; they should query the [Data Rights Status endpoint](#203-get-status-data-rights-status-endpoint) or wait for a Status callback.
 
 ### 3.03 Schema: Status of a Data Subject Exercise Request
 
@@ -245,19 +253,18 @@ A single JSON object is used to describe any existing Data Exercise Request and 
 
 In development of this protocol a simple question with complex answers is raised repeatedly: how do we securely encode a user's identity in a way that is trustworthy to all implementing parties? This has traditionally been done in an ad-hoc fashion. In the scope of a Data Rights Protocol, this can be seen as a barrier to exercise: if a consumer has 50 companies they would like to access their data from, they should not need to complete 50 identity verification processes to exercise those rights. To that end, the parties implementing the protocol have spent some time researching the state of the art and the wider identity ecosystem and come to the following set of conclusions:
 
-- OpenID Connect solves much of the questions around federated identity and trust, and the biggest barriers to uptake are implementation complexity and relatively early rollout of the technology. This, however, is the broad direction that federated identity on the web appears to be headed and we intend to follow that current.
-- for Version 1 of the protocol the focus of development is on developing endpoints, defining the data structure of requests, defining end to end state transitions of the requests, and development of non-technical processes around this protocol.
+- Federated trust models introduce a technical and operational complexity for protocol implementers that does not match the risk and effort required to identify users within the system.
+- No Implementers within the Data Rights Protocol network are currently building on top of OIDC for their Users' identity management.
+- OIDC eKYC and their federated KYC networks are still pretty far off and building version 1.0 protocol around this design ideology doesn't make as much sense as being pragmatic about identity verification.
+- Authorized Agents involved in the Data Rights Protocol Network will act within a closed trust network for the forseeable future.
 - Implementers will work with minimal technical trust mechanisms and instead rely on an operating agreement between implementers deploying this protocol in production. See [System Rules](./governance.md) documentation. [XXX: this is still being drafted]
-- Working Group intends to explore best practices in federated identity and emerging technologies like [OpenID Identity Assurance (eKYC)](https://openid.net/specs/openid-connect-4-identity-assurance-1_0-ID2.html).
+- for Version 1 of the protocol the focus of development is on developing endpoints, defining the data structure of requests, defining end to end state transitions of the requests, and development of non-technical processes around this protocol.
+- Working Group continues to track federated identity work and emerging technologies like [OpenID Identity Assurance (eKYC)](https://openid.net/specs/openid-connect-4-identity-assurance-1_0-ID2.html).
 
-Given the long-term goal of supporting OpenID Connect, protocol implementers SHALL encapsulate identity using [RFC7515-encoded JSON Web Tokens](https://datatracker.ietf.org/doc/html/rfc7515). Tokens can either be represented in their Compact Serialization or JSON Serialization representations; for complex JWTs containing sub-tokens (consider an Authorized Agent with a set of self-attested claims alongside a Covered Business-provided identity token), the JSON Serialization should be considered preferred, but for simple tokens compact serialization should be accepted. (these are purposefully NOT RFC1191 SHOULDs...)
-
-Subject to further refinement of trust mechanisms and authorization workflow, JWTs MAY contain custom claims, and contain the following [OIDC Standard Claims](https://openid.net/specs/openid-connect-core-1_0.html#rfc.section.5.1):
+Subject to further refinement of trust mechanisms and authorization workflow, JWTs MAY contain custom claims, but SHOULD contain the following [OIDC Standard Claims](https://www.iana.org/assignments/jwt/jwt.xhtml#claims):
 
 | name                    | type    | description                                                                                                                                                                                              |
 |-------------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `aud`                   | str     | audience claim MUST contain reference to the legal entity which is responsible for processing rights action                                                                                              |
-| `sub`                   | str     | if known, subject claim SHALL contain the Covered Business's preferred public identifier for the user, for example a user-name or account email address.                                                 |
 | `name`                  | str     | if known, claim SHALL contain the user's full name most likely known by the Covered Business                                                                                                             |
 | `email`                 | str     | if known, claim SHALL contain the user's email address.                                                                                                                                                  |
 | `email_verified`        | bool    | if the user's email address has been affirmatively verified according to the level of assurance specified in the System Rules, this field SHALL be specified as `true`                                |
@@ -269,9 +276,6 @@ Subject to further refinement of trust mechanisms and authorization workflow, JW
 
 Covered Businesses SHALL determine for themselves the level of reliance they will place on a given token. Authorized Agents SHALL make reasonable efforts to provide trustworthy tokens, by verifying user-attested claims according to the practices agreed under the System Rules, by attaching user-attested claims as available, and by ensuring their JWTs are signed by a key which the Covered Businesses and PIPs can verify against.
 
-[XXX] JWTs should probably not be encrypted? managing the encryption key exchange here is very strange and necessarily happening out-of-scope of the protocol. but we already have shared-secret API authentication in [section 3.07](#307-api-authentication); I am queasy about having user tokens identity floating in the open here....
-
-[XXX] discussion about what happens in `need_user_verification` stage; it would be nice if the UA could specify a redirect URL to return back to the app.
 
 ### 3.06 Error States
 
@@ -288,7 +292,7 @@ Servers SHALL respond with HTTP 200 response codes when requests are processed s
 }
 ```
 
-PIPi servers MAY signal that an existing request will no longer be processed due to this error. PIPi SHOULD move the request to a `denied`/`other` state and call the [Status Callback endpoint](#204-post-status_callback-data-rights-status-callback-endpoint) accordingly.
+PIP servers MAY signal that an existing request will no longer be processed due to this error. PIP SHOULD move the request to a `denied`/`other` state and call the [Status Callback endpoint](#204-post-status_callback-data-rights-status-callback-endpoint) accordingly.
 
 Error codes are purposefully under-specified at the moment -- servers SHALL make a best effort to map to known 4XX and 5XX codes.
 
@@ -296,12 +300,21 @@ Note that these error states only represent *request errors*; workflow errors SH
 
 ### 3.07 API Authentication
 
-In short:
-- for v.0.5 we specify that client shared secrets will be used for authentication to all endpoints except the Data rights Discovery endpoint.
-- Participating parties will need to exchange shared secrets out of band for now
-  - the intention is to eventually leverage OAuth2 to secure these resources, either in concert with OIDC or out of band
-- Each party MUST include an HTTP `Authorization` header in each response containing the SHA-512 hash of their secret.
-- Requests which do not have an `Authorization` header MUST receive an `401` HTTP response.
+By enveloping the entire Data Rights Request inside of a JSON Web Token, it is possible to rely on the cryptographic signature of the message to authenticate it, rather than relying on `Authorization` headers or more complicated systems like `OAuth2`. 
+    
+In version 0.6 we continue to use JWT technology but in the future we will be evaluating a move to another cryptographic envelope library called [libsodium](https://doc.libsodium.org/) which eschews the URL-encoding and provides a much less error-prone API **without exchanging any pair-wise secrets**. The Data Rights Protocol organizing group will be responsible for managing a directory mapping `kid` to public API keys for participants in the network.
+
+0.6 should then be seen as a bridge-effort between the current API security paradigm and a final productionized version. Implementers are encouraged to review libsodium and the programming language bindings which are applicable to their technical stack and provide feedback to the Technical Working Group.
+
+We believe that providing these signed messages will ensure message integrity and prevent re-use or re-appropriate of requests: A data rights request represents a single action of one user acting against one covered business one time.
+
+Privacy Infrastructure Providers should take care to validate the message in this order:
+- That the signature validates to the key associated with the out of band Authorized Agent identity specified in `kid` URL parameter.
+- That the Authorized Agent attribute in the request matches the Authorized Agent identity outside the envelope
+- That they are the Covered Business specified inside the `aud` claim (this is very important to prevent request reuse)
+- That the current time is after the Timestamp `iat` claim
+- That the current time is before the Expiration `exp` claim (this is very important to prevent replay attacks)
+
 
 ### 3.08 Processing Extensions & "Expected By" dates
 
@@ -311,17 +324,26 @@ When applying changes to Data Rights Requests in this fashion, the Privacy Infra
 
 ## 4.0 Protocol Roadmap
 
-In its current implementation, DRP should not be used to process data of Users who are not involved in the implementers group. There are known shortcomings in security, privacy, and identity verification that will need to be solved before a "1.0" protocol version which is suitable for production-ready systems.
+In its current implementation, DRP should not be used to process data of Users who are not involved in the implementers group. This protocol is undergoing significant technical design changes, security evaluation, and implementation work, which should preclude the transfer of arbitrary Users' data rights. 
 
-- Governance and operating model
-- Protocol Compliance suite
-- OIDC identity provider flows
-- Secure OAuth2 client authentication (eg [FAPI baseline security profile](https://openid.net/specs/openid-financial-api-part-1-1_0.html))
-- Successful DRP pilot between multiple Agents and Covered Businesses
+In steps:
+
+- Moving to signed data rights requests from the Authorized Agents
+- Moving from JWT to libsodium for singing requests
+- Developing a directory service for Authorized Agents to discover businesses participating in a Data Rights Network, and a directory service for Covered Businesses to resolve message signatures to specific Authorized Agents
 
 ## Specification Change Log
 
 In general, please put major change log items at the top of the file. When a new protocol version is "cut", move the previous versions' change log down here.
+
+Protocol Changes from 0.4 to 0.5:
+
+- [new request state "denied/`too_many_requests`"](https://github.com/consumer-reports-digital-lab/data-rights-protocol/commit/14fea83a1b7856da55a2075a6233039f8a7c9c81)
+- [openapi.yaml](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/0.5/openapi.yaml) specification for PIP server interface
+- [encode time-extensions in to the request status, along with a `processing_details` field](https://github.com/consumer-reports-digital-lab/data-rights-protocol/commit/f758f164e33b862e990526b8a2aafba49d777862)
+- [draft minimal implementation guide](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/0.5/implementation-guide.org)
+- [draft PIP certification/conformance suite](https://github.com/consumer-reports-digital-lab/data-rights-protocol-cert/)
+- [respecification of identity tokens to match OIDC Core 1.0](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pull/44)
 
 Protocol Changes from 0.3 to 0.4:
 
