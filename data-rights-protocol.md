@@ -4,7 +4,7 @@
 
 Protocol changes from 0.5 to 0.6:
 
-- Breaking data model changes to enable signed data rights requests
+- Breaking data model changes to fully sign data rights requests
 - Elimination of distinction between technical actor and technical interface (CBi and PIPi and AAi terminology eliminated)
 
 ## 1.0 Introduction
@@ -30,15 +30,15 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 - *User* is the individual who is exercising their rights. This User may or may not have a direct business relationship or login credentials with the Covered Business.
 - *User Agent* (**UA**) is the application, software, or browser which is used by the User to mediate their interaction with the *Data Rights Protocol*. 
-- *Authorized Agent* (**AA**) is a natural person or business entity that a User has authorized to act on their behalf to exercise the rights encoded in this protocol and to accept status callbcks by implementing the ["Data Rights Status Callback" endpoint](#2041-post-status_callback-response).
+- *Authorized Agent* (**AA**) is an entity (most likely a business or nonprofit organization) that a User has authorized to act on their behalf to exercise the rights encoded in this protocol and to accept status callbcks by implementing the ["Data Rights Status Callback" endpoint](#2041-post-status_callback-response).
 - *Covered Business* (**CB**) is the business entity which the *User* is exercising their rights with.
-- *Privacy Infrastucture Provider* (**PIP**) is the technical and business layer which processes incoming Data Rights Requests. For many Covered Businesses, this may be a service they contract to fulfill these requests, but it may also be implemented directly by the Covered Business. This component is responsible for providing the endpoints specified in sections [2.02](#202-post-exercise-data-rights-exercise-endpoint), [2.03](#203-get-status-data-rights-status-endpoint), [2.05](#205-post-revoke-data-rights-revoke-endpoint), and [Data Rights Discovery endpoint](#201-get-well-knowndata-rightsjson-data-rights-discovery-endpoint) 
+- A *Privacy Infrastucture Provider* (**PIP**) is responsible for providing the endpoints specified in sections [2.02](#202-post-exercise-data-rights-exercise-endpoint), [2.03](#203-get-status-data-rights-status-endpoint), [2.05](#205-post-revoke-data-rights-revoke-endpoint), and [Data Rights Discovery endpoint](#201-get-well-knowndata-rightsjson-data-rights-discovery-endpoint).  These may either be implemented by a third-party service provider with whom a Covered Business contracts to process incoming Data Rights Requests on their behalf, or directly by the Covered Business.
 
 ## 2.0 HTTP Endpoint Specification
 
 [note about including schemas by-reference from below.]
 
-TKTK: DRP 0.5 implementors MUST support application/json request and response bodies.
+TKTK: DRP 0.6 implementors MUST support application/json request and response bodies.
 
 [expand endpoints with their failure states]
 
@@ -100,7 +100,7 @@ The first grouping are JWT security claims. Taken as a whole, these aim to const
 - `iat` contains an RFC 3339-encoded timestamp expressing when the request was *created*.
 
 The second grouping contains metadata about the Data Rights Request.
-- `drp.version` which contains a string referencing the current protocol version "0.6".
+- `drp.version` which MUST contain a string referencing the current protocol version "0.6".
 - `regime` MAY contain a string specifying the legal regime under which the Data Request is being taken.  Requests which do not supply a `regime` MAY be considered for voluntary processing.
   - The legal regime is a system of applicable rules, whether enforceable by statute, regulations, voluntary contract, or other legal frameworks which prescribe data rights to the User. See [3.01 Supported Rights Actions](#301-supported-rights-actions) for more discussion.
 - `exercise` MUST contain a list of rights to exercise. [XXX] is exercise a list? is making multiple "requests" in a single request valid?
@@ -201,7 +201,7 @@ This table shows valid states for Data Rights Requests, along with the criteria 
 | denied      | other                  | some other unspecified failure state reached                        | processing_details                           | x      |
 | expired     |                        | the time is currently after the `expires_at` in the request.        |                                              | x      |
 
-[2]: in the case of claim_not_covered, this may be about asking for categories of data which Covered Businesses are not required to present to the User. in the case of outside_jurisdiction, this may be because the business is not honoring CCPA requests for non-California residents and there is no other basis on which to honor the request. [#28](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/28) for discussion on `too_many_requests`
+[2]: In the case of claim_not_covered, this may be about asking for categories of data which Covered Businesses are not required to present to the User. In the case of outside_jurisdiction, this may be because the business is not honoring CCPA requests for non-California residents and there is no other basis on which to honor the request. See [#28](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/28) for discussion on `too_many_requests`.
 
 #### 3.02.1: `need_user_verification` State Flow Semantics
 
@@ -308,12 +308,12 @@ In version 0.6 we continue to use JWT technology but in the future we will be ev
 
 We believe that providing these signed messages will ensure message integrity and prevent re-use or re-appropriate of requests: A data rights request represents a single action of one user acting against one covered business one time.
 
-Privacy Infrastructure Providers should take care to validate the message in this order:
+Privacy Infrastructure Providers MUST validate the message in this order:
 - That the signature validates to the key associated with the out of band Authorized Agent identity specified in `kid` URL parameter.
 - That the Authorized Agent attribute in the request matches the Authorized Agent identity outside the envelope
-- That they are the Covered Business specified inside the `aud` claim (this is very important to prevent request reuse)
-- That the current time is after the Timestamp `iat` claim
-- That the current time is before the Expiration `exp` claim (this is very important to prevent replay attacks)
+- That they are the Covered Business specified inside the `aud` claim (this is very important to prevent requests originally destined for one CB from being resent to other CBs)
+- That the current time is after the Timestamp `iat` claim (this is a very important check for clock-skew, to ensure that requests aren't being generated with expiration times far in the future because the clock of the system generating the requests is running fast)
+- That the current time is before the Expiration `exp` claim (this is very important to prevent old requests from being replayed)
 
 
 ### 3.08 Processing Extensions & "Expected By" dates
