@@ -80,10 +80,8 @@ A Data Rights Exercise request SHALL contain a JWT-encoded message body containi
 
   # 2
   "drp.version": "0.6"
+  "exercise": "sale:opt-out",
   "regime": "ccpa",
-  "exercise": [
-    "sale:opt-out"
-  ],
   "relationships": ["customer", "marketing"],
   "status_callback": "https://dsr-agent.example.com/update_status"
   
@@ -100,10 +98,10 @@ The first grouping are JWT security claims. Taken as a whole, these aim to const
 - `iat` contains an RFC 3339-encoded timestamp expressing when the request was *created*.
 
 The second grouping contains metadata about the Data Rights Request.
-- `drp.version` which MUST contain a string referencing the current protocol version "0.6".
+- `drp.version` which contains a string referencing the current protocol version "0.6".
+- `exercise` MUST contain a string specifying the [Rights Action](#301-supported-rights-actions) which is to be taken by the Covered Business.
 - `regime` MAY contain a string specifying the legal regime under which the Data Request is being taken.  Requests which do not supply a `regime` MAY be considered for voluntary processing.
   - The legal regime is a system of applicable rules, whether enforceable by statute, regulations, voluntary contract, or other legal frameworks which prescribe data rights to the User. See [3.01 Supported Rights Actions](#301-supported-rights-actions) for more discussion.
-- `exercise` MUST contain a list of rights to exercise. [XXX] is exercise a list? is making multiple "requests" in a single request valid?
 - `relationships` MAY contain a list of string 'hints' for the Covered Business signaling that the Covered Business may have data of the User's outside of the expected Customer/Business relationship, and which the User would like to be considered as part of this Data Rights Exercise.
 - `status_callback` MAY be specified with a URL that the Status Callback can be sent to. See ["Data Rights Status Callback" endpoint](#204-post-status_callback-data-rights-status-callback-endpoint).
 
