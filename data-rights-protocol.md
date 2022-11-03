@@ -132,7 +132,7 @@ The request body MUST adhere to the [Exercise Status Schema](#303-schema-status-
 
 #### 2.04.1 `POST $status_callback` Response
 
-Privacy Infrastructure Providers SHOULD make a best effort to ensure that a 200 status is recorded for the most recent status update. The body of the callback's response SHOULD be discarded and not be considered for parsing by the Covered Business.
+Privacy Infrastructure Providers SHOULD make a best effort to ensure that a 200 response is issued by the Authorized Agent for the most recent status update. The body of the callback's response SHOULD be discarded and not be considered for parsing by the Covered Business.
 
 ### 2.05 `POST /revoke` ("Data Rights Revoke" endpoint)
 
@@ -298,7 +298,7 @@ Note that these error states only represent *request errors*; workflow errors SH
 
 ### 3.07 API Authentication
 
-By enveloping the entire Data Rights Request inside of a JSON Web Token, it is possible to rely on the cryptographic signature of the message to authenticate it, rather than relying on `Authorization` headers or more complicated systems like `OAuth2`. 
+By enveloping the entire Data Rights Request inside of a JSON Web Token, it is possible to rely on the cryptographic signature of the message to authenticate it, rather than relying on shared-secret `Authorization` headers or more complicated systems like `OAuth2`. 
     
 In version 0.6 we continue to use JWT technology but in the future we will be evaluating a move to another cryptographic envelope library called [libsodium](https://doc.libsodium.org/) which eschews the URL-encoding and provides a much less error-prone API **without exchanging any pair-wise secrets**. The Data Rights Protocol organizing group will be responsible for managing a directory mapping `kid` to public API keys for participants in the network.
 
@@ -312,7 +312,6 @@ Privacy Infrastructure Providers MUST validate the message in this order:
 - That they are the Covered Business specified inside the `aud` claim (this is very important to prevent requests originally destined for one CB from being resent to other CBs)
 - That the current time is after the Timestamp `iat` claim (this is a very important check for clock-skew, to ensure that requests aren't being generated with expiration times far in the future because the clock of the system generating the requests is running fast)
 - That the current time is before the Expiration `exp` claim (this is very important to prevent old requests from being replayed)
-
 
 ### 3.08 Processing Extensions & "Expected By" dates
 
