@@ -134,7 +134,7 @@ The request body MUST adhere to the [Exercise Status Schema](#303-schema-status-
 
 Privacy Infrastructure Providers SHOULD make a best effort to ensure that a 200 response is issued by the Authorized Agent for the most recent status update. The body of the callback's response SHOULD be discarded and not be considered for parsing by the Covered Business.
 
-### 2.05 `POST /revoke` ("Data Rights Revoke" endpoint)
+### 2.05 `POST /revoke?kid={aa-id}` ("Data Rights Revoke" endpoint)
 
 An Authorized Agent SHALL provide Users with a mechanism to request cancellation of an open or in progress request by sending a Data Rights Revoke request with the following JSON object encoded as a signed JSON Web Token:
 
@@ -148,6 +148,10 @@ An Authorized Agent SHALL provide Users with a mechanism to request cancellation
 Requests to this endpoint contain a single field:
 - `request_id` MUST contain the ID of the request to revoke
 - `reason` MAY contain a user provided reason for the request to be not processed.
+
+The URL Parameter `kid` MUST contain an agreed-upon identifier which a Privacy Infrastructure Provider can use to identify the source of the request, and ultimately which Authorized Agent's signing key to use to verify the request. This identifier MUST match the `iss` field within the JWT itself. `iss` and `kid` MUST be compared case-insensitive and match a regular expression `[0-9a-zA-Z-]+` (ASCII alphanumeric plus hyphen).
+
+The Privacy Infrastructure Provider SHALL validate the message is signed according to the guidance in section 3.07.
 
 #### 2.05.1 `POST /revoke` response
 
