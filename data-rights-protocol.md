@@ -92,13 +92,13 @@ A Data Rights Exercise request SHALL contain a JWT-encoded message body containi
 ```
 
 The first grouping are JWT security claims. Taken as a whole, these aim to constrain the scope of a Data Rights Request to a single AA-CB relationship to prevent mis-use or re-use by any party.
-- `iss` contains a string identifying the Authorized Agent which is submitting or **issuing** the JWT. 
-- `aud` contains a string identifying the *Covered Business* which the request is being sent to. These identifiers will be shared out-of-band by participants but will eventually be represented in a Service Directory managed by a DRP consortium or working group.
-- `exp` contains an RFC 3339-encoded timestamp expressing when the request should no longer be considered viable. This should be kept short, we recommend no more than 15 minute time windows to prevent re-use while still allowing for backend-processing delays in the Privacy Infrastructure Provider pipeline.
-- `iat` contains an RFC 3339-encoded timestamp expressing when the request was *created*.
+- `iss` MUST contain a string identifying the Authorized Agent which is submitting or **issuing** the JWT. 
+- `aud` MUST contain a string identifying the *Covered Business* which the request is being sent to. These identifiers will be shared out-of-band by participants but will eventually be represented in a Service Directory managed by a DRP consortium or working group.
+- `exp` MUST contain an RFC 3339-encoded timestamp expressing when the request should no longer be considered viable. This should be kept short, we recommend no more than 15 minute time windows to prevent re-use while still allowing for backend-processing delays in the Privacy Infrastructure Provider pipeline.
+- `iat` MUST contain an RFC 3339-encoded timestamp expressing when the request was *created*.
 
 The second grouping contains metadata about the Data Rights Request.
-- `drp.version` which contains a string referencing the current protocol version "0.6".
+- `drp.version` MUST contain a string referencing the current protocol version "0.6".
 - `exercise` MUST contain a string specifying the [Rights Action](#301-supported-rights-actions) which is to be taken by the Covered Business.
 - `regime` MAY contain a string specifying the legal regime under which the Data Request is being taken.  Requests which do not supply a `regime` MAY be considered for voluntary processing.
   - The legal regime is a system of applicable rules, whether enforceable by statute, regulations, voluntary contract, or other legal frameworks which prescribe data rights to the User. See [3.01 Supported Rights Actions](#301-supported-rights-actions) for more discussion.
