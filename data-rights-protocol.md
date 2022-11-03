@@ -109,7 +109,7 @@ The second grouping contains metadata about the Data Rights Request.
 
 The JWT may contain any other [IANA JSON Web Token Claims](https://www.iana.org/assignments/jwt/jwt.xhtml#claims) but minimally must contain the claims outlined in [section 3.04](#304-schema-identity-encapsulation) regarding identity encapsulation.
 
-The URL Parameter `kid` MUST contain an agreed-upon identifier which a Privacy Infrastructure Provider can use to identify the source of the request, and ultimately which Authorized Agent's signing key to use to verify the request. This identifier MUST match the `iss` field within the JWT itself.
+The URL Parameter `kid` MUST contain an agreed-upon identifier which a Privacy Infrastructure Provider can use to identify the source of the request, and ultimately which Authorized Agent's signing key to use to verify the request. This identifier MUST match the `iss` field within the JWT itself. `iss` and `kid` MUST be compared case-insensitive and match a regular expression `[0-9a-zA-Z]+` (ASCII alphanumeric plus hyphen).
 
 #### 2.02.1 `POST /exercise` Response
 
