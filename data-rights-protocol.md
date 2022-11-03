@@ -321,6 +321,19 @@ Privacy Infrastructure Providers MUST validate the message in this order:
 - That the current time is after the Timestamp `iat` claim (this is a very important check for clock-skew, to ensure that requests aren't being generated with expiration times far in the future because the clock of the system generating the requests is running fast)
 - That the current time is before the Expiration `exp` claim (this is very important to prevent old requests from being replayed)
 
+#### 3.07.1 JWT Key Semantics and Management
+
+In this protocol version we want to signal a move to *asymmetric key management* with unduly burdening implementers. Rather than relying on pair-wise symmetric keys multiplicatively exchanged between Authorized Agents and Covered Businesses, Authorized Agents SHALL generate 256-bit RSA keys and present their public portion in [RFC 7517](https://www.rfc-editor.org/rfc/rfc7517) JWK files.
+
+Authorized Agents SHALL use JWTs with `alg` set to `RS256` RSASSA-PKCS1-v1_5 using SHA-256. RSA symmetric keys are well supported, easy to generate, and easy grasp conceptually. Future iterations of the protocol will use `libsodium`'s built in key generation utilities to provide cryptographic agility.
+
+Keys can be generated in a number of fashions:
+- [C implementation of JOSE](https://github.com/latchset/jose) can generate JWKs: `jose jwk gen -i '{"alg":"RS256"}' -o rsa.jwk && jose jwk pub -i rsa.jwk -o rsa.pub.jwk`
+- [MITRE's json-web-key-generator](https://github.com/mitreid-connect/json-web-key-generator) will generate the key from scratch
+- [pem2jwk](https://github.com/mt-inside/pem2jwks) will accept an existing PEM-encoded key and convert it to JWK
+- [jwkcreator](https://russelldavies.github.io/jwk-creator/) web site MAY be used to convert PEM keys to JWKs which will not be used to exchange 3rd party identity and rights
+- [mkjwk.org](https://mkjwk.org/) web site MAY be used to generate JWKs which will not be used to exchange 3rd party identity and rights.
+
 ### 3.08 Processing Extensions & "Expected By" dates
 
 When a Covered Business acknowledges receipt of a Data Rights Request and moves it in to `in_progress` state, the request's `expected_by` field SHOULD be populated based on either an estimate provided by the Covered Business or the deadline prescribed by the legal regime the request is submitted under. Consider, for example, [California's legal regime](https://transcend.io/laws/cpra/#section-15) prescribes up to 90 days extension so long as they are made within 45 days; If a request is extended, this request must also be extended with a `processing_details` field detailing a reason for the Request's extension to notify the consumer of this delay. The intent of the `processing_details` field is to add additional color to already-defined `state`/`reason` combinations. States which cannot be encoded without reaching for free-form text should be integrated in to the state transition table.
