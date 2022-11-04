@@ -38,7 +38,7 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 [note about including schemas by-reference from below.]
 
-TKTK: DRP 0.6 implementors MUST support application/json request and response bodies.
+DRP 0.6 implementors MUST support application/jwt request and application/json responses. 
 
 [expand endpoints with their failure states]
 
