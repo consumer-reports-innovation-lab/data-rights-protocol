@@ -1,0 +1,3 @@
+[submodule "osiraa"]
+	path = osiraa
+	url = https://github.com/consumer-reports-digital-lab/osiraa/
