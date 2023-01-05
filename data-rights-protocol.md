@@ -2,14 +2,14 @@
 
 **DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pulls) in this repository or you may provide feedback through this form: [https://forms.gle/YC7nKRs3ZQMWLvw27](https://forms.gle/YC7nKRs3ZQMWLvw27).
 
-Protocol changes from 0.5 to 0.6:
+Protocol Changes from 0.6 to 0.7:
 
-- Breaking data model changes to fully sign data rights requests
-  - Move all attributes of the request in to JWT envelope
-  - Allow for only one right to be exercised per request
-  - Provide guidance for signing JWKs to test and signal movement in 0.7 toward libsodium or similar cryptographic primitives library.
-- Elimination of distinction between technical actor and technical interface (CBi and PIPi and AAi terminology eliminated)
-- Remove old Certification Test repo link and replace with link to [OSIRAA](https://osirra.datarightsprotocol.org).
+- Move from JWT to NaCl/libsodium/Ed25519 signatures
+- Renaming security claims from JWT short codes to more expressive identifiers
+- Add `POST /key-exchange` endpoint to provide mechanism for generating pair-wise API Authorization/routing tokens
+- Specify timestamps as ISO-8601 instead of RFC-3339
+- Re-draft API Authentication and Security Guidance sections.
+
 
 ## 1.0 Introduction
 
@@ -46,13 +46,13 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 DRP 0.6 implementors MUST support application/jwt request and application/json responses. 
 
-[XXX: link/embed request flow diagram from plantuml]
+![Sequence Diagram showing Data Rights Request event flow](https://raw.githubusercontent.com/consumer-reports-digital-lab/data-rights-protocol/main/files/drp-1.0-sequence-diagram.svg)
 
 [expand endpoints with their failure states]
 
 ### 2.01 `GET /.well-known/data-rights.json` ("Data Rights Discovery" endpoint)
 
-[XXX: signal intention to move this information in to service directory in 0.8 or 0.9]
+*Before protocol 1.0 this endpoint may be replaced by a pair of machine-legible service directories operated by the Data Rights Protocol network operators. An Authorized Agent directory will contain public-key and business identity information for businesses, and a Covered Business directory will contain the information currently recorded in these Data Rights Discovery responses. This will allow agents and businesses to actually discover the full set of actors in the network rather than rely on domain-based discovery.*
 
 This is the Data Rights Discovery endpoint, responding at a well-known endpoint on the Covered Business’s primary User focused domain. This [RFC8615] URI will return a JSON document conforming to this schema. This endpoint exists for Users and Authorized Agents to be able to take Data Rights Actions.
 
@@ -77,7 +77,7 @@ For instance, an User looking to exercise their data rights for Example, Inc. wh
 
 This is the Data Rights Exercise endpoint which Users and Authorized Agents can use to exercise enumerated data rights. 
 
-A Data Rights Exercise request SHALL contain a JSON-encoded message body containing the following fields, with a `libsodium`/`NaCl`/`ED25119` binary signature immediately prepending it [XXX: point to code examples]:
+A Data Rights Exercise request SHALL contain a JSON-encoded message body containing the following fields, with a `libsodium`/`NaCl`/`ED25119` binary signature immediately prepending it[^1]:
 
 
 ```
@@ -205,8 +205,6 @@ Authorized Agents SHALL use this `token` up until the `expires-at` time to ident
 
 If the validation failed, the Privacy Infrastructure Provider SHALL return an `HTTP 403 Forbidden` response with no response body. The Authorized Agent and Privacy Infrastructure Provider SHOULD resolve this issue out of band utilizing the Technical Contact Address in the Data Rights Network Directory [xxx: current unspecified, landing in 0.8 or 0.9]
 
-Privacy Infrastructure Providers SHOULD store the `agent-id` alongside these tokens when they are generated to ensure that the key which an Exercise request was signed with can be intuited using the presented Bearer token. [XXX maybe better in 3.07]
-
 ## 3.0 Data Schemas
 
 These Schemas are referenced in Section 2 outlining the HTTP endpoints and their semantics.
@@ -291,7 +289,7 @@ A single JSON object is used to describe any existing Data Exercise Request and 
 * `request_id` MUST contain a string that is the globally unique ID returned in the initial [Data Rights Exercise request](#202-post-exercise-data-rights-exercise-endpoint).[1] 
 * `status` MUST contain a string which is one of the request states as defined in [Request Statuses](#302-request-statuses).
 * `reason` MAY contain a string containing additional information about the current state of the request according to the [Request Statuses](#302-request-statuses).
-* `received_at` SHOULD contain a string which is the [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339)-encoded time which the initial request was registered by the Covered Business. [XXX: update URL reference]
+* `received_at` SHOULD contain a string which is the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)-encoded time which the initial request was registered by the Covered Business.
   * When a Covered Business receives a request, this field MUST be present.
 * `expected_by` SHOULD contain a date before which the Authorized Agent can expect to see an update on the status of the Data Rights Request. This field should conform to the legal regime's deadline guidances, and may be amended by the PIP or Covered Business according to those same regulations. `processing_details` MUST be updated to reflect the reason for this extension. 
 * `processing_details` MAY contain a string reflecting the state of the Data Rights Request so that the Agent may communicate this state to the End User.
@@ -352,37 +350,36 @@ Note that these error states only represent *request errors*; workflow errors SH
 
 ### 3.07 API Authentication
 
-By enveloping the entire Data Rights Request inside of a JSON Web Token, it is possible to rely on the cryptographic signature of the message to authenticate it, rather than relying on shared-secret `Authorization` headers or more complicated systems like `OAuth2`. 
+The ultimate design of this API is to allow Covered Businesses to join the network, and immediately have the ability to process automated requests from trusted Authorized Agents, and for those Agents to discover new businesses participating in the network. Key to this is the idea that pre-exchanging secrets and establishing business relationships should be a technical process back-stopped by the business rules of participating in the network. Thus, the network will be primarily secured by **modern public key cryptography signatures** commonly known as Ed25519. There are multiple implementations and language bindings for this algorithm starting from [the public domain, patent un-encumbered NaCl and libsodium](https://en.wikipedia.org/wiki/NaCl_(software)) software APIs which shall ensure that all members of the network are able to integrate simple, secure, high-level cryptographic APIs.
 
-[XXX rewrite for 0.7]
-    
-In version 0.6 we continue to use JWT technology but in the future we will be evaluating a move to another cryptographic envelope library called [libsodium](https://doc.libsodium.org/) which eschews the URL-encoding and provides a much less error-prone API **without exchanging any pair-wise secrets**. The Data Rights Protocol organizing group will be responsible for managing a directory mapping `kid` to public API keys for participants in the network.
+We do, however, understand that the needs of an API Authentication extend beyond purely on the security aspects, towards rate-limiting, request routing, and the like so this version of the Data Rights Protocol includes a `POST /key-exchange` API which is used to generate API Bearer Tokens which can be used to identify the agent submitting a request, load the associated public key, and bootstrap a message validation algorithm:
 
-0.6 should then be seen as a bridge-effort between the current API security paradigm and a final productionized version. Implementers are encouraged to review libsodium and the programming language bindings which are applicable to their technical stack and provide feedback to the Technical Working Group.
+Privacy Infrastructure Providers MUST validate the message in this order:
+- That the presented Bearer Token has not expired.
+  - [XXX: provide guidance around Bearer Token lifecycle]
+- That the signature validates to the key associated with the out of band Authorized Agent identity presented in the Bearer Token.
+  - That the Authorized Agent specified in the `agent-id` claim in the request matches the Authorized Agent associated with the presented Bearer Token 
+  - This is very important to prevent requests generated by one AA from being reused by another AA.
+- That they are the Covered Business specified inside the `business-id` claim 
+  - This is very important to prevent requests originally destined for one CB from being resent to other CBs
+- That the current time is after the Timestamp `issued-at` claim 
+  - This is a very important check for clock-skew, to ensure that requests aren't being generated with expiration times far in the future because the clock of the system generating the requests is running fast.
+- That the current time is before the Expiration `expires-at` claim 
+  - This is very important to prevent old requests from being replayed
+
+Privacy Infrastructure Providers SHOULD store the `agent-id` alongside the Bearer Tokens when they are generated to ensure that the key which an Exercise request was signed with can be intuited using the presented Bearer token.
 
 We believe that providing these signed messages will ensure message integrity and prevent re-use or re-appropriate of requests: A data rights request represents a single action of one user acting against one covered business one time.
 
-Privacy Infrastructure Providers MUST validate the message in this order:
-- That the signature validates to the key associated with the out of band Authorized Agent identity presented in the Bearer Token.
-  - That the Authorized Agent specified in the `agent-id` claim in the request matches the Authorized Agent associated with the presented Bearer Token (this is very important to prevent requests generated by one AA from being reused by another AA)
-- That they are the Covered Business specified inside the `business-id` claim (this is very important to prevent requests originally destined for one CB from being resent to other CBs)
-- That the current time is after the Timestamp `issued-at` claim (this is a very important check for clock-skew, to ensure that requests aren't being generated with expiration times far in the future because the clock of the system generating the requests is running fast)
-- That the current time is before the Expiration `expires-at` claim (this is very important to prevent old requests from being replayed)
+#### 3.07.1 Ed25519 Key Semantics, Request Signing, and Management
 
-#### 3.07.1 JWT Key Semantics and Management
+The Data Rights Protocol authors **strongly** recommend the use of a [libsodium](https://doc.libsodium.org/)-based Ed25519 implementation. There is a [wide selection](https://doc.libsodium.org/bindings_for_other_languages) of language bindings for `libsodium` and in general is considered to be a high-quality, trustworthy API.
 
-[XXX: rewrite for 0.7]
-
-In this protocol version we want to signal a move to *asymmetric key management* with unduly burdening implementers. Rather than relying on pair-wise symmetric keys multiplicatively exchanged between Authorized Agents and Covered Businesses, Authorized Agents SHALL generate 256-bit RSA keys and present their public portion in [RFC 7517](https://www.rfc-editor.org/rfc/rfc7517) JWK files.
-
-Authorized Agents SHALL use JWTs with `alg` set to `RS256` RSASSA-PKCS1-v1_5 using SHA-256. RSA symmetric keys are well supported, easy to generate, and easy grasp conceptually. Future iterations of the protocol will use `libsodium`'s built in key generation utilities to provide cryptographic agility.
-
-Keys can be generated in a number of fashions:
-- [C implementation of JOSE](https://github.com/latchset/jose) can generate JWKs: `jose jwk gen -i '{"alg":"RS256"}' -o rsa.jwk && jose jwk pub -i rsa.jwk -o rsa.pub.jwk`
-- [MITRE's json-web-key-generator](https://github.com/mitreid-connect/json-web-key-generator) will generate the key from scratch
-- [pem2jwk](https://github.com/mt-inside/pem2jwks) will accept an existing PEM-encoded key and convert it to JWK
-- [jwkcreator](https://russelldavies.github.io/jwk-creator/) web site MAY be used to convert PEM keys to JWKs which will not be used to exchange 3rd party identity and rights
-- [mkjwk.org](https://mkjwk.org/) web site MAY be used to generate JWKs which will not be used to exchange 3rd party identity and rights.
+We provide in OSIRAA an example [generating keys and signing
+requests](https://github.com/consumer-reports-digital-lab/osiraa/blob/main/drp_aa_mvp/data_rights_request/pynacl_validator_submit.py)
+using the PyNaCl implementation, as well as a [Django request
+handler](https://github.com/consumer-reports-digital-lab/osiraa/blob/main/drp_aa_mvp/data_rights_request/pynacl_validator.py)
+which does cryptographic verification of the requests (without the full semantic validation chain presented above). 
 
 ### 3.08 Processing Extensions & "Expected By" dates
 
@@ -403,6 +400,15 @@ In steps:
 ## Specification Change Log
 
 In general, please put major change log items at the top of the file. When a new protocol version is "cut", move the previous versions' change log down here.
+
+Protocol changes from 0.5 to 0.6:
+
+- Breaking data model changes to fully sign data rights requests
+  - Move all attributes of the request in to JWT envelope
+  - Allow for only one right to be exercised per request
+  - Provide guidance for signing JWKs to test and signal movement in 0.7 toward libsodium or similar cryptographic primitives library.
+- Elimination of distinction between technical actor and technical interface (CBi and PIPi and AAi terminology eliminated)
+- Remove old Certification Test repo link and replace with link to [OSIRAA](https://osirra.datarightsprotocol.org).
 
 Protocol Changes from 0.4 to 0.5:
 
@@ -429,3 +435,6 @@ Changes in v0.2 to v0.3:
 
 ## Footnotes and Errata
 
+[^1]: See section 3.07 and
+    [OSIRAA](https://github.com/consumer-reports-digital-lab/osiraa/blob/main/drp_aa_mvp/data_rights_request/pynacl_validator.py)'s
+    validation example.
