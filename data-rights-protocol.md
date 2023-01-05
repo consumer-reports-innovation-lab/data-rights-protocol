@@ -67,11 +67,11 @@ For instance, an User looking to exercise their data rights for Example, Inc. wh
 - `user_relationships` is a list of strings enumerating the contexts by which a User may have a relationship with the Covered Business. The enumeration of possible relationships is left unspecified and future versions of the protocol may have more to say about them.
 
 
-### 2.02 `POST /exercise?kid={aa-id}` ("Data Rights Exercise" endpoint)
+### 2.02 `POST /exercise` ("Data Rights Exercise" endpoint)
 
 This is the Data Rights Exercise endpoint which Users and Authorized Agents can use to exercise enumerated data rights. 
 
-A Data Rights Exercise request SHALL contain a JWT-encoded message body containing the following fields:
+A Data Rights Exercise request SHALL contain a JSON-encoded message body containing the following fields, with a `libsodium`/`NaCl`/`ED25119` binary signature immediately prepending it [XXX: point to code examples]:
 
 
 ```
@@ -109,9 +109,9 @@ The second grouping contains data about the Data Rights Request.
 - `relationships` MAY contain a list of string 'hints' for the Covered Business signaling that the Covered Business may have data of the User's outside of the expected Customer/Business relationship, and which the User would like to be considered as part of this Data Rights Exercise.
 - `status_callback` MAY be specified with a URL that the Status Callback can be sent to. See ["Data Rights Status Callback" endpoint](#204-post-status_callback-data-rights-status-callback-endpoint).
 
-The JWT may contain any other [IANA JSON Web Token Claims](https://www.iana.org/assignments/jwt/jwt.xhtml#claims) but minimally must contain the claims outlined in [section 3.04](#304-schema-identity-encapsulation) regarding identity encapsulation.
+The JSON object may contain any other [IANA JSON Web Token Claims](https://www.iana.org/assignments/jwt/jwt.xhtml#claims) but minimally must contain the claims outlined in [section 3.04](#304-schema-identity-encapsulation) regarding identity encapsulation.
 
-The URL Parameter `kid` MUST contain an agreed-upon identifier which a Privacy Infrastructure Provider can use to identify the source of the request, and ultimately which Authorized Agent's signing key to use to verify the request. This identifier MUST match the `iss` field within the JWT itself. `iss` and `kid` MUST be compared case-insensitive and match a regular expression `[0-9a-zA-Z-]+` (ASCII alphanumeric plus hyphen).
+This request SHALL contain an Bearer Token header containing the key for this AA-CB pairwise relationship in it in the form `Authorization: Bearer <token>`.
 
 The Privacy Infrastructure Provider SHALL validate the message is signed according to the guidance in section 3.07
 
@@ -142,7 +142,7 @@ The request body MUST adhere to the [Exercise Status Schema](#303-schema-status-
 
 Privacy Infrastructure Providers SHOULD make a best effort to ensure that a 200 response is issued by the Authorized Agent for the most recent status update. The body of the callback's response SHOULD be discarded and not be considered for parsing by the Covered Business.
 
-### 2.05 `POST /revoke?kid={aa-id}` ("Data Rights Revoke" endpoint)
+### 2.05 `POST /revoke` ("Data Rights Revoke" endpoint)
 
 An Authorized Agent SHALL provide Users with a mechanism to request cancellation of an open or in progress request by sending a Data Rights Revoke request with the following JSON object encoded as a signed JSON Web Token:
 
@@ -157,7 +157,7 @@ Requests to this endpoint contain a single field:
 - `request_id` MUST contain the ID of the request to revoke
 - `reason` MAY contain a user provided reason for the request to be not processed.
 
-The URL Parameter `kid` MUST contain an agreed-upon identifier which a Privacy Infrastructure Provider can use to identify the source of the request, and ultimately which Authorized Agent's signing key to use to verify the request. This identifier MUST match the `iss` field within the JWT itself. `iss` and `kid` MUST be compared case-insensitive and match a regular expression `[0-9a-zA-Z-]+` (ASCII alphanumeric plus hyphen).
+This request SHALL contain an Bearer Token header containing the key for this AA-CB pairwise relationship in it in the form `Authorization: Bearer <token>`.
 
 The Privacy Infrastructure Provider SHALL validate the message is signed according to the guidance in section 3.07.
 
