@@ -131,7 +131,7 @@ This is the Data Rights Status endpoint which Users and Authorized Agents can us
 
 `GET /status?request_id=c789ff35-7644-4ceb-9981-4b35c264aac3`
 
-Data Rights Status requests SHALL be made without Authorization headers. The implications and mitigations of this will be explored in the 0.7 version of the Data Rights Protocol. See [issue #58](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/58) for a proposal under discussion.
+This request SHALL contain an Bearer Token header containing the key for this AA-CB pairwise relationship in it in the form `Authorization: Bearer <token>`.
 
 #### 2.03.1 `GET /status` Response
 
