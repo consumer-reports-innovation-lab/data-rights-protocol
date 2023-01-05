@@ -165,6 +165,42 @@ The Privacy Infrastructure Provider SHALL validate the message is signed accordi
 
 Responses to this request MUST adhere to the [Exercise Status Schema](#303-schema-status-of-a-data-subject-exercise-request). Responses MUST contain the *new* state.
 
+### 2.06 `POST /key-exchange` ("Pair-wise Key Setup")
+
+This endpoint allows the Data Rights Protocol network to operate without pre-shared public keys by providing Authorized Agents a method to generate API tokens for Privacy Infrastructure Providers by POSTing a message signed with a key whose public portion resides in a trustworthy registry.
+
+These keys will allow the Privacy Infrastructure Provider to disambiguate Data Rights Requests' submitting Agent for cryptographic verification purposes, request routing, and rate limiting. See section 3.07 below for a full discussion.
+
+This request consists of a single signed message following the same semantics as the Data Rights Exercise endpoint laid out in in section 3.07.1, with the signed object being a JSON message with the following keys:
+
+```
+{
+  "agent-id": "aa-id",
+  "business-id": "cb-id",
+  "expires-at": "<ISO 8601 Timestamp>",
+  "issued-at":  "<ISO 8601 Timestamp>"
+}
+```
+
+These keys MUST follow the same semantics outlined in sectin 2.02, and SHALL be validated using the same chain as described in section 3.07.
+
+#### 2.06.1 `POST /key-exchange` Response
+
+After validating the signature and semantics of the request, the Privacy Infrastructure Provider SHALL return the following response if the validation succeeded:
+
+```
+{
+  "token": "<str>",
+  "expires-at": "<ISO 8601 Timestamp>"
+}
+```
+
+Authorized Agents SHALL use this `token` up until the `expires-at` time to identify their requests to any requests made against resources on **the same domain** this request was submitted to except to this endpoint. [XXX: include some sort of scoping/prefix in the response to allow PIP to have multiple DRP APIs on the same domain?]
+
+If the validation failed, the Privacy Infrastructure Provider SHALL return an `HTTP 403 Forbidden` response with no response body. The Authorized Agent and Privacy Infrastructure Provider SHOULD resolve this issue out of band utilizing the Technical Contact Address in the Data Rights Network Directory [xxx: current unspecified, landing in 0.8 or 0.9]
+
+Privacy Infrastructure Providers SHOULD store the `agent-id` alongside these tokens when they are generated to ensure that the key which an Exercise request was signed with can be intuited using the presented Bearer token. [XXX maybe better in 3.07]
+
 ## 3.0 Data Schemas
 
 These Schemas are referenced in Section 2 outlining the HTTP endpoints and their semantics.
