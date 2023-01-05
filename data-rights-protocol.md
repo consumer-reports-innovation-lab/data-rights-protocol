@@ -18,12 +18,14 @@ This specification defines a web protocol encoding a set of standardized request
 We aim to make the data rights protocol integrable with an ecosystem of data rights middlewares, agent services, automation tool kits, and privacy-respecting businesses which empower and build trust with consumers while driving the cost of compliance towards zero.
 
 ### 1.01 Motivation
+
 Data Rights are increasingly becoming universal, but the method of request and protocol for communicating those requests varies and there is no universal interchange format. Companies operating under these regulatory regimes face not only technical challenges in collecting and delivering responses to users’ data rights requests but also face significant process burdens as consumers increasingly make use of these rights. At the same time, consumers find it tough to execute their data rights under new privacy laws, partially due to a lack of standardization among companies.
 
 By providing a shared protocol and vocabulary for expressing these data rights, we aim to minimize the administrative burdens on consumers and businesses while providing a basis of trust for verifiable identity attestation which can be used by (individual) consumers (or by an agent intermediating the relationship on behalf of consumers) and businesses.
 
 
 ### 1.02 Scope
+
 In this initial phase of the Data Rights Protocol, we want to enable a group of peers to form a voluntary trust network while expanding the protocol to support wider trust models and additional data flows.
 
 Version 0.6 encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
@@ -44,9 +46,13 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 DRP 0.6 implementors MUST support application/jwt request and application/json responses. 
 
+[XXX: link/embed request flow diagram from plantuml]
+
 [expand endpoints with their failure states]
 
 ### 2.01 `GET /.well-known/data-rights.json` ("Data Rights Discovery" endpoint)
+
+[XXX: signal intention to move this information in to service directory in 0.8 or 0.9]
 
 This is the Data Rights Discovery endpoint, responding at a well-known endpoint on the Covered Business’s primary User focused domain. This [RFC8615] URI will return a JSON document conforming to this schema. This endpoint exists for Users and Authorized Agents to be able to take Data Rights Actions.
 
@@ -347,6 +353,8 @@ Note that these error states only represent *request errors*; workflow errors SH
 ### 3.07 API Authentication
 
 By enveloping the entire Data Rights Request inside of a JSON Web Token, it is possible to rely on the cryptographic signature of the message to authenticate it, rather than relying on shared-secret `Authorization` headers or more complicated systems like `OAuth2`. 
+
+[XXX rewrite for 0.7]
     
 In version 0.6 we continue to use JWT technology but in the future we will be evaluating a move to another cryptographic envelope library called [libsodium](https://doc.libsodium.org/) which eschews the URL-encoding and provides a much less error-prone API **without exchanging any pair-wise secrets**. The Data Rights Protocol organizing group will be responsible for managing a directory mapping `kid` to public API keys for participants in the network.
 
@@ -362,6 +370,8 @@ Privacy Infrastructure Providers MUST validate the message in this order:
 - That the current time is before the Expiration `expires-at` claim (this is very important to prevent old requests from being replayed)
 
 #### 3.07.1 JWT Key Semantics and Management
+
+[XXX: rewrite for 0.7]
 
 In this protocol version we want to signal a move to *asymmetric key management* with unduly burdening implementers. Rather than relying on pair-wise symmetric keys multiplicatively exchanged between Authorized Agents and Covered Businesses, Authorized Agents SHALL generate 256-bit RSA keys and present their public portion in [RFC 7517](https://www.rfc-editor.org/rfc/rfc7517) JWK files.
 
