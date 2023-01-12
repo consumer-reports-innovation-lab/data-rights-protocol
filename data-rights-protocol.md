@@ -167,7 +167,7 @@ The Privacy Infrastructure Provider SHALL validate the message is signed accordi
 
 Responses to this request MUST adhere to the [Exercise Status Schema](#303-schema-status-of-a-data-subject-exercise-request). Responses MUST contain the *new* `revoked` state.
 
-### 2.06 `POST /agent/{agent-id}/generate-key` ("Pair-wise Key Setup" endpoint)
+### 2.06 `POST /agent/{agent-id}/register` ("Pair-wise Key Setup" endpoint)
 
 This endpoint allows the Data Rights Protocol network to operate without pre-shared API tokens or client secrets by providing Authorized Agents a method to generate API tokens for Privacy Infrastructure Providers by POSTing a message signed with a key whose public portion resides in a trustworthy registry.
 
@@ -188,7 +188,7 @@ These keys listed in this message MUST follow the same semantics outlined in sec
 
 Because there will be no Bearer Token associated with this request, presenting an agent-id in the request will be necessary for callers to disambiguate to a single public key to validate the message with. The `agent-id` presented in the URL parameters MUST match the `agent-id` key within the signed message, and the signing identity MUST map back to the `agent-id` in the Authorized Agent Service Directory. Once the signature has been verified in this manner, the rest of the keys will be validated in the fashion outlined in 3.07.
 
-#### 2.06.1 `POST /agent/{agent-id}/generate-key` Response
+#### 2.06.1 `POST /agent/{agent-id}/register` Response
 
 After validating the signature and semantics of the request, the Privacy Infrastructure Provider SHALL return the following JSON response:
 
