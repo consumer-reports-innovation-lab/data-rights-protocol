@@ -190,16 +190,20 @@ These keys MUST follow the same semantics outlined in sectin 2.02, and SHALL be 
 
 #### 2.06.1 `POST /key-exchange` Response
 
-After validating the signature and semantics of the request, the Privacy Infrastructure Provider SHALL return the following response if the validation succeeded:
+After validating the signature and semantics of the request, the Privacy Infrastructure Provider SHALL return the following JSON response:
+
 
 ```
 {
-  "token": "<str>",
-  "expires-at": "<ISO 8601 Timestamp>"
+  "agent-id": "presented-agent-id",
+  "token": "<str>"
 }
 ```
 
-Authorized Agents SHALL use this `token` up until the `expires-at` time to identify their requests to any requests made against resources on **the same domain** this request was submitted to except to this endpoint. [XXX: include some sort of scoping/prefix in the response to allow PIP to have multiple DRP APIs on the same domain?]
+- the `agent-id` key SHALL match the `agent-id` presented in the signed request.
+- the `token` SHALL be a string which Authorized Agents SHALL present in subsequent authenticated requests.
+
+Agents SHALL present this token as an HTTP Bearer Token in any request made against resources **on the same domain** this request was submitted to.
 
 If the validation failed, the Privacy Infrastructure Provider SHALL return an `HTTP 403 Forbidden` response with no response body. The Authorized Agent and Privacy Infrastructure Provider SHOULD resolve this issue out of band utilizing the Technical Contact Address in the Data Rights Network Directory [xxx: current unspecified, landing in 0.8 or 0.9]
 
