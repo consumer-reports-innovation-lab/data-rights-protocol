@@ -46,8 +46,6 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 DRP 0.6 implementors MUST support application/jwt request and application/json responses.
 
-![Sequence Diagram showing Data Rights Request event flow](https://raw.githubusercontent.com/consumer-reports-digital-lab/data-rights-protocol/main/files/drp-1.0-sequence-diagram.svg)
-
 [expand endpoints with their failure states]
 
 ### 2.01 `GET /.well-known/data-rights.json` ("Data Rights Discovery" endpoint)
@@ -386,6 +384,10 @@ which does cryptographic verification of the requests (without the full semantic
 When a Covered Business acknowledges receipt of a Data Rights Request and moves it in to `in_progress` state, the request's `expected_by` field SHOULD be populated based on either an estimate provided by the Covered Business or the deadline prescribed by the legal regime the request is submitted under. Consider, for example, [California's legal regime](https://transcend.io/laws/cpra/#section-15) prescribes up to 90 days extension so long as they are made within 45 days; If a request is extended, this request must also be extended with a `processing_details` field detailing a reason for the Request's extension to notify the consumer of this delay. The intent of the `processing_details` field is to add additional color to already-defined `state`/`reason` combinations. States which cannot be encoded without reaching for free-form text should be integrated in to the state transition table.
 
 When applying changes to Data Rights Requests in this fashion, the Privacy Infrastructure Provider SHALL attempt to notify the Authorized Agent using the [Data Rights Status Callback](#2041-post-status_callback-response).
+
+### 3.09 Request State Flow Diagram
+
+![Sequence Diagram showing Data Rights Request event flow](https://raw.githubusercontent.com/consumer-reports-digital-lab/data-rights-protocol/main/files/drp-1.0-sequence-diagram.svg)
 
 ## 4.0 Protocol Roadmap
 
