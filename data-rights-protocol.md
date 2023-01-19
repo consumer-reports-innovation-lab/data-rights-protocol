@@ -7,7 +7,7 @@ Protocol Changes from 0.6 to 0.7:
 - PIP endpoints are re-structured to be more [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)-like
 - Move from JWT to NaCl/libsodium/Ed25519 signatures
 - Renaming security claims from JWT short codes to more expressive identifiers
-- Add `POST /key-exchange` endpoint to provide mechanism for generating pair-wise API Authorization/routing tokens
+- Add `POST /v1/agent/{agent-id}/register` endpoint to provide mechanism for generating pair-wise API Authorization/routing tokens
 - Specify timestamps as ISO-8601 instead of RFC-3339
 - Re-draft API Authentication and Security Guidance sections.
 
