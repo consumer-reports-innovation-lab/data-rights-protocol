@@ -9,7 +9,7 @@ Protocol changes from 0.5 to 0.6:
   - Allow for only one right to be exercised per request
   - Provide guidance for signing JWKs to test and signal movement in 0.7 toward libsodium or similar cryptographic primitives library.
 - Elimination of distinction between technical actor and technical interface (CBi and PIPi and AAi terminology eliminated)
-- Remove old Certification Test repo link and replace with link to [OSIRAA](https://osirra.datarightsprotocol.org).
+- Remove old Certification Test repo link and replace with link to [OSIRAA](https://osiraa.datarightsprotocol.org).
 
 ## 1.0 Introduction
 
