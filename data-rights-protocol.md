@@ -11,7 +11,6 @@ Protocol Changes from 0.6 to 0.7:
 - Specify timestamps as ISO-8601 instead of RFC-3339
 - Re-draft API Authentication and Security Guidance sections.
 
-
 ## 1.0 Introduction
 
 This specification defines a web protocol encoding a set of standardized request/response data flows such that Users can exercise Personal Data Rights provided under regulations like the California Consumer Privacy Act, General Data Protection Regulation, and other regulatory or voluntary bases, and receive affirmative responses in standardized formats.
