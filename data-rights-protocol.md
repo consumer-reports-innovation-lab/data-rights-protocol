@@ -75,7 +75,7 @@ For instance, an User looking to exercise their data rights for Example, Inc. wh
 
 This is the Data Rights Exercise endpoint which Users and Authorized Agents can use to exercise enumerated data rights.
 
-A Data Rights Exercise request SHALL contain a JSON-encoded message body containing the following fields, with a `libsodium`/`NaCl`/`ED25119` binary signature immediately prepending it[^1]:
+A Data Rights Exercise request SHALL contain a JSON-encoded message body containing the following fields, with a `libsodium`/`NaCl`/`ED25119` binary signature immediately prepended to it[^1]:
 
 
 ```
@@ -99,14 +99,14 @@ A Data Rights Exercise request SHALL contain a JSON-encoded message body contain
 }
 ```
 
-The first grouping are the  security anchor claims. Taken as a whole, these aim to constrain the scope of a Data Rights Request to a single AA-CB relationship to prevent mis-use or re-use by any party.
-- `agent-id` MUST contain a string identifying the Authorized Agent which is submitting or **issuing** the JWT.
+These keys identify the Authorized Agent making the request and the Covered Business of whom the request is being made, the time the request is being made, and the duration for which it will be valid.  Taken together, they describe where trust in the request is rooted (the AA), and aim to constrain the scope of the Data Rights Request to a single AA-CB relationship at a particular moment in time in order to prevent re-use or mis-use of the request by any party.
+- `agent-id` MUST contain a string identifying the Authorized Agent which is submitting the data rights request and attesting to its validity, particularly that they have validated the identity of the user submitting the request to the standards of the network.
 - `business-id` MUST contain a string identifying the *Covered Business* which the request is being sent to. These identifiers will be shared out-of-band by participants but will eventually be represented in a Service Directory managed by a DRP consortium or working group.
 - `expires-at` MUST contain an ISO 8601-encoded timestamp expressing when the request should no longer be considered viable. This should be kept short, we recommend no more than 15 minute time windows to prevent re-use while still allowing for backend-processing delays in the Privacy Infrastructure Provider pipeline.
 - `issued-at` MUST contain an ISO 8601-encoded timestamp expressing when the request was *created*.
 
 The second grouping contains data about the Data Rights Request.
-- `drp.version` MUST contain a string referencing the current protocol version "0.6".
+- `drp.version` MUST contain a string referencing the current protocol version "0.7".
 - `exercise` MUST contain a string specifying the [Rights Action](#301-supported-rights-actions) which is to be taken by the Covered Business.
 - `regime` MAY contain a string specifying the legal regime under which the Data Request is being taken.  Requests which do not supply a `regime` MAY be considered for voluntary processing.
   - The legal regime is a system of applicable rules, whether enforceable by statute, regulations, voluntary contract, or other legal frameworks which prescribe data rights to the User. See [3.01 Supported Rights Actions](#301-supported-rights-actions) for more discussion.
@@ -367,7 +367,7 @@ Note that these error states only represent *request errors*; workflow errors SH
 
 ### 3.07 API Authentication
 
-The ultimate design of this API is to allow Covered Businesses to join the network, and immediately have the ability to process automated requests from trusted Authorized Agents, and for those Agents to discover new businesses participating in the network. Key to this is the idea that pre-exchanging secrets and establishing business relationships should be a technical process back-stopped by the business rules of participating in the network. Thus, the network will be primarily secured by **modern public key cryptography signatures** commonly known as Ed25519. There are multiple implementations and language bindings for this algorithm starting from [the public domain, patent un-encumbered NaCl and libsodium](https://en.wikipedia.org/wiki/NaCl_(software)) software APIs which shall ensure that all members of the network are able to integrate simple, secure, high-level cryptographic APIs.
+The ultimate design of this API is to allow Covered Businesses to join the network, and immediately have the ability to process automated requests from trusted Authorized Agents, and for those Agents to discover new businesses participating in the network. Key to this is the idea that pre-exchanging secrets and establishing business relationships should be a technical process back-stopped by the business rules of participating in the network. Thus, the network will be primarily secured by **modern public key cryptography signatures** commonly known as Ed25519. There are multiple implementations and language bindings for this algorithm starting from [the public domain, patent un-encumbered NaCl and libsodium](https://en.wikipedia.org/wiki/NaCl_(software)) software APIs which shall ensure that all members of the network are able to integrate simple, secure, high-level cryptographic APIs.  Implementers are STRONGLY ENCOURAGED to use libsodium.
 
 We do, however, understand that the needs of an API Authentication extend beyond purely on the security aspects, towards rate-limiting, request routing, and the like so this version of the Data Rights Protocol includes a `POST /agent/{id}/register` API which is used to generate API Bearer Tokens which can be used to identify the agent submitting a request, load the associated public key, and bootstrap a message validation algorithm:
 
