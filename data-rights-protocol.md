@@ -200,7 +200,7 @@ After validating the signature and semantics of the request, the Privacy Infrast
 ```
 
 - the `agent-id` key SHALL match the `agent-id` presented in the signed request.
-- the `token` SHALL be a string which Authorized Agents SHALL present in subsequent authenticated requests.
+- the `token` SHALL be a string which Authorized Agents SHALL present in subsequent authenticated requests. PIPs SHOULD generate this token using a cryptographically secure source such as `libsodium`'s CSPRNG. Authorized Agents SHALL treat this token as an opaque string.
 
 Agents SHALL present this token as an HTTP Bearer Token in any request made against resources **on the same domain** this request was submitted to.
 
