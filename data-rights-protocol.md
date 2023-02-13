@@ -214,7 +214,7 @@ This request SHALL contain an Bearer Token header containing the key for this AA
 
 #### 2.07.1 `GET /v1/agent/{agent-id}` Response
 
-This request currently does not *need* to return anything more than an empty JSON document, but may be extended at a later date.
+This request currently does not *need* to return anything more than an empty JSON document and HTTP 200 response code, but may be extended at a later date.
 
 ```
 {}
