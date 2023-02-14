@@ -409,13 +409,14 @@ When applying changes to Data Rights Requests in this fashion, the Privacy Infra
 
 ## 4.0 Protocol Roadmap
 
-In its current implementation, DRP should not be used to process data of Users who are not involved in the implementers group. This protocol is undergoing significant technical design changes, security evaluation, and implementation work, which should preclude the transfer of arbitrary Users' data rights.
+In its current implementation, DRP should not be used to process data of Users who are not involved in the implementers group or implemented by organizations not in the implementers group. This protocol is undergoing significant technical design changes, security evaluation, and implementation work, which should preclude the transfer of arbitrary Users' data rights.
 
 In steps:
 
-- Moving to signed data rights requests from the Authorized Agents
-- Moving from JWT to libsodium for singing requests
+- [x] Moving to signed data rights requests from the Authorized Agents
+- [x] Moving from JWT to libsodium for singing requests
 - Developing a directory service for Authorized Agents to discover businesses participating in a Data Rights Network, and a directory service for Covered Businesses to resolve message signatures to specific Authorized Agents
+- Developing system rules and legal agreements for implementers.
 
 ## Specification Change Log
 
