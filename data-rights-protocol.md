@@ -391,11 +391,13 @@ We believe that providing these signed messages will ensure message integrity an
 
 The Data Rights Protocol authors **strongly** recommend the use of a [libsodium](https://doc.libsodium.org/)-based Ed25519 implementation. There is a [wide selection](https://doc.libsodium.org/bindings_for_other_languages) of language bindings for `libsodium` and in general is considered to be a high-quality, trustworthy API. Requests SHALL be signed by prepending the JSON document with the signature and sending both as a binary `application/octet-stream` request.
 
+<!-- These examples are not strong enough to link to as implementation guides right now!
 We provide in OSIRAA an example [generating keys and signing
 requests](https://github.com/consumer-reports-digital-lab/osiraa/blob/main/drp_aa_mvp/data_rights_request/pynacl_validator_submit.py)
 using the PyNaCl implementation, as well as a [Django request
 handler](https://github.com/consumer-reports-digital-lab/osiraa/blob/main/drp_aa_mvp/data_rights_request/pynacl_validator.py)
 which does cryptographic verification of the requests (without the full semantic validation chain presented above).
+-->
 
 ### 3.08 Processing Extensions & "Expected By" dates
 
