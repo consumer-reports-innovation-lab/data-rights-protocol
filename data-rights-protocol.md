@@ -1,4 +1,4 @@
-# [Data Rights Protocol](https://github.com/consumer-reports-digital-lab/data-rights-protocol) v.0.7-draft
+# [Data Rights Protocol](https://github.com/consumer-reports-digital-lab/data-rights-protocol) v.0.7
 
 **DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pulls) in this repository or you may provide feedback through this form: [https://forms.gle/YC7nKRs3ZQMWLvw27](https://forms.gle/YC7nKRs3ZQMWLvw27).
 
@@ -28,7 +28,7 @@ By providing a shared protocol and vocabulary for expressing these data rights, 
 
 In this initial phase of the Data Rights Protocol, we want to enable a group of peers to form a voluntary trust network while expanding the protocol to support wider trust models and additional data flows.
 
-Version 0.6 encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
+Version 0.7 encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
 
 ### 1.03 Terminology
 
@@ -44,7 +44,7 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 [note about including schemas by-reference from below.]
 
-DRP 0.6 implementors MUST support application/jwt request and application/json responses.
+DRP 0.7 implementors MUST support application/octet-stream requests and application/json responses for signed POST an DELETE requests
 
 [expand endpoints with their failure states]
 
@@ -58,14 +58,14 @@ For instance, an User looking to exercise their data rights for Example, Inc. wh
 
 ```
 {
-  "version": "0.6",
+  "version": "0.7",
   "api_base": "https://example.com/data-rights",
   "actions": ["sale:opt-out", "sale:opt-in", "access", "deletion"],
   "user_relationships": [ ... ]
 }
 ```
 
-- `version` field is a string carrying the version of the protocol implemented. Currently this MUST read "0.6"
+- `version` field is a string carrying the version of the protocol implemented. Currently this MUST read "0.7"
 - `api_base` field is a URI under which the rest of the Data Rights Protocol is accessible. This endpoint MAY be run by a Privacy Infrastructure Provider but SHOULD be accessible under the Covered Business's domains for legibility's sake.
 - `actions` is a list of strings enumerating the rights which may be exercised, as outlined in [Supported Rights Actions](#301-supported-rights-actions)
 - `user_relationships` is a list of strings enumerating the contexts by which a User may have a relationship with the Covered Business. The enumeration of possible relationships is left unspecified and future versions of the protocol may have more to say about them.
@@ -87,7 +87,7 @@ A Data Rights Exercise request SHALL contain a JSON-encoded message body contain
   "issued-at":  "<ISO 8601 Timestamp>",
 
   # 2
-  "drp.version": "0.6"
+  "drp.version": "0.7"
   "exercise": "sale:opt-out",
   "regime": "ccpa",
   "relationships": ["customer", "marketing"],
@@ -228,7 +228,7 @@ These Schemas are referenced in Section 2 outlining the HTTP endpoints and their
 
 ### 3.01 Supported Rights Actions
 
-These are the CCPA rights which are encoded in v0.6 of the protocol:
+These are the CCPA rights which are encoded in v0.7 of the protocol:
 
 | Regime | Right               | Details                                                              |
 |--------|---------------------|----------------------------------------------------------------------|
