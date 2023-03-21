@@ -3,7 +3,7 @@ title DRP Request Flow
 
 Actor User
 participant "Authorized Agent" 
-participant "DRP Network"
+participant "DRP Consortium Services"
 participant "Privacy Infrastructure" 
 participant "Covered Business"
 
@@ -19,8 +19,8 @@ note over "Privacy Infrastructure", "Authorized Agent"
         This has not been added to spec yet. for discussion
         see [[https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/60]] 
 end note
-"Authorized Agent" -> "DRP Network": fetch businesses' API/etc\nfrom directory
-"Privacy Infrastructure" -> "DRP Network": fetch agents' signing keys, etc\nfrom directory
+"Authorized Agent" -> "DRP Consortium Services": fetch businesses' API/etc\nfrom directory
+"Privacy Infrastructure" -> "DRP Consortium Services": fetch agents' signing keys, etc\nfrom directory
 
 == Onboarding and request creation ==
 
@@ -28,11 +28,8 @@ User --> "Authorized Agent": Onboard and verify\nidentity attributes once
 User --> "Authorized Agent": Requests data rights action to\nspecific business
 
 opt "AA has not interacted with this PIP before"
-        note over "Privacy Infrastructure", "Authorized Agent"
-                (This sequence/endpoint has not been added to spec yet,
-                [[https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/58]] for discussion)
-        end note
-        "Authorized Agent" -> "Privacy Infrastructure": fetch API token w/ signed request\nif this relationship is new
+        "Authorized Agent" -> "Privacy Infrastructure": [[https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md#206-post-v1agentagent-id-pair-wise-key-setup-endpoint POST /v1/agent/{id}]] w/ nacl signed request to fetch an API Bearer Token 
+        "Privacy Infrastructure" --> "Privacy Infrastructure": Verify signature of request, etc\npersist request
         "Privacy Infrastructure" -> "Authorized Agent": Provide an API token which can be used to authenticate GET requests,\nprovide rate limiting on agent by agent basis, etc
 end
 
