@@ -2,6 +2,10 @@
 
 **DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pulls) in this repository or you may provide feedback through this form: [https://forms.gle/YC7nKRs3ZQMWLvw27](https://forms.gle/YC7nKRs3ZQMWLvw27).
 
+Protocol Changes from 0.7 to 0.7.1:
+
+- Fix path in 2.02 from `POST /v1/data-right-request` to `POST /v1/data-rights-request/`
+
 Protocol Changes from 0.6 to 0.7:
 
 - PIP endpoints are re-structured to be more [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)-like
@@ -71,7 +75,7 @@ For instance, an User looking to exercise their data rights for Example, Inc. wh
 - `user_relationships` is a list of strings enumerating the contexts by which a User may have a relationship with the Covered Business. The enumeration of possible relationships is left unspecified and future versions of the protocol may have more to say about them.
 
 
-### 2.02 `POST /v1/data-right-request/` ("Data Rights Exercise" endpoint)
+### 2.02 `POST /v1/data-rights-request/` ("Data Rights Exercise" endpoint)
 
 This is the Data Rights Exercise endpoint which Users and Authorized Agents can use to exercise enumerated data rights.
 
