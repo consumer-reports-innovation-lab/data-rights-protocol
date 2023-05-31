@@ -48,7 +48,7 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 [note about including schemas by-reference from below.]
 
-DRP 0.7 implementors MUST support application/octet-stream requests and application/json responses for signed POST an DELETE requests
+DRP 0.7 implementors MUST support text/plain requests and application/json responses for signed POST and DELETE requests
 
 [expand endpoints with their failure states]
 
@@ -394,7 +394,7 @@ We believe that providing these signed messages will ensure message integrity an
 
 #### 3.07.1 Ed25519 Key Semantics, Request Signing, and Management
 
-The Data Rights Protocol authors **strongly** recommend the use of a [libsodium](https://doc.libsodium.org/)-based Ed25519 implementation. There is a [wide selection](https://doc.libsodium.org/bindings_for_other_languages) of language bindings for `libsodium` and in general is considered to be a high-quality, trustworthy API. Requests SHALL be signed by prepending the JSON document with the signature and sending both as a binary `application/octet-stream` request.
+The Data Rights Protocol authors **strongly** recommend the use of a [libsodium](https://doc.libsodium.org/)-based Ed25519 implementation. There is a [wide selection](https://doc.libsodium.org/bindings_for_other_languages) of language bindings for `libsodium` and in general is considered to be a high-quality, trustworthy API. Requests SHALL be signed by prepending the JSON document with the signature (so-called "combined mode" libsodium APIs will do this by default), base64 encoding the resulting binary buffer, and then sending that request with Content-Type `text/plain`.
 
 The Open Source Implementers' Reference contains an implementation of both sides of the `libsodium` key exchange in [drp_aa_mvp/data_rights_request/views.py#sign_request](https://github.com/consumer-reports-innovation-lab/osiraa/blob/main/drp_aa_mvp/data_rights_request/views.py#L450-L454) and [drp_aa_mvp/drp_pip/views.py#validate_message_to_agent](https://github.com/consumer-reports-innovation-lab/osiraa/blob/main/drp_aa_mvp/drp_pip/views.py#L199-L248) which illustrate the use of the PyNACL API.
 
