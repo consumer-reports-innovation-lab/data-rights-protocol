@@ -1,6 +1,6 @@
-# [Data Rights Protocol](https://github.com/consumer-reports-digital-lab/data-rights-protocol) v.0.7
+# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol) v.0.7
 
-**DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pulls) in this repository or you may provide feedback through this form: [https://forms.gle/YC7nKRs3ZQMWLvw27](https://forms.gle/YC7nKRs3ZQMWLvw27).
+**DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/pulls) in this repository or you may provide feedback through this form: [https://forms.gle/YC7nKRs3ZQMWLvw27](https://forms.gle/YC7nKRs3ZQMWLvw27).
 
 Protocol Changes from 0.7 to 0.7.1:
 
@@ -247,7 +247,7 @@ These are the CCPA rights which are encoded in v0.7 of the protocol:
 
 Requests to exercise these rights SHALL be made under either a processing `regime` of "ccpa", or on a voluntary basis by leaving the regime unspecified. The encoding of CCPA rights in this section is not to be interpreted to exclude requests made under GDPR statutes or other regional privacy or accessibility legislation; other legal regimes shall be encoded in to the protocol in future iterations.
 
-[☆] The schema and semantics of the `access:categories` and `access:specific` rights shall be declared at a later date. Discussion in [GitHub issue #9](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/9).
+[☆] The schema and semantics of the `access:categories` and `access:specific` rights shall be declared at a later date. Discussion in [GitHub issue #9](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/issues/9).
 
 ### 3.02 Request Statuses
 
@@ -272,11 +272,11 @@ This table shows valid states for Data Rights Requests, along with the criteria 
 | denied      | other                  | some other unspecified failure state reached                        | processing_details                           | x      |
 | expired     |                        | the time is currently after the `expires_at` in the request.        |                                              | x      |
 
-[2]: In the case of claim_not_covered, this may be about asking for categories of data which Covered Businesses are not required to present to the User. In the case of outside_jurisdiction, this may be because the business is not honoring CCPA requests for non-California residents and there is no other basis on which to honor the request. See [#28](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/28) for discussion on `too_many_requests`.
+[2]: In the case of claim_not_covered, this may be about asking for categories of data which Covered Businesses are not required to present to the User. In the case of outside_jurisdiction, this may be because the business is not honoring CCPA requests for non-California residents and there is no other basis on which to honor the request. See [#28](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/issues/28) for discussion on `too_many_requests`.
 
 #### 3.02.1: `need_user_verification` State Flow Semantics
 
-*This has not been implemented or explored by any DRP implementers. If the need for this arises in your implementation, please reach out to DRP protocol developers to work towards implementation and improvement.* There is a alternate proposal for machine-legible signaling preferred/required attributes before the request is submitted in [github #52](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/52).
+*This has not been implemented or explored by any DRP implementers. If the need for this arises in your implementation, please reach out to DRP protocol developers to work towards implementation and improvement.* There is a alternate proposal for machine-legible signaling preferred/required attributes before the request is submitted in [github #52](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/issues/52).
 
 This `need_user_verification` flow allows a Covered Business to signal to the User that additional User attributes or actions are necessary to confirm or match the identity of the User to an account. The Authorized Agent will navigate the User to a URL specified by the Privacy Infrastructure Provider which will provide the necessary interface to resolve this identification issue.
 
@@ -397,9 +397,9 @@ The Data Rights Protocol authors **strongly** recommend the use of a [libsodium]
 
 <!-- These examples are not strong enough to link to as implementation guides right now!
 We provide in OSIRAA an example [generating keys and signing
-requests](https://github.com/consumer-reports-digital-lab/osiraa/blob/main/drp_aa_mvp/data_rights_request/pynacl_validator_submit.py)
+requests](https://github.com/consumer-reports-innovation-lab/osiraa/blob/main/drp_aa_mvp/data_rights_request/pynacl_validator_submit.py)
 using the PyNaCl implementation, as well as a [Django request
-handler](https://github.com/consumer-reports-digital-lab/osiraa/blob/main/drp_aa_mvp/data_rights_request/pynacl_validator.py)
+handler](https://github.com/consumer-reports-innovation-lab/osiraa/blob/main/drp_aa_mvp/data_rights_request/pynacl_validator.py)
 which does cryptographic verification of the requests (without the full semantic validation chain presented above).
 -->
 
@@ -411,7 +411,7 @@ When applying changes to Data Rights Requests in this fashion, the Privacy Infra
 
 ### 3.09 Request State Flow Diagram
 
-![Sequence Diagram showing Data Rights Request event flow](https://raw.githubusercontent.com/consumer-reports-digital-lab/data-rights-protocol/main/files/drp-1.0-sequence-diagram.svg)
+![Sequence Diagram showing Data Rights Request event flow](https://raw.githubusercontent.com/consumer-reports-innovation-lab/data-rights-protocol/main/files/drp-1.0-sequence-diagram.svg)
 
 ## 4.0 Protocol Roadmap
 
@@ -439,18 +439,18 @@ Protocol changes from 0.5 to 0.6:
 
 Protocol Changes from 0.4 to 0.5:
 
-- [new request state "denied/`too_many_requests`"](https://github.com/consumer-reports-digital-lab/data-rights-protocol/commit/14fea83a1b7856da55a2075a6233039f8a7c9c81)
-- [openapi.yaml](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/0.5/openapi.yaml) specification for PIP server interface
-- [encode time-extensions in to the request status, along with a `processing_details` field](https://github.com/consumer-reports-digital-lab/data-rights-protocol/commit/f758f164e33b862e990526b8a2aafba49d777862)
-- [draft minimal implementation guide](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/0.5/implementation-guide.org)
-- [draft PIP certification/conformance suite](https://github.com/consumer-reports-digital-lab/data-rights-protocol-cert/)
-- [respecification of identity tokens to match OIDC Core 1.0](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pull/44)
+- [new request state "denied/`too_many_requests`"](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/commit/14fea83a1b7856da55a2075a6233039f8a7c9c81)
+- [openapi.yaml](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/blob/0.5/openapi.yaml) specification for PIP server interface
+- [encode time-extensions in to the request status, along with a `processing_details` field](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/commit/f758f164e33b862e990526b8a2aafba49d777862)
+- [draft minimal implementation guide](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/blob/0.5/implementation-guide.org)
+- [draft PIP certification/conformance suite](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-cert/)
+- [respecification of identity tokens to match OIDC Core 1.0](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/pull/44)
 
 Protocol Changes from 0.3 to 0.4:
 
-- [relationship hints](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pull/17) allow users and agents to provide "hints" for the type of customer relationship, or a set of subsidiary brands to query.
-- [shift in language from regulatory framework to broader legal bases](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pull/16)
-- [medium-term protocol development road-map](https://github.com/consumer-reports-digital-lab/data-rights-protocol/pull/21)
+- [relationship hints](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/pull/17) allow users and agents to provide "hints" for the type of customer relationship, or a set of subsidiary brands to query.
+- [shift in language from regulatory framework to broader legal bases](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/pull/16)
+- [medium-term protocol development road-map](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/pull/21)
 
 Changes in v0.2 to v0.3:
 - donotsell -> sale:opt-in opt-out
@@ -463,5 +463,5 @@ Changes in v0.2 to v0.3:
 ## Footnotes and Errata
 
 [^1]: See section 3.07 and
-    [OSIRAA](https://github.com/consumer-reports-digital-lab/osiraa/blob/main/drp_aa_mvp/data_rights_request/pynacl_validator.py)'s
+    [OSIRAA](https://github.com/consumer-reports-innovation-lab/osiraa/blob/main/drp_aa_mvp/data_rights_request/pynacl_validator.py)'s
     validation example.
