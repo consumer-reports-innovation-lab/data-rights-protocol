@@ -1,6 +1,6 @@
 # [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol) v.0.7
 
-**DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/pulls) in this repository or you may provide feedback through this form: [https://forms.gle/YC7nKRs3ZQMWLvw27](https://forms.gle/YC7nKRs3ZQMWLvw27).
+**DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/pulls) in this repository or you may provide feedback by emailing <b>datarightsprotocol@cr.consumer.org</b>.
 
 Protocol Changes from 0.7 to 0.7.1:
 
