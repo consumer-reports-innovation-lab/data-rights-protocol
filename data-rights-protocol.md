@@ -1,19 +1,10 @@
-# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol) v.0.7
+# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol) v.0.8
 
 **DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/pulls) in this repository or you may provide feedback by emailing <b>datarightsprotocol@cr.consumer.org</b>.
 
-Protocol Changes from 0.7 to 0.7.1:
+Protocol Changes from 0.7.1 to 0.8:
 
-- Fix path in 2.02 from `POST /v1/data-right-request` to `POST /v1/data-rights-request/`
-
-Protocol Changes from 0.6 to 0.7:
-
-- PIP endpoints are re-structured to be more [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)-like
-- Move from JWT to NaCl/libsodium/Ed25519 signatures
-- Renaming security claims from JWT short codes to more expressive identifiers
-- Add `POST /v1/agent/{agent-id}` endpoint to provide mechanism for generating pair-wise API Authorization/routing tokens
-- Specify timestamps as ISO-8601 instead of RFC-3339
-- Re-draft API Authentication and Security Guidance sections.
+- Libsodium signed requests will now be base64 encoded to ensure they can traverse the web safely.
 
 ## 1.0 Introduction
 
@@ -32,7 +23,7 @@ By providing a shared protocol and vocabulary for expressing these data rights, 
 
 In this initial phase of the Data Rights Protocol, we want to enable a group of peers to form a voluntary trust network while expanding the protocol to support wider trust models and additional data flows.
 
-Version 0.7 encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
+Version 0.8 encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
 
 ### 1.03 Terminology
 
@@ -48,7 +39,7 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 [note about including schemas by-reference from below.]
 
-DRP 0.7 implementors MUST support text/plain requests and application/json responses for signed POST and DELETE requests
+DRP 0.8 implementors MUST support text/plain requests and application/json responses for signed POST an DELETE requests
 
 [expand endpoints with their failure states]
 
@@ -62,14 +53,14 @@ For instance, an User looking to exercise their data rights for Example, Inc. wh
 
 ```
 {
-  "version": "0.7",
+  "version": "0.8",
   "api_base": "https://example.com/data-rights",
   "actions": ["sale:opt-out", "sale:opt-in", "access", "deletion"],
   "user_relationships": [ ... ]
 }
 ```
 
-- `version` field is a string carrying the version of the protocol implemented. Currently this MUST read "0.7"
+- `version` field is a string carrying the version of the protocol implemented. Currently this MUST read "0.8"
 - `api_base` field is a URI under which the rest of the Data Rights Protocol is accessible. This endpoint MAY be run by a Privacy Infrastructure Provider but SHOULD be accessible under the Covered Business's domains for legibility's sake.
 - `actions` is a list of strings enumerating the rights which may be exercised, as outlined in [Supported Rights Actions](#301-supported-rights-actions)
 - `user_relationships` is a list of strings enumerating the contexts by which a User may have a relationship with the Covered Business. The enumeration of possible relationships is left unspecified and future versions of the protocol may have more to say about them.
@@ -91,7 +82,7 @@ A Data Rights Exercise request SHALL contain a JSON-encoded message body contain
   "issued-at":  "<ISO 8601 Timestamp>",
 
   # 2
-  "drp.version": "0.7"
+  "drp.version": "0.8"
   "exercise": "sale:opt-out",
   "regime": "ccpa",
   "relationships": ["customer", "marketing"],
@@ -110,7 +101,7 @@ These keys identify the Authorized Agent making the request and the Covered Busi
 - `issued-at` MUST contain an ISO 8601-encoded timestamp expressing when the request was *created*.
 
 The second grouping contains data about the Data Rights Request.
-- `drp.version` MUST contain a string referencing the current protocol version "0.7".
+- `drp.version` MUST contain a string referencing the current protocol version "0.8".
 - `exercise` MUST contain a string specifying the [Rights Action](#301-supported-rights-actions) which is to be taken by the Covered Business.
 - `regime` MAY contain a string specifying the legal regime under which the Data Request is being taken.  Requests which do not supply a `regime` MAY be considered for voluntary processing.
   - The legal regime is a system of applicable rules, whether enforceable by statute, regulations, voluntary contract, or other legal frameworks which prescribe data rights to the User. See [3.01 Supported Rights Actions](#301-supported-rights-actions) for more discussion.
@@ -232,7 +223,7 @@ These Schemas are referenced in Section 2 outlining the HTTP endpoints and their
 
 ### 3.01 Supported Rights Actions
 
-These are the CCPA rights which are encoded in v0.7 of the protocol:
+These are the CCPA rights which are encoded in v0.8 of the protocol:
 
 | Regime | Right               | Details                                                              |
 |--------|---------------------|----------------------------------------------------------------------|
@@ -422,6 +413,20 @@ In steps:
 ## Specification Change Log
 
 In general, please put major change log items at the top of the file. When a new protocol version is "cut", move the previous versions' change log down here.
+
+Protocol Changes from 0.7 to 0.7.1:
+
+- Fix path in 2.02 from `POST /v1/data-right-request` to `POST /v1/data-rights-request/`
+
+Protocol Changes from 0.6 to 0.7:
+
+- PIP endpoints are re-structured to be more [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)-like
+- Move from JWT to NaCl/libsodium/Ed25519 signatures
+- Renaming security claims from JWT short codes to more expressive identifiers
+- Add `POST /v1/agent/{agent-id}` endpoint to provide mechanism for generating pair-wise API Authorization/routing tokens
+- Specify timestamps as ISO-8601 instead of RFC-3339
+- Re-draft API Authentication and Security Guidance sections.
+
 
 Protocol changes from 0.5 to 0.6:
 
