@@ -1,19 +1,10 @@
-# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol) v.0.7
+# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol) v.0.8
 
 **DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/pulls) in this repository or you may provide feedback by emailing <b>datarightsprotocol@cr.consumer.org</b>.
 
-Protocol Changes from 0.7 to 0.7.1:
+Protocol Changes from 0.7.1 to 0.8:
 
-- Fix path in 2.02 from `POST /v1/data-right-request` to `POST /v1/data-rights-request/`
-
-Protocol Changes from 0.6 to 0.7:
-
-- PIP endpoints are re-structured to be more [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)-like
-- Move from JWT to NaCl/libsodium/Ed25519 signatures
-- Renaming security claims from JWT short codes to more expressive identifiers
-- Add `POST /v1/agent/{agent-id}` endpoint to provide mechanism for generating pair-wise API Authorization/routing tokens
-- Specify timestamps as ISO-8601 instead of RFC-3339
-- Re-draft API Authentication and Security Guidance sections.
+- Libsodium signed requests will now be base64 encoded to ensure they can traverse the web safely.
 
 ## 1.0 Introduction
 
@@ -32,7 +23,7 @@ By providing a shared protocol and vocabulary for expressing these data rights, 
 
 In this initial phase of the Data Rights Protocol, we want to enable a group of peers to form a voluntary trust network while expanding the protocol to support wider trust models and additional data flows.
 
-Version 0.7 encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
+Version 0.8 encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
 
 ### 1.03 Terminology
 
@@ -48,7 +39,7 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 [note about including schemas by-reference from below.]
 
-DRP 0.7 implementors MUST support application/octet-stream requests and application/json responses for signed POST an DELETE requests
+DRP 0.8 implementors MUST support text/plain requests and application/json responses for signed POST an DELETE requests
 
 [expand endpoints with their failure states]
 
@@ -62,14 +53,14 @@ For instance, an User looking to exercise their data rights for Example, Inc. wh
 
 ```
 {
-  "version": "0.7",
+  "version": "0.8",
   "api_base": "https://example.com/data-rights",
   "actions": ["sale:opt-out", "sale:opt-in", "access", "deletion"],
   "user_relationships": [ ... ]
 }
 ```
 
-- `version` field is a string carrying the version of the protocol implemented. Currently this MUST read "0.7"
+- `version` field is a string carrying the version of the protocol implemented. Currently this MUST read "0.8"
 - `api_base` field is a URI under which the rest of the Data Rights Protocol is accessible. This endpoint MAY be run by a Privacy Infrastructure Provider but SHOULD be accessible under the Covered Business's domains for legibility's sake.
 - `actions` is a list of strings enumerating the rights which may be exercised, as outlined in [Supported Rights Actions](#301-supported-rights-actions)
 - `user_relationships` is a list of strings enumerating the contexts by which a User may have a relationship with the Covered Business. The enumeration of possible relationships is left unspecified and future versions of the protocol may have more to say about them.
@@ -79,7 +70,7 @@ For instance, an User looking to exercise their data rights for Example, Inc. wh
 
 This is the Data Rights Exercise endpoint which Users and Authorized Agents can use to exercise enumerated data rights.
 
-A Data Rights Exercise request SHALL contain a JSON-encoded message body containing the following fields, with a `libsodium`/`NaCl`/`ED25119` binary signature immediately prepended to it[^1]:
+A Data Rights Exercise request SHALL contain a JSON-encoded message body containing the following fields, with a `libsodium`/`NaCl`/`ED25119` binary signature immediately prepended to it[^1], and then base64 encoded. The decoded, verified JSON body SHALL be structured as follows:
 
 
 ```
@@ -91,7 +82,7 @@ A Data Rights Exercise request SHALL contain a JSON-encoded message body contain
   "issued-at":  "<ISO 8601 Timestamp>",
 
   # 2
-  "drp.version": "0.7"
+  "drp.version": "0.8"
   "exercise": "sale:opt-out",
   "regime": "ccpa",
   "relationships": ["customer", "marketing"],
@@ -110,7 +101,7 @@ These keys identify the Authorized Agent making the request and the Covered Busi
 - `issued-at` MUST contain an ISO 8601-encoded timestamp expressing when the request was *created*.
 
 The second grouping contains data about the Data Rights Request.
-- `drp.version` MUST contain a string referencing the current protocol version "0.7".
+- `drp.version` MUST contain a string referencing the current protocol version "0.8".
 - `exercise` MUST contain a string specifying the [Rights Action](#301-supported-rights-actions) which is to be taken by the Covered Business.
 - `regime` MAY contain a string specifying the legal regime under which the Data Request is being taken.  Requests which do not supply a `regime` MAY be considered for voluntary processing.
   - The legal regime is a system of applicable rules, whether enforceable by statute, regulations, voluntary contract, or other legal frameworks which prescribe data rights to the User. See [3.01 Supported Rights Actions](#301-supported-rights-actions) for more discussion.
@@ -121,7 +112,7 @@ The JSON object may contain any other [IANA JSON Web Token Claims](https://www.i
 
 This request SHALL contain an Bearer Token header containing the key for this AA-CB pairwise relationship in it in the form `Authorization: Bearer <token>`. This token is generated by calling `POST /agent/{id}` in section 2.06.
 
-The Privacy Infrastructure Provider SHALL validate the message is signed according to the guidance in section 3.07
+The Privacy Infrastructure Provider SHALL validate the message is signed according to the guidance in section 3.07.
 
 #### 2.02.1 `POST /v1/data-rights-request` Response
 
@@ -151,7 +142,7 @@ Privacy Infrastructure Providers SHOULD make a best effort to ensure that a 200 
 
 ### 2.05 `DELETE /v1/data-rights-request/{request_id}` ("Data Rights Revoke" endpoint)
 
-An Authorized Agent SHALL provide Users with a mechanism to request cancellation of an open or in progress request by sending a Data Rights Revoke request with the following JSON object encoded as a signed JSON Web Token:
+An Authorized Agent SHALL provide Users with a mechanism to request cancellation of an open or in progress request by sending a Data Rights Revoke request containing a JSON-encoded message body containing the following fields, with a `libsodium`/`NaCl`/`ED25119` binary signature immediately prepended to it[^1], and then base64 encoded. The decoded, verified JSON body SHALL be structured as follows:
 
 ```
 {
@@ -232,7 +223,7 @@ These Schemas are referenced in Section 2 outlining the HTTP endpoints and their
 
 ### 3.01 Supported Rights Actions
 
-These are the CCPA rights which are encoded in v0.7 of the protocol:
+These are the CCPA rights which are encoded in v0.8 of the protocol:
 
 | Regime | Right               | Details                                                              |
 |--------|---------------------|----------------------------------------------------------------------|
@@ -332,7 +323,7 @@ In development of this protocol a simple question with complex answers is raised
 - for Version 1 of the protocol the focus of development is on developing endpoints, defining the data structure of requests, defining end to end state transitions of the requests, and development of non-technical processes around this protocol.
 - Working Group continues to track federated identity work and emerging technologies like [OpenID Identity Assurance (eKYC)](https://openid.net/specs/openid-connect-4-identity-assurance-1_0-ID2.html).
 
-Subject to further refinement of trust mechanisms and authorization workflow, JWTs MAY contain custom claims, but SHOULD contain the following [OIDC Standard Claims](https://www.iana.org/assignments/jwt/jwt.xhtml#claims):
+Subject to further refinement of trust mechanisms and authorization workflow, Requests MAY contain custom claims, but SHOULD contain the following [OIDC Standard Claims](https://www.iana.org/assignments/jwt/jwt.xhtml#claims):
 
 | name                    | type    | description                                                                                                                                                                                              |
 |-------------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -376,7 +367,8 @@ The ultimate design of this API is to allow Covered Businesses to join the netwo
 We do, however, understand that the needs of an API Authentication extend beyond purely on the security aspects, towards rate-limiting, request routing, and the like so this version of the Data Rights Protocol includes a `POST /agent/{id}` API which is used to generate API Bearer Tokens which can be used to identify the agent submitting a request, load the associated public key, and bootstrap a message validation algorithm:
 
 Privacy Infrastructure Providers MUST validate the message in this order:
-- That the signature validates to the key associated with the out of band Authorized Agent identity presented in the Bearer Token.
+- That the message decodes from a base64 request in to a binary buffer.
+- That the signature at the beginning of that buffer validates to the key associated with the out of band Authorized Agent identity presented in the Bearer Token.
   - This link between the signing body and the Service Directory is the root of the chain of trust.
 - That the Authorized Agent specified in the `agent-id` claim in the request matches the Authorized Agent associated with the presented Bearer Token
   - This is very important to prevent requests generated by one AA from being reused by another AA.
@@ -393,15 +385,9 @@ We believe that providing these signed messages will ensure message integrity an
 
 #### 3.07.1 Ed25519 Key Semantics, Request Signing, and Management
 
-The Data Rights Protocol authors **strongly** recommend the use of a [libsodium](https://doc.libsodium.org/)-based Ed25519 implementation. There is a [wide selection](https://doc.libsodium.org/bindings_for_other_languages) of language bindings for `libsodium` and in general is considered to be a high-quality, trustworthy API. Requests SHALL be signed by prepending the JSON document with the signature and sending both as a binary `application/octet-stream` request.
+The Data Rights Protocol authors **strongly** recommend the use of a [libsodium](https://doc.libsodium.org/)-based Ed25519 implementation. There is a [wide selection](https://doc.libsodium.org/bindings_for_other_languages) of language bindings for `libsodium` and in general is considered to be a high-quality, trustworthy API. Requests SHALL be signed by prepending the JSON document with the signature (so-called "combined mode" libsodium APIs will do this by default), base64 encoding the resulting binary buffer, and then sending that request with Content-Type `text/plain`.
 
-<!-- These examples are not strong enough to link to as implementation guides right now!
-We provide in OSIRAA an example [generating keys and signing
-requests](https://github.com/consumer-reports-innovation-lab/osiraa/blob/main/drp_aa_mvp/data_rights_request/pynacl_validator_submit.py)
-using the PyNaCl implementation, as well as a [Django request
-handler](https://github.com/consumer-reports-innovation-lab/osiraa/blob/main/drp_aa_mvp/data_rights_request/pynacl_validator.py)
-which does cryptographic verification of the requests (without the full semantic validation chain presented above).
--->
+The Open Source Implementers' Reference contains an implementation of both sides of the `libsodium` key exchange in [drp_aa_mvp/data_rights_request/views.py#sign_request](https://github.com/consumer-reports-innovation-lab/osiraa/blob/main/drp_aa_mvp/data_rights_request/views.py#L450-L454) and [drp_aa_mvp/drp_pip/views.py#validate_message_to_agent](https://github.com/consumer-reports-innovation-lab/osiraa/blob/main/drp_aa_mvp/drp_pip/views.py#L199-L248) which illustrate the use of the PyNACL API.
 
 ### 3.08 Processing Extensions & "Expected By" dates
 
@@ -427,6 +413,20 @@ In steps:
 ## Specification Change Log
 
 In general, please put major change log items at the top of the file. When a new protocol version is "cut", move the previous versions' change log down here.
+
+Protocol Changes from 0.7 to 0.7.1:
+
+- Fix path in 2.02 from `POST /v1/data-right-request` to `POST /v1/data-rights-request/`
+
+Protocol Changes from 0.6 to 0.7:
+
+- PIP endpoints are re-structured to be more [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)-like
+- Move from JWT to NaCl/libsodium/Ed25519 signatures
+- Renaming security claims from JWT short codes to more expressive identifiers
+- Add `POST /v1/agent/{agent-id}` endpoint to provide mechanism for generating pair-wise API Authorization/routing tokens
+- Specify timestamps as ISO-8601 instead of RFC-3339
+- Re-draft API Authentication and Security Guidance sections.
+
 
 Protocol changes from 0.5 to 0.6:
 
