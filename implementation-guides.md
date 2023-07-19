@@ -1,3 +1,5 @@
+# Digital Rights Protocol Implementation Guides
+
 This documents describes the basic technical components of the Data Rights Protocol system, with a
 particular eye on how a company which has implemented 0.5 version of the protocol may look towards a
 1.0 protocol implementation. It should also serve as a high-level introduction to the Data Rights
