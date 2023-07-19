@@ -1,4 +1,5 @@
-# Digital Rights Protocol Implementation Guides
+# Digital Rights Protocol Implementation Guide
+
 
 
 This documents describes the basic technical components of the Data Rights Protocol system, with a
