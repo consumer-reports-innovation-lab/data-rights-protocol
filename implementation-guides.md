@@ -302,6 +302,5 @@ programs.
 ## System Operator
 
 -   maintain service directories
--   clearinghouse for network-level statistics
 -   onboarding/offboardings Business + Agents + PIPs
 -   Facilitate decision making for updates for the Data Rights Protocol and System Rules
