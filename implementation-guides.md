@@ -1,11 +1,109 @@
 # Digital Rights Protocol Implementation Guide
 
-
-
 This documents describes the basic technical components of the Data Rights Protocol system, with a
 particular eye on how a company which has implemented 0.5 version of the protocol may look towards a
 1.0 protocol implementation. It should also serve as a high-level introduction to the Data Rights
 Protocol for new implementers.
+
+# Minimum Viable Actors
+
+## Covered Business responsibilities
+
+Covered Businesses may implement the DRP themselves, or partner with a Privacy Infrastructure Provider who 
+will provide API services and privacy rights workflow management. Businesses implementing their own endpoints 
+will be responsible for evaluating and implementing the requirements for PIPs as well.
+
+### What information does the Covered Business have access to?
+
+These are provided in the Authorized Agent's data rights request or informed by the legal regime the
+request is made under
+
+-   information about the authorized agent submitting the request as pulled from the Service
+    Directory or shared out of band including the LoA which the authorized agent verifies identity
+    attributes to.
+-   identity attributes of the consumer, and whether they are positively verified. A handful of
+    standard claims will be included but there is ongoing discussion in [issue
+    52](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/52) about
+    methods to specify which claims a business wishes to see in a data rights request.
+-   the data rights actions requested: data sale opt-out, deletion, access, data-categorical
+    transparency...
+-   legal regime of the request. the DRP is designed around a **legal obligation to
+    communicate with authorized agents**, a legal framework which currently only exists under the
+    California Consumer Privacy Act and its amended statutes. Requests made outside of this legal
+    regime are thus made on a **voluntary compliance** basis until other legal jurisdictions adopt
+    Authorized Agent frameworks.
+-   important deadline dates (45 days after ack for CCPA, for example)
+
+### What actions can a Covered Business be expected to take
+
+-   Maintain records in the Covered Business Service Directory with the technical and business
+    information used to discover API endpoints and API requirements.
+-   acknowledge data requests made under DRP and generate and maintain a request ID
+-   update a request's state with information about the status of a request in progress
+-   \[1.0\] request information or verification by providing a URL
+-   \[1.0\] if a business has an account server, they may ask a consumer to authenticate against it
+    in `need_user_verification`
+
+### What is expected of a participating Covered Business
+
+-   Interoperate with Authorized Agents not only in a technical fashion but at the business/legal
+    consortium layer
+-   Encouraged to affirmatively respond to voluntary data requests
+-   High-level status/statistical tracking of requests made through the system \[currently
+    under-specified\]
+
+## Privacy Infrastructure Provider responsibilities
+
+It is perfectly possible and reasonable for Covered Businesses to "bring their own" PIP and
+participate in the network as both a business and a technical contributor, and it's also perfectly
+possible and reasonable for them to out-source PIP functions to a company providing automation
+services. Businesses which "bring their own" PIP should read any of the PIP requirements as
+requirements on their technical team and its interface with the Business's privacy legal/policy
+programs.
+
+-   Keep an up to date copy of the Authorized Agent Service Directory
+-   Maintain records in Covered Business Service Directory with the technical and business
+    information for the Covered Businesses whose requests are managed by the PIP
+-   Verify the cryptographic trust of incoming requests against the Consortium managed service
+    directories
+-   Generate and Persist API tokens for each Authorized Agent + Covered Business relationship
+    pairing
+-   Map DRP request states in to a workflow which the Covered Business's Privacy Program can work
+    with and back out to the workflow states which the Authorized Agents expect to work against
+-   Review and provide revisions/feedback/approval on revisions to the Data Rights Protocol and
+    System Rules
+
+## Authorized Agent responsibilities
+
+-   Provide documentation of the practices the AA follows to verify identity attributes of Consumers
+    -   Authorized Agent MUST verify the consumer's email address when the user first registers
+    -   Authorized Agent MAY verify the consumer's phone number and/or physical address when they
+        register as well.
+    -   Authorized Agent MUST only present the "is verified" bits for attributes that have been
+        verified according to this documentation
+-   Generate and securely manage an Ed25519 signing key. This signing key is **not to be placed on a
+    Consumer's user agent**
+-   Keep an up to date version of the Covered Business Service Directory
+-   Maintain records in the Authorized Agent Service Directory with the technical and business
+    information used as mechanisms for trusting mechanism the AA, including the "verify key"
+    corresponding to the Ed25519 signing key.
+-   Interact with the "pair-wise API token" setup endpoint the first time it submits a request to a
+    Covered Business and persist that API token
+-   Interact with the Data Rights Request endpoints using the Ed25519 signed requests and API bearer
+    token as appropriate
+-   Authorized Agents must notify a user when the CB communicates a state change to the AA
+-   \[1.0\] Authorized Agents SHOULD provide a "status callback" URL pointing to a service they manage which
+    can receive updates to data rights requests without needing to regularly poll from the PIP.
+-   \[1.0\] Authorized Agents MUST implement the `need_user_verification` flow allowing the Consumer to
+    verify their identity in a system managed by the CB.
+-   Review and provide revisions/feedback/approval on revisions to the Data Rights Protocol and
+    System Rules
+
+## System Operator
+
+-   maintain service directories
+-   onboarding/offboardings Business + Agents + PIPs
+-   Facilitate decision making for updates for the Data Rights Protocol and System Rules
 
 # Technical Overview
 
@@ -208,99 +306,3 @@ business requirements, regulatory regimes, innovative mindsets, etc.
 It should be assumed that the PIP and CB more or less "owns" the status of the request, the AA has
 little agency over a request once it's been submitted. If they need to be amended by the AA the
 request should be revoked and resubmitted.
-
-# Minimum Viable Actors
-
-## Covered Business responsibilities
-
-### What information does the Covered Business have access to?
-
-These are provided in the Authorized Agent's data rights request or informed by the legal regime the
-request is made under
-
--   information about the authorized agent submitting the request as pulled from the Service
-    Directory or shared out of band including the LoA which the authorized agent verifies identity
-    attributes to.
--   identity attributes of the consumer, and whether they are positively verified. A handful of
-    standard claims will be included but there is ongoing discussion in [issue
-    52](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/52) about
-    methods to specify which claims a business wishes to see in a data rights request.
--   the data rights actions requested: data sale opt-out, deletion, access, data-categorical
-    transparency...
--   legal regime of the request. the DRP right now is designed around a **legal obligation to
-    communicate with authorized agents**, a legal framework which currently only exists under the
-    California Consumer Privacy Act and its amended statutes. Requests made outside of this legal
-    regime are thus made on a **voluntary compliance** basis until other legal jurisdictions adopt
-    Authorized Agent frameworks.
--   important deadline dates (45 days after ack for CCPA, for example)
-
-### What actions can a Covered Business be expected to take
-
--   Maintain records in the Covered Business Service Directory with the technical and business
-    information used to discover API endpoints and API requirements.
--   acknowledge data requests made under DRP and generate and maintain a request ID
--   update a request's state with information about the status of a request in progress
--   \[1.0\] request information or verification by providing a URL
--   \[1.0\] if a business has an account server, they may ask a consumer to authenticate against it
-    in `need_user_verification`
-
-### What is expected of a participating Covered Business
-
--   Interoperate with Authorized Agents not only in a technical fashion but at the business/legal
-    consortium layer
--   Encouraged to affirmatively respond to voluntary data requests
--   High-level status/statistical tracking of requests made through the system \[currently
-    under-specified\]
-
-## Privacy Infrastructure Provider responsibilities
-
-It is perfectly possible and reasonable for Covered Businesses to "bring their own" PIP and
-participate in the network as both a business and a technical contributor, and it's also perfectly
-possible and reasonable for them to out-source PIP functions to a company providing automation
-services. Businesses which "bring their own" PIP should read any of the PIP requirements as
-requirements on their technical team and its interface with the Business's privacy legal/policy
-programs.
-
--   Keep an up to date copy of the Authorized Agent Service Directory
--   Maintain records in Covered Business Service Directory with the technical and business
-    information for the Covered Businesses whose requests are managed by the PIP
--   Verify the cryptographic trust of incoming requests against the Consortium managed service
-    directories
--   Generate and Persist API tokens for each Authorized Agent + Covered Business relationship
-    pairing
--   Map DRP request states in to a workflow which the Covered Business's Privacy Program can work
-    with and back out to the workflow states which the Authorized Agents expect to work against
--   Review and provide revisions/feedback/approval on revisions to the Data Rights Protocol and
-    System Rules
-
-## Authorized Agent responsibilities
-
--   Provide documentation of the practices the AA follows to verify identity attributes of Consumers
-    -   Authorized Agent MUST verify the consumer's email address when the user first registers
-    -   Authorized Agent MAY verify the consumer's phone number and/or physical address when they
-        register as well.
-    -   Authorized Agent MUST only present the "is verified" bits for attributes that have been
-        verified according to this documentation
--   Generate and securely manage an Ed25519 signing key. This signing key is **not to be placed on a
-    Consumer's user agent**
--   Keep an up to date version of the Covered Business Service Directory
--   Maintain records in the Authorized Agent Service Directory with the technical and business
-    information used as mechanisms for trusting mechanism the AA, including the "verify key"
-    corresponding to the Ed25519 signing key.
--   Interact with the "pair-wise API token" setup endpoint the first time it submits a request to a
-    Covered Business and persist that API token
--   Interact with the Data Rights Request endpoints using the Ed25519 signed requests and API bearer
-    token as appropriate
--   Authorized Agents must notify a user when the CB communicates a state change to the AA
--   \[1.0\] Authorized Agents SHOULD provide a "status callback" URL pointing to a service they manage which
-    can receive updates to data rights requests without needing to regularly poll from the PIP.
--   \[1.0\] Authorized Agents MUST implement the `need_user_verification` flow allowing the Consumer to
-    verify their identity in a system managed by the CB.
--   Review and provide revisions/feedback/approval on revisions to the Data Rights Protocol and
-    System Rules
-
-## System Operator
-
--   maintain service directories
--   onboarding/offboardings Business + Agents + PIPs
--   Facilitate decision making for updates for the Data Rights Protocol and System Rules
