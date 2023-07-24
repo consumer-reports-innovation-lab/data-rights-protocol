@@ -25,8 +25,7 @@ request is made under
     standard claims will be included but there is ongoing discussion in [issue
     52](https://github.com/consumer-reports-digital-lab/data-rights-protocol/issues/52) about
     methods to specify which claims a business wishes to see in a data rights request.
--   the data rights actions requested: data sale opt-out, deletion, access, data-categorical
-    transparency...
+-   the data rights actions requested: data sale opt-out, deletion, access
 -   legal regime of the request. the DRP is designed around a **legal obligation to
     communicate with authorized agents**, a legal framework which currently only exists under the
     California Consumer Privacy Act and its amended statutes. Requests made outside of this legal
@@ -49,8 +48,6 @@ request is made under
 -   Interoperate with Authorized Agents not only in a technical fashion but at the business/legal
     consortium layer
 -   Encouraged to affirmatively respond to voluntary data requests
--   High-level status/statistical tracking of requests made through the system \[currently
-    under-specified\]
 
 ## Privacy Infrastructure Provider responsibilities
 
@@ -64,23 +61,24 @@ programs.
 -   Keep an up to date copy of the Authorized Agent Service Directory
 -   Maintain records in Covered Business Service Directory with the technical and business
     information for the Covered Businesses whose requests are managed by the PIP
--   Verify the cryptographic trust of incoming requests against the Consortium managed service
+-   Verify the cryptographic trust of incoming requests against Agent public keys in service
     directories
 -   Generate and Persist API tokens for each Authorized Agent + Covered Business relationship
     pairing
 -   Map DRP request states in to a workflow which the Covered Business's Privacy Program can work
     with and back out to the workflow states which the Authorized Agents expect to work against
 -   Review and provide revisions/feedback/approval on revisions to the Data Rights Protocol and
-    System Rules
+    Agreements
 
 ## Authorized Agent responsibilities
 
--   Provide documentation of the practices the AA follows to verify identity attributes of Consumers
+-   Provide within the Authorized Agent directory documentation of the practices the AA follows to
+    verify identity attributes of Consumers.
     -   Authorized Agent MUST verify the consumer's email address when the user first registers
     -   Authorized Agent MAY verify the consumer's phone number and/or physical address when they
         register as well.
     -   Authorized Agent MUST only present the "is verified" bits for attributes that have been
-        verified according to this documentation
+        verified according to this Identity Assurance documentation
 -   Generate and securely manage an Ed25519 signing key. This signing key is **not to be placed on a
     Consumer's user agent**
 -   Keep an up to date version of the Covered Business Service Directory
@@ -91,19 +89,19 @@ programs.
     Covered Business and persist that API token
 -   Interact with the Data Rights Request endpoints using the Ed25519 signed requests and API bearer
     token as appropriate
--   Authorized Agents must notify a user when the CB communicates a state change to the AA
+-   Authorized Agents must notify a user when the CB communicates a state change to the AA in a timely manner
 -   \[1.0\] Authorized Agents SHOULD provide a "status callback" URL pointing to a service they manage which
     can receive updates to data rights requests without needing to regularly poll from the PIP.
 -   \[1.0\] Authorized Agents MUST implement the `need_user_verification` flow allowing the Consumer to
     verify their identity in a system managed by the CB.
 -   Review and provide revisions/feedback/approval on revisions to the Data Rights Protocol and
-    System Rules
+    Agreements
 
 ## System Operator
 
 -   maintain service directories
 -   onboarding/offboardings Business + Agents + PIPs
--   Facilitate decision making for updates for the Data Rights Protocol and System Rules
+-   Facilitate decision making for updates for the Data Rights Protocol and Agreements
 
 # Technical Overview
 
