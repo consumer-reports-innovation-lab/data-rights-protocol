@@ -236,6 +236,8 @@ request is made under
 
 ### What actions can a Covered Business be expected to take
 
+-   Maintain records in the Covered Business Service Directory with the technical and business
+    information used to discover API endpoints and API requirements.
 -   acknowledge data requests made under DRP and generate and maintain a request ID
 -   update a request's state with information about the status of a request in progress
 -   \[1.0\] request information or verification by providing a URL
@@ -259,7 +261,7 @@ services. Businesses which "bring their own" PIP should read any of the PIP requ
 requirements on their technical team and its interface with the Business's privacy legal/policy
 programs.
 
--   Keep an up to date version of the Authorized Agent Service Directory
+-   Keep an up to date copy of the Authorized Agent Service Directory
 -   Maintain records in Covered Business Service Directory with the technical and business
     information for the Covered Businesses whose requests are managed by the PIP
 -   Verify the cryptographic trust of incoming requests against the Consortium managed service
@@ -290,9 +292,9 @@ programs.
 -   Interact with the Data Rights Request endpoints using the Ed25519 signed requests and API bearer
     token as appropriate
 -   Authorized Agents must notify a user when the CB communicates a state change to the AA
--   Authorized Agents SHOULD provide a "status callback" URL pointing to a service they manage which
+-   \[1.0\] Authorized Agents SHOULD provide a "status callback" URL pointing to a service they manage which
     can receive updates to data rights requests without needing to regularly poll from the PIP.
--   Authorized Agents MUST implement the `need_user_verification` flow allowing the Consumer to
+-   \[1.0\] Authorized Agents MUST implement the `need_user_verification` flow allowing the Consumer to
     verify their identity in a system managed by the CB.
 -   Review and provide revisions/feedback/approval on revisions to the Data Rights Protocol and
     System Rules
