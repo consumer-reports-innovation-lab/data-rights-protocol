@@ -315,6 +315,98 @@ Subject to further refinement of trust mechanisms and authorization workflow, Re
 
 Covered Businesses SHALL determine for themselves the level of reliance they will place on a given token. Authorized Agents SHALL make reasonable efforts to provide trustworthy tokens, by verifying user-attested claims according to the practices agreed under the System Agreement, by attaching user-attested claims as available, and by ensuring their envelopes are signed by a key which the Covered Businesses and PIPs can verify against.
 
+### 3.05 Schema: Agent/Business Discovery Documents
+
+The pre-1.0 design of the Data Rights Protocol envisioned it as a public network driven by a "`well-known`" resource the "Data Rights Discovery" endpoint. As the development of the protocol and implementations has progressed, this model has shown a number of limitations which in 2022 we began to address in the [Draft DRP Security Model](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/blob/main/files/2022-June-14%20Draft%20DRP%20Security%20Model.pdf) document. 
+
+The model of the current DRP is a closed network with fairly low barrier to entry where Agents provide a cryptographic key and process accountability information to the DRP operators, and businesses provide the information previously hosted by the `well-known` resources to the same operators, and the operators provide a pair of JSON documents which list all agents and all businesses represented under the network. 
+
+This inversion of the model makes discovery of new businesses trivial, and provides a trust-root for the cryptographic tokens which Data Rights Requests rely on. Future iterations of the DRP may open up the design of the network  as consumer identity technologies evolve and as the network itself evolves. To protect the personal information of technical and business contacts the service directory itself is left as an semi-private repository accessible to DRP implementers.
+
+#### 3.05.1 Agent Discovery Document Schema
+
+These entities act as the "root of trust" for Data Rights Requests and Pairwise Key Setup requests; requests are signed with the private key paired with the `verify_key` in this document. The other keys contain information about the business.
+
+Here is an example of the JSON document with description of each entity:
+
+```
+{
+    "id": "unique identifier matching [A-Z_]+ regular expression",
+    "name": "Consumer Legible Agent App Name",
+    "verify_key": "Hex encoded Libsodium public verifying key for signed requests",
+    "web_url": "business's homepage",
+    "technical_contact": "an email contact for the techical integration",
+    "business_contact": "an email address for contacting a person within the business who is knowledgeable about the privacy program and DRP integration",
+    "identity_assurance_url": "a link to an HTML or PDF document describing the process the agent enacts to verify a consumer's identity; a signed request containing these identities should be understood to have gone through this process."
+}
+```
+
+Here is a JSON-Schema document describing a single entry in the Authorized Agent directory:
+
+```
+{
+    "$id": "https://sd.datarightsprotocol.org/agent.schema.json",
+    "type": "object",
+    "properties": {
+        "id": { "type": "string", "pattern": "[A-Z_]+" },
+        "name": { "type": "string" },
+        "verify_key": { "type": "string", "pattern": "[A-Fa-f0-9]+" },
+        "web_url": { "type": "string", "pattern": "https://[a-z./-]+" },
+        "identity_assurance_url": { "type": "string", "pattern": "https://[a-z./-]+" },
+        "technical_contact": { "type": "string" },
+        "business_contact": { "type": "string" }
+    }
+}
+```
+
+#### 3.05.2 Business Discovery Document Schema
+
+These entities are used by Authorized Agents to discover businesses which accept DRP requests and which types of requests.
+
+Here is an example of the JSON document with description of each entity:
+
+```
+{
+    "id": "unique identifier matching [A-Z_]+ regular expression",
+    "name": "Consumer Legible Business Name",
+    "logo": "https link to hi-res or vector image square logo suitable for display in agent app",
+    "api_base": "URL to DRP API base",
+    "supported_actions": ["list", "of", "drp", "request types"],
+    "web_url": "business's homepage",
+    "technical_contact": "an email contact for the techical integration. this may be a contact at a PIP which the business has delegated to",
+    "business_contact": "an email address for contacting a person within the business who is knowledgeable about the privacy program and DRP integration"
+}
+```
+
+Here is a JSON-Schema document describing a single entry in the Covered Business directory:
+
+```
+{
+    "$id": "https://sd.datarightsprotocol.org/business.schema.json",
+    "type": "object",
+    "properties": {
+        "id": { "type": "string", "pattern": "[A-Z_]+" },
+        "name": { "type": "string" },
+        "logo": { "type": ["null", "string"] },
+        "api_base": { "type": "string", "pattern": "https://[a-z/.-]+" },
+        "supported_actions": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "access", "deletion",
+                    "sale:opt_out", "sale:opt_in",
+                    "access:categories", "access:specific"
+                ]
+            }
+        },
+        "privacy_policy_url": { "type": "string", "pattern": "https://[a-z/.-]+" },
+        "web_url": { "type": "string", "pattern": "https://[a-z/.-]+" },
+        "technical_contact": { "type": "string" },
+        "business_contact": { "type": "string" }
+    }
+}
+```
 
 ### 3.06 Error States
 
