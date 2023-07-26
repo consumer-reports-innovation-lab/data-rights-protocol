@@ -89,8 +89,8 @@ A Data Rights Exercise request SHALL contain a JSON-encoded message body contain
   "status_callback": "https://dsr-agent.example.com/update_status"
 
   # 3
-  # claims in IANA JSON Web Token Claims page
-  # https://www.iana.org/assignments/jwt/jwt.xhtml#claims
+  # claims in schema.org/Person
+  # https://schema.org/Person
 }
 ```
 
@@ -323,7 +323,7 @@ In development of this protocol a simple question with complex answers is raised
 - for Version 1 of the protocol the focus of development is on developing endpoints, defining the data structure of requests, defining end to end state transitions of the requests, and development of non-technical processes around this protocol.
 - Working Group continues to track federated identity work and emerging technologies like [OpenID Identity Assurance (eKYC)](https://openid.net/specs/openid-connect-4-identity-assurance-1_0-ID2.html).
 
-Subject to further refinement of trust mechanisms and authorization workflow, Requests MAY contain custom claims, but SHOULD contain the following [OIDC Standard Claims](https://www.iana.org/assignments/jwt/jwt.xhtml#claims):
+Subject to further refinement of trust mechanisms and authorization workflow, Requests MAY contain custom claims, but SHOULD contain the following [schema.org/Person](https://schema.org/Person):
 
 | name                    | type    | description                                                                                                                                                                                              |
 |-------------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -336,7 +336,7 @@ Subject to further refinement of trust mechanisms and authorization workflow, Re
 | `address_verified`      | bool    | if the user's address has been affirmatively verified according to the level of assurance specified in the System Rules, this field SHALL be specified as `true`                                      |
 | `power_of_attorney`     | str     | this custom claim MAY contain a reference to a User-signed document delegating power of attorney to the submitting AA. Implementation details of this claim will be defined later.                       |
 
-Covered Businesses SHALL determine for themselves the level of reliance they will place on a given token. Authorized Agents SHALL make reasonable efforts to provide trustworthy tokens, by verifying user-attested claims according to the practices agreed under the System Rules, by attaching user-attested claims as available, and by ensuring their JWTs are signed by a key which the Covered Businesses and PIPs can verify against.
+Covered Businesses SHALL determine for themselves the level of reliance they will place on a given token. Authorized Agents SHALL make reasonable efforts to provide trustworthy tokens, by verifying user-attested claims according to the practices agreed under the System Agreement, by attaching user-attested claims as available, and by ensuring their envelopes are signed by a key which the Covered Businesses and PIPs can verify against.
 
 
 ### 3.06 Error States
