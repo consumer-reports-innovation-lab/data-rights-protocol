@@ -1,4 +1,4 @@
-# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol) v.0.8
+# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol) v.0.9
 
 **DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/pulls) in this repository or you may provide feedback by emailing <b>datarightsprotocol@cr.consumer.org</b>.
 
@@ -25,7 +25,7 @@ By providing a shared protocol and vocabulary for expressing these data rights, 
 
 In this initial phase of the Data Rights Protocol, we want to enable a group of peers to form a voluntary trust network while expanding the protocol to support wider trust models and additional data flows.
 
-Version 0.8 encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
+Version 0.9 encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
 
 ### 1.03 Terminology
 
@@ -41,7 +41,7 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 [note about including schemas by-reference from below.]
 
-DRP 0.8 implementors MUST support text/plain requests and application/json responses for signed POST an DELETE requests
+DRP 0.9 implementors MUST support text/plain requests and application/json responses for signed POST an DELETE requests
 
 [expand endpoints with their failure states]
 
@@ -61,7 +61,7 @@ A Data Rights Exercise request SHALL contain a JSON-encoded message body contain
   "issued-at":  "<ISO 8601 Timestamp>",
 
   # 2
-  "drp.version": "0.8"
+  "drp.version": "0.9"
   "exercise": "sale:opt-out",
   "regime": "ccpa",
   "relationships": ["customer", "marketing"],
@@ -80,7 +80,7 @@ These keys identify the Authorized Agent making the request and the Covered Busi
 - `issued-at` MUST contain an ISO 8601-encoded timestamp expressing when the request was *created*.
 
 The second grouping contains data about the Data Rights Request.
-- `drp.version` MUST contain a string referencing the current protocol version "0.8".
+- `drp.version` MUST contain a string referencing the current protocol version "0.9".
 - `exercise` MUST contain a string specifying the [Rights Action](#301-supported-rights-actions) which is to be taken by the Covered Business.
 - `regime` MAY contain a string specifying the legal regime under which the Data Request is being taken.  Requests which do not supply a `regime` MAY be considered for voluntary processing.
   - The legal regime is a system of applicable rules, whether enforceable by statute, regulations, voluntary contract, or other legal frameworks which prescribe data rights to the User. See [3.01 Supported Rights Actions](#301-supported-rights-actions) for more discussion.
@@ -178,7 +178,7 @@ After validating the signature and semantics of the request, the Privacy Infrast
 
 Agents SHALL present this token as an HTTP Bearer Token in any request made against resources **on the same domain** this request was submitted to.
 
-If the validation failed, the Privacy Infrastructure Provider SHALL return an `HTTP 403 Forbidden` response with no response body. The Authorized Agent and Privacy Infrastructure Provider SHOULD resolve this issue out of band utilizing the Technical Contact Address in the Data Rights Network Directory [xxx: current unspecified, landing in 0.8 or 0.9]
+If the validation failed, the Privacy Infrastructure Provider SHALL return an `HTTP 403 Forbidden` response with no response body. The Authorized Agent and Privacy Infrastructure Provider SHOULD resolve this issue out of band utilizing the Technical Contact Address in the Data Rights Network Directory.
 
 ### 2.06 `GET /v1/agent/{agent-id}` ("Agent Information" endpoint)
 
@@ -202,7 +202,7 @@ These Schemas are referenced in Section 2 outlining the HTTP endpoints and their
 
 ### 3.01 Supported Rights Actions
 
-These are the CCPA rights which are encoded in v0.8 of the protocol:
+These are the CCPA rights which are encoded in v0.9 of the protocol:
 
 | Regime | Right               | Details                                                              |
 |--------|---------------------|----------------------------------------------------------------------|
