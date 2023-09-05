@@ -2,9 +2,11 @@
 
 **DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/pulls) in this repository or you may provide feedback by emailing <b>datarightsprotocol@cr.consumer.org</b>.
 
-Protocol Changes from 0.7.1 to 0.8:
+Protocol Changes from 0.8 to 0.9:
 
-- Libsodium signed requests will now be base64 encoded to ensure they can traverse the web safely.
+- Remove obsolete references to JWT/IANA specification for identity attributes in favor of schema.org
+- Specify the shape of Business and Authorized Agent entities in the DRP Service Directory
+- Remove obsolete Data Rights Discovery endpoint (`/.well-known/data-rights.json`)
 
 ## 1.0 Introduction
 
@@ -482,6 +484,10 @@ In steps:
 ## Specification Change Log
 
 In general, please put major change log items at the top of the file. When a new protocol version is "cut", move the previous versions' change log down here.
+
+Protocol Changes from 0.7.1 to 0.8:
+
+- Libsodium signed requests will now be base64 encoded to ensure they can traverse the web safely.
 
 Protocol Changes from 0.7 to 0.7.1:
 
