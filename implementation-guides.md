@@ -125,24 +125,7 @@ The [DRP Security
 Model](https://raw.githubusercontent.com/consumer-reports-digital-lab/data-rights-protocol/main/files/DRP_security_model.pdf)
 technical note describes the rationale for this choice and the move away from JSON Web Tokens.
 
-## Discovery
-
-### 0.7: `~/.well-known/data-rights.json` ([2.01](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md#201-get-well-knowndata-rightsjson-data-rights-discovery-endpoint))
-
-Currently a small JSON file is used to boot-strap communication from Authorized Agents to Covered
-Businesses. This method is to be deprecated over the next few months in favor of a managed directory
-service containing the same information but for all parties instead of delegating this to the
-business.
-
-The idea of hosting these resources was that if an Authorized Agent wanted to send a data rights
-request to ACME, Inc. whose homepage is `acme.com`, they could `GET
-https://acme.com/.well-known/data-rights.json` to discover where the API endpoints for the DRP are
-as well as the supported features and whatnot. However, until DRP takes over the world, this is
-likely to be less hit and more miss. In practice, network participants need to know the full shape
-of the network and so in the next development period we will be moving to a model where the DRP
-consortium operates services providing two light-weight JSON directory files:
-
-### 0.8-1.0+: service directories
+## Endpoint and Agent Discovery
 
 As part of their onboarding to the DRP, Authorized Agents will present their verify key as well as
 technical and business contact information.
