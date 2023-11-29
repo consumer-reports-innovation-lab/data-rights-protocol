@@ -74,11 +74,13 @@ Before the first request to a new Covered Business, the Authorized Agent will cr
 
 The API follows a "REST-ful" pattern with a major-version prefix signaling that these paths and the shape of their requests will remain backward compatible. Authorized Agents make calls to these APIs from a trusted back-end rather than a User Agent or uncontrolled device. CBs implement handlers for these endpoints under their `api_base`.
 
-### `POST /v1/data-rights-request/` ([2.02](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md#202-post-v1data-right-request-data-rights-exercise-endpoint))
+### `POST /v1/data-rights-request/` ([2.01](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip#201-post-v1data-rights-request-data-rights-exercise-endpoint))
+
+
 
 This call declares a new digital rights request from an Authorized Agent on behalf of a consumer. The body of the request will be a libsodium signed object with the signature embedded in it. The inner JSON document contains information about the consumer making the request, the specific rights they want to exercise, the authorized agent submitting the request on behalf of the consumer, the unique request Id, and the business to which the request is being sent. Section 3.07 of the protocol specification outlines an algorithm which CBs use to validate the messages are signed and coming from the expected party. The validated request should be persisted and mapped into a privacy workflow system which the Covered Business uses to process data rights requests.
 
-### `GET /v1/data-rights-request/{id}` ([2.03](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md#203-get-v1data-rights-requestrequest_id-data-rights-status-endpoint))
+### `GET /v1/data-rights-request/{id}` ([2.02](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip#202-get-v1data-rights-requestrequest_id-data-rights-status-endpoint))
 
 This endpoint returns the processing status of a previously submitted request. The critical fields to include in response to this request are "status" and "reason", which represent the state of a given request.  Additional fields specify when a request may be expected to be delivered, or may be due.
 
