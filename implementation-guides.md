@@ -59,7 +59,7 @@ PermissionSlip API requests submitted to Covered Businesses are signed using Ed2
 Model](https://raw.githubusercontent.com/consumer-reports-digital-lab/data-rights-protocol/main/files/DRP_security_model.pdf) technical note describes the rationale for this choice.
 
 
-## Auth endpoints (protocol section [2.06](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md#206-post-v1agentagent-id-pair-wise-key-setup-endpoint) and [2.07](https://github.com/consumer-reports-digital-lab/data-rights-protocol/blob/main/data-rights-protocol.md#207-get-v1agentagent-id-agent-information-endpoint))
+## Auth endpoints (protocol section [2.05](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/blob/main/data-rights-protocol.md#205-post-v1agentagent-id-pair-wise-key-setup-endpoint) and [2.06](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/blob/main/data-rights-protocol.md#206-get-v1agentagent-id-agent-information-endpoint))
 
 -   `POST /v1/agent/{id}`
 -   `GET /v1/agent/{id}`
