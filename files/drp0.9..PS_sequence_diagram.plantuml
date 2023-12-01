@@ -1,0 +1,86 @@
+@startuml
+title DRP Request Flow
+
+Actor User
+participant "Authorized Agent"
+participant "Covered Business"
+
+== Onboarding and request creation ==
+
+User --> "Authorized Agent": Onboard and verify\nidentity attributes once
+User --> "Authorized Agent": Requests data rights action to\nspecific business
+
+opt "AA has not interacted with this CB before"
+        "Authorized Agent" -> "Covered Business": [[https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/blob/main/data-rights-protocol.md#205-post-v1agentagent-id-pair-wise-key-setup-endpoint POST /v1/agent/{agent-id}]] w/ nacl signed request to fetch an API Bearer Token
+        "Covered Business" --> "Covered Business": Verify signature of request, etc\npersist request
+        "Covered Business" -> "Authorized Agent": Provide an API token which can be used to authenticate GET requests,\nprovide rate limiting on agent by agent basis, etc
+end
+
+== Request State Machine ==
+
+"Authorized Agent" -> "Covered Business": AA constructs a Data Rights Request and submits to CB's API [[https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/blob/main/data-rights-protocol.md#201-post-v1data-rights-request-data-rights-exercise-endpoint POST /v1/data-rights-request/]]
+
+"Covered Business" --> "Covered Business": Verify signature of request, etc.\npersist request
+
+"Covered Business" -> "Authorized Agent": CB informs Agent request is acknowledged [[https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/blob/main/data-rights-protocol.md#2011-post-v1data-rights-request-response response]]
+
+note over "Covered Business", "Authorized Agent" 
+        Request Status: IN PROGRESS
+end note
+
+"Covered Business" --> "Covered Business": Process request through normal DSR process\nverify identity, collect records, process\nrequest using PIP tooling
+
+opt "optional additional verification flow [[https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/blob/main/data-rights-protocol.md#3021-need_user_verification-state-flow-semantics (DRP 3.02.1)]]"
+        "Covered Business" --> "Covered Business": Need additional verification of consumer identity\ndirect user to visit a specific URL.
+        "Covered Business" -> "Authorized Agent": Update request state to need_user_verification
+
+        note over "Covered Business", "Authorized Agent" 
+                Request Status: IN PROGRESS, needs_user_verification
+        end note
+                
+        "Authorized Agent" --> User: Notify user of requirement
+
+        User -> "Covered Business": User visits URL in browser or webview and provides verification
+
+        alt "identity verification successful?"
+                "Covered Business" --> "Covered Business": Verification complete\nmove request forward in state machine
+
+                "Authorized Agent" -> "Covered Business": Agent queries status of request [[https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/blob/main/data-rights-protocol.md#202-get-v1data-rights-requestrequest_id-data-rights-status-endpoint GET /v1/data-rights-request/]]
+
+                "Covered Business" -> "Authorized Agent": CB inform Agents request is in progress [[https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/blob/main/data-rights-protocol.md#2011-post-v1data-rights-request-response response]]
+
+                note over "Covered Business", "Authorized Agent" 
+                        Request Status: IN PROGRESS
+                end note
+
+                "Authorized Agent" --> User: Notify user of status updated
+
+        else
+                "Authorized Agent" -> "Covered Business": Agent queries status of request [[https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/blob/main/data-rights-protocol.md#202-get-v1data-rights-requestrequest_id-data-rights-status-endpoint GET /v1/data-rights-request/]]
+
+                "Covered Business" ->x "Authorized Agent": CB inform Agents request is denied [[https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/blob/main/data-rights-protocol.md#2011-post-v1data-rights-request-response response]]
+
+                note over "Covered Business", "Authorized Agent" 
+                        Request Status: DENIED
+                        Request sequence terminates. A request can be denied for a number of [[https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/blob/main/data-rights-protocol.md#302-request-statuses different reasons]]
+                end note
+
+                "Authorized Agent" --> User: Notify user of status updated
+        end
+end
+
+"Covered Business" --> "Covered Business": Process Request ...
+
+"Covered Business" --> "Covered Business": Processing is completed
+
+"Authorized Agent" -> "Covered Business": Agent queries status of request [[https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/blob/main/data-rights-protocol.md#202-get-v1data-rights-requestrequest_id-data-rights-status-endpoint GET /v1/data-rights-request/]]
+
+"Covered Business" -> "Authorized Agent": CB inform Agents request is complete [[https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/blob/main/data-rights-protocol.md#2011-post-v1data-rights-request-response response]]
+
+note over "Covered Business", "Authorized Agent" 
+        Request Status: FULFILLED
+end note
+
+"Authorized Agent" --> User: Notify user of completion
+User -> "Covered Business": User may have results URL to download or view in browser or user agent
+@enduml
