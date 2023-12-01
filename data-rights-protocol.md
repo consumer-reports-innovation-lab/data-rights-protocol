@@ -211,7 +211,7 @@ This table shows valid states for Data Rights Requests, along with the criteria 
 
 This `need_user_verification` flow allows a Covered Business to signal to the User that additional User attributes or actions are necessary to confirm or match the identity of the User to an account. The Authorized Agent will navigate the User to a URL specified by the Covered Business which will provide the necessary interface to resolve this identification issue.
 
-When a Data Rights Request enters the `in_progress`/`need_user_verification` state, the CB SHALL inform the Agent through the [Data Rights Status endpoint](#202-get-status-data-rights-status-endpoint). A Data Rights Request can enter this state if the identity tokens are not already sufficiently verifiable by the Covered Business, or they could not unambiguously match the User to an account based on those tokens. 
+When a Data Rights Request enters the `in_progress`/`need_user_verification` state, the CB SHALL inform the Agent through the [Data Rights Status endpoint](#202-get-v1data-rights-requestrequest_id-data-rights-status-endpoint). A Data Rights Request can enter this state if the identity tokens are not already sufficiently verifiable by the Covered Business, or they could not unambiguously match the User to an account based on those tokens. 
 
 These request statuses MUST contain a `user_verification_url` string which is an HTTPS or otherwise secure URL; the user's identity token will be included in requests to that URL. The Authorized Agent is responsible for presenting the URL in the Status's `user_verification_url` with some URL parameters attached to it:
 
@@ -220,7 +220,7 @@ These request statuses MUST contain a `user_verification_url` string which is an
 
 The CB SHOULD provide a `user_verification_url` which refers to a unique Data Rights Request and then SHALL verify that the `request_id` specified by the Authorized Agent refers to the same Data Rights Request before presenting a verification.
 
-The CB SHOULD NOT redirect the user back to the Authorized Agent's `redirect_to` URL when the user verification fails or is canceled, but the Authorized Agent SHOULD NOT assume that loading that URL is enough to assume the verification is complete and request is ready to proceed; they should query the [Data Rights Status endpoint](#202-get-status-data-rights-status-endpoint).
+The CB SHOULD NOT redirect the user back to the Authorized Agent's `redirect_to` URL when the user verification fails or is canceled, but the Authorized Agent SHOULD NOT assume that loading that URL is enough to assume the verification is complete and request is ready to proceed; they should query the [Data Rights Status endpoint](#202-get-v1data-rights-requestrequest_id-data-rights-status-endpoint).
 
 
 ### 3.03 Schema: Status of a Data Subject Exercise Request
@@ -239,7 +239,7 @@ A single JSON object is used to describe any existing Data Exercise Request and 
 }
 ```
 
-* `request_id` MUST contain a string that is the globally unique ID returned in the initial [Data Rights Exercise request](#202-post-exercise-data-rights-exercise-endpoint).[1]
+* `request_id` MUST contain a string that is the globally unique ID returned in the initial [Data Rights Exercise request](#202-get-v1data-rights-requestrequest_id-data-rights-status-endpoint).[1]
 * `status` MUST contain a string which is one of the request states as defined in [Request Statuses](#302-request-statuses).
 * `reason` MAY contain a string containing additional information about the current state of the request according to the [Request Statuses](#302-request-statuses).
 * `received_at` SHOULD contain a string which is the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)-encoded time which the initial request was registered by the Covered Business.
