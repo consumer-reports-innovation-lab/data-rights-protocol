@@ -179,8 +179,6 @@ These are the CCPA rights which are encoded in v0.9.PS of the protocol:
 | ccpa   | `deletion`          | [RIGHT TO DELETE](https://oag.ca.gov/privacy/ccpa#sectione)          |
 | ccpa   | `access`            | [RIGHT TO KNOW](https://oag.ca.gov/privacy/ccpa#sectionc)            |
 
-**Covered Businesses** specify which rights they support in the [Data Rights Discovery](#201-get-well-knowndata-rightsjson-data-rights-discovery-endpoint) endpoint while consumers and their agents can specify the rights they are making use of in the [Data Rights Exercise](#202-post-exercise-data-rights-exercise-endpoint) endpoint.
-
 Requests to exercise these rights SHALL be made under either a processing `regime` of "ccpa", or on a voluntary basis by leaving the regime unspecified. The encoding of CCPA rights in this section is not to be interpreted to exclude requests made under GDPR statutes or other regional privacy or accessibility legislation; other legal regimes shall be encoded in to the protocol in future iterations.
 
 
