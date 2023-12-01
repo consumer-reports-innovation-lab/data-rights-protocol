@@ -211,7 +211,7 @@ This table shows valid states for Data Rights Requests, along with the criteria 
 
 This `need_user_verification` flow allows a Covered Business to signal to the User that additional User attributes or actions are necessary to confirm or match the identity of the User to an account. The Authorized Agent will navigate the User to a URL specified by the Covered Business which will provide the necessary interface to resolve this identification issue.
 
-When a Data Rights Request enters the `in_progress`/`need_user_verification` state, the CB SHALL inform the Agent through the [Data Rights Status endpoint](#202-get-status-data-rights-status-endpoint). A Data Rights Request can enter this state if the identity tokens are not already sufficiently verifiable by the Covered Business, or they could not unambiguously match the User to an account based on those tokens.
+When a Data Rights Request enters the `in_progress`/`need_user_verification` state, the CB SHALL inform the Agent through the [Data Rights Status endpoint](#202-get-status-data-rights-status-endpoint). A Data Rights Request can enter this state if the identity tokens are not already sufficiently verifiable by the Covered Business, or they could not unambiguously match the User to an account based on those tokens. 
 
 These request statuses MUST contain a `user_verification_url` string which is an HTTPS or otherwise secure URL; the user's identity token will be included in requests to that URL. The Authorized Agent is responsible for presenting the URL in the Status's `user_verification_url` with some URL parameters attached to it:
 
