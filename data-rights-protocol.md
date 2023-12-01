@@ -8,8 +8,11 @@ Permision Slip API (PS API) is a subset, or "profile" of the Data Rights Protoco
 
 ### Protocol Changes from 0.9 to 0.9.PS:
 
-- Depricate Status Callback
-- Depricate /Delete endpoint
+- Deprecate role of Privacy Infrasctructure Provider (PIP) - the Covered Business now takes on aspects of the sytstem that were formerly delegated to the PIP.
+- Deprecate role of System Operator and Service Directory - Permission Slip takes on the role of System Operator as well as Authorized Agent, and the Service Directory is replaced by private out-of-band exchange of discoverable information between Permission Slip and the Covered Business.
+- Authorized Agent now sends a request_id as part of the initial POST request to exercise data rights (#201-post-v1data-rights-request-data-rights-exercise-endpoint)
+- Deprecate Status Callback
+- Deprecate /Delete endpoint
 
 
 ## 1.0 Introduction
@@ -55,6 +58,7 @@ A Data Rights Exercise request SHALL contain a JSON-encoded message body contain
   # 1
   "agent-id": "aa-id",
   "business-id": "cb-id",
+  "request_id": ""
   "expires-at": "<ISO 8601 Timestamp>",
   "issued-at":  "<ISO 8601 Timestamp>",
 
@@ -72,6 +76,7 @@ A Data Rights Exercise request SHALL contain a JSON-encoded message body contain
 These keys identify the Authorized Agent making the request and the Covered Business of whom the request is being made, the time the request is being made, and the duration for which it will be valid.  Taken together, they describe where trust in the request is rooted (the AA), and constrain the scope of the Data Rights Request to a single AA-CB relationship at a particular moment in time, in order to prevent re-use or mis-use of the request by any party.
 - `agent-id` MUST contain a string identifying the Authorized Agent which is submitting the data rights request and attesting to its validity, particularly that they have validated the identity of the user submitting the request to the standards of the network.
 - `business-id` MUST contain a string identifying the *Covered Business* which the request is being sent to. These identifiers will be shared out-of-band by participants.
+- `request_id` MUST contain a string that is the globally unique ID returned in the initial [Data Rights Exercise request](#202-get-v1data-rights-requestrequest_id-data-rights-status-endpoint).
 - `expires-at` MUST contain an ISO 8601-encoded timestamp expressing when the request should no longer be considered viable. This should be kept short, we recommend no more than 15 minute time windows to prevent re-use while still allowing for backend-processing delays in the Covered Business pipeline. Covered Businesses SHOULD discard requests made at a time after this value and respond with a `fatal` Error State.
 - `issued-at` MUST contain an ISO 8601-encoded timestamp expressing when the request was *created*.
 
