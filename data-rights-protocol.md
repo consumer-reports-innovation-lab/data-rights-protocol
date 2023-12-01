@@ -415,4 +415,4 @@ When applying changes to Data Rights Requests in this fashion, the Covered Busin
 
 ### 3.09 Request State Flow Diagram
 
-![Sequence Diagram showing Data Rights Request event flow](https://raw.githubusercontent.com/consumer-reports-innovation-lab/data-rights-protocol/main/files/drp-1.0-sequence-diagram.svg)
+![Sequence Diagram showing Data Rights Request event flow](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/blob/main/files/drp0.9.PS_sequence_diagram.svg)
