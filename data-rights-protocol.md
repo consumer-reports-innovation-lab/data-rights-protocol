@@ -96,8 +96,6 @@ The Covered Business SHALL validate the message is signed according to the guida
 
 Responses to this request MUST adhere to the [Exercise Status Schema](#303-schema-status-of-a-data-subject-exercise-request).
 
-
-
 ### 2.02 `GET /v1/data-rights-request/{request_id}` ("Data Rights Status" endpoint)
 
 This is the Data Rights Status endpoint which Users and Authorized Agents can use to query for the status of an existing data rights request.

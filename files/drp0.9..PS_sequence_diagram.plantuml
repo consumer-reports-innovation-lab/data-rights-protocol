@@ -28,7 +28,7 @@ note over "Covered Business", "Authorized Agent"
         Request Status: IN PROGRESS
 end note
 
-"Covered Business" --> "Covered Business": Process request through normal DSR process\nverify identity, collect records, process\nrequest using PIP tooling
+"Covered Business" --> "Covered Business": Process request through normal DSR process\nverify identity, collect records, process request
 
 opt "optional additional verification flow [[https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/blob/main/data-rights-protocol.md#3021-need_user_verification-state-flow-semantics (DRP 3.02.1)]]"
         "Covered Business" --> "Covered Business": Need additional verification of consumer identity\ndirect user to visit a specific URL.

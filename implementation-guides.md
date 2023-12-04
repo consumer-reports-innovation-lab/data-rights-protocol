@@ -7,7 +7,7 @@ Data Rights Protocol (DPR) is centered on an API for communication between Autho
 
 PermissionSlip API is a subset of the protocol, designed to work directly with multiple Covered Businesses with Permission Slip in the role of Authorized Agent.  If, in the future, multiple interoperating AA’s and/or PIPs create demand, we can expand the implementation to the full spec by introducing Service Directories, but that is out of scope for now.
 
-For more information see the full DRP spec at: https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip
+For more information see the PermissionSlip API spec at: https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/ and the full DRP spec at: https://github.com/consumer-reports-innovation-lab/data-rights-protocol.
 
 
 ## Authorized Agent Responsibilities
