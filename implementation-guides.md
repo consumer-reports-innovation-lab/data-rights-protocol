@@ -1,9 +1,9 @@
 # PermissionSlip API for Data Rights Requests: Implementer's Guide for Covered Businesses
 
 
-This document describes the basic components of the PermissionSlip API for Data Rights Requests, and serves as a high-level introduction for new implementers.  The PermissionSlip API is based on (a profile of) the Data Rights Protocol (DPR), an open source protocol which has been developed by Consumer Reports and a consortium of privacy infrastructure companies.
+This document describes the basic components of the PermissionSlip API for Data Rights Requests, and serves as a high-level introduction for new implementers.  The PermissionSlip API is based on (a profile of) the Data Rights Protocol (DRP), an open source protocol which has been developed by Consumer Reports and a consortium of privacy infrastructure companies.
 
-Data Rights Protocol (DPR) is centered on an API for communication between Authorized Agents acting on behalf of a consumer exercising their digital rights, and a Covered Business or Privacy Infrastructure Provider acting on the business’s behalf to honor those rights as prescribed by laws in California and elsewhere.  It is designed to track data rights requests from consumers to companies, and their ongoing updates to the status of those requests.
+Data Rights Protocol (DRP) is centered on an API for communication between Authorized Agents acting on behalf of a consumer exercising their digital rights, and a Covered Business or Privacy Infrastructure Provider acting on the business’s behalf to honor those rights as prescribed by laws in California and elsewhere.  It is designed to track data rights requests from consumers to companies, and their ongoing updates to the status of those requests.
 
 PermissionSlip API is a subset of the protocol, designed to work directly with multiple Covered Businesses with Permission Slip in the role of Authorized Agent.  If, in the future, multiple interoperating AA’s and/or PIPs create demand, we can expand the implementation to the full spec by introducing Service Directories, but that is out of scope for now.
 

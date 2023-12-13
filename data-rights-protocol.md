@@ -198,7 +198,6 @@ This table shows valid states for Data Rights Requests, along with the criteria 
 | in_progress |                        | CB has acknowledge receipt of request OR User solves verification   | received_at, expected_by, processing_details |        |
 | in_progress | need_user_verification | CB doesn't have sufficient ID verification                          | user_verification_url, expires_at            |        |
 | fulfilled   |                        | CB has finished data rights request process                         | results_url, expires_at                      | x      |
-| revoked     |                        | user has explicitly actioned to revoke the request                  |                                              | x      |
 | denied      | suspected_fraud        | CB or CB believes this request was made fraudulently               | processing_details                           | x      |
 | denied      | insuf_verification     | the [in_progress, need_user_verification] stage failed or timed out | processing_details                           | x      |
 | denied      | no_match               | CB could not match user identity to data subject                    | processing_details                           | x      |
