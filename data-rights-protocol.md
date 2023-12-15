@@ -1,6 +1,6 @@
 # [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip) v.0.9.PS
 
-**DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-innovation-lab/ddata-rights-protocol-lite-permissionslip/issues/new) or [pull request](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/pulls) in this repository or you may provide feedback by emailing <b>datarightsprotocol@cr.consumer.org</b>.
+**DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/issues/new) or [pull request](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/pulls) in this repository or you may provide feedback by emailing <b>datarightsprotocol@cr.consumer.org</b>.
 
 ### About the version numbering system:
 
