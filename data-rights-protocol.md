@@ -305,7 +305,7 @@ Here is a JSON-Schema document describing a single entry in the Authorized Agent
     "properties": {
         "id": { "type": "string", "pattern": "[A-Z_]+" },
         "name": { "type": "string" },
-        "verify_key": { "type": "string", "pattern": "[a-zA-Z0-9\-_]+" },
+        "verify_key": { "type": "string", "pattern": "[a-zA-Z0-9+/]+" },
         "web_url": { "type": "string", "pattern": "https://[a-z./-]+" },
         "identity_assurance_url": { "type": "string", "pattern": "https://[a-z./-]+" },
         "technical_contact": { "type": "string" },
