@@ -1,10 +1,14 @@
-# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip) v.0.9.PS
+# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip) v.0.9.1.PS
 
 **DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/issues/new) or [pull request](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/pulls) in this repository or you may provide feedback by emailing <b>datarightsprotocol@cr.consumer.org</b>.
 
 ### About the version numbering system:
 
 Permision Slip API (PS API) is a subset, or "profile" of the Data Rights Protocol (https://github.com/consumer-reports-innovation-lab/data-rights-protocol).  As such the version number for the PS API tracks with the corresponding version of the DRP, with ".PS" suffixed.
+
+### Protocol Changes from 0.9.PS to 0.9.1.PS:
+
+- Change verify key encoding from Hex to Base64
 
 ### Protocol Changes from 0.9 to 0.9.PS:
 
@@ -29,7 +33,7 @@ By providing a shared protocol and vocabulary for expressing these data rights, 
 
 ### 1.02 Scope
 
-In Version 0.9.PS, we want to make the data rights protocol interoperatble between the PermissionSlip app in the role of an Authorized Agent and a Covered Business who wished to recieve and respond to Users' data rights requests via a lightweight API.  This version encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
+In Version 0.9.1.PS, we want to make the data rights protocol interoperatble between the PermissionSlip app in the role of an Authorized Agent and a Covered Business who wished to recieve and respond to Users' data rights requests via a lightweight API.  This version encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
 
 ### 1.03 Terminology
 
@@ -43,7 +47,7 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 ## 2.0 HTTP Endpoint Specification
 
-DRP 0.9.PS implementors MUST support text/plain requests and application/json responses for signed POST requests
+DRP 0.9.1.PS implementors MUST support text/plain requests and application/json responses for signed POST requests
 
 [expand endpoints with their failure states]
 
@@ -63,7 +67,7 @@ A Data Rights Exercise request SHALL contain a JSON-encoded message body contain
   "issued-at":  "<ISO 8601 Timestamp>",
 
   # 2
-  "drp.version": "0.9.PS"
+  "drp.version": "0.9.1.PS"
   "exercise": "sale:opt-out",
   "regime": "ccpa",
 
@@ -81,7 +85,7 @@ These keys identify the Authorized Agent making the request and the Covered Busi
 - `issued-at` MUST contain an ISO 8601-encoded timestamp expressing when the request was *created*.
 
 The second grouping contains data about the Data Rights Request.
-- `drp.version` MUST contain a string referencing the current protocol version "0.9.PS".
+- `drp.version` MUST contain a string referencing the current protocol version "0.9.1.PS".
 - `exercise` MUST contain a string specifying the [Rights Action](#301-supported-rights-actions) which is to be taken by the Covered Business.
 - `regime` MAY contain a string specifying the legal regime under which the Data Request is being taken.  Requests which do not supply a `regime` MAY be considered for voluntary processing.
   - The legal regime is a system of applicable rules, whether enforceable by statute, regulations, voluntary contract, or other legal frameworks which prescribe data rights to the User. See [3.01 Supported Rights Actions](#301-supported-rights-actions) for more discussion.
@@ -173,7 +177,7 @@ These Schemas are referenced in Section 2 outlining the HTTP endpoints and their
 
 ### 3.01 Supported Rights Actions
 
-These are the CCPA rights which are encoded in v0.9.PS of the protocol:
+These are the CCPA rights which are encoded in v0.9.1.PS of the protocol:
 
 | Regime | Right               | Details                                                              |
 |--------|---------------------|----------------------------------------------------------------------|
