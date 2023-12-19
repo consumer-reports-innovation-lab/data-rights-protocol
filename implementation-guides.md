@@ -119,7 +119,7 @@ documentation.
 
 Verify keys should be presented to the PIPs through an out of band channel (email/signal/etc to
 start, eventually transitioning to a service directory model outlined under **Discovery**) and
-encoded in `hex` as in `nacl.encoding.HexEncoder` for the sake of consistency.
+encoded in `base64` as in `nacl.encoding.Base64Encoder` for the sake of consistency.
 
 The [DRP Security
 Model](https://raw.githubusercontent.com/consumer-reports-digital-lab/data-rights-protocol/main/files/DRP_security_model.pdf)
