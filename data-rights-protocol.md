@@ -284,7 +284,7 @@ Here is an example of the JSON document with description of each entity:
 {
     "id": "unique identifier matching [A-Z_]+ regular expression",
     "name": "Consumer Legible Agent App Name",
-    "verify_key": "Hex encoded Libsodium public verifying key for signed requests",
+    "verify_key": "Base64 encoded Libsodium public verifying key for signed requests",
     "web_url": "business's homepage",
     "technical_contact": "an email contact for the techical integration",
     "business_contact": "an email address for contacting a person within the business who is knowledgeable about the privacy program and DRP integration",
@@ -301,7 +301,7 @@ Here is a JSON-Schema document describing a single entry in the Authorized Agent
     "properties": {
         "id": { "type": "string", "pattern": "[A-Z_]+" },
         "name": { "type": "string" },
-        "verify_key": { "type": "string", "pattern": "[A-Fa-f0-9]+" },
+        "verify_key": { "type": "string", "pattern": "[a-zA-Z0-9\-_]+" },
         "web_url": { "type": "string", "pattern": "https://[a-z./-]+" },
         "identity_assurance_url": { "type": "string", "pattern": "https://[a-z./-]+" },
         "technical_contact": { "type": "string" },

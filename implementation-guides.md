@@ -55,7 +55,7 @@ As part of their onboarding to the PermissionSlip API, Covered Businesses will d
 
 ## Libsodium encryption
 
-PermissionSlip API requests submitted to Covered Businesses are signed using Ed25519 public/private key encryption as implemented by the public domain library `libsodium`. This signature system is used to issue bearer token authorization keys as defined under the **Auth endpoints** section below. The Authorized Agent is responsible for generating and securely managing signing keys and exporting public verify keys derived from those signing keys. See the [PyNaCl](https://pynacl.readthedocs.io/en/latest/signing/) "Digital Signatures" documentation for more information. Verify keys will be exchanged through an out of band channel and encoded in `hex` as in `nacl.encoding.HexEncoder`. The The [DRP Security
+PermissionSlip API requests submitted to Covered Businesses are signed using Ed25519 public/private key encryption as implemented by the public domain library `libsodium`. This signature system is used to issue bearer token authorization keys as defined under the **Auth endpoints** section below. The Authorized Agent is responsible for generating and securely managing signing keys and exporting public verify keys derived from those signing keys. See the [PyNaCl](https://pynacl.readthedocs.io/en/latest/signing/) "Digital Signatures" documentation for more information. Verify keys will be exchanged through an out of band channel and encoded in `base64` as in `nacl.encoding.Base64Encoder`. The The [DRP Security
 Model](https://raw.githubusercontent.com/consumer-reports-digital-lab/data-rights-protocol/main/files/DRP_security_model.pdf) technical note describes the rationale for this choice.
 
 
