@@ -207,7 +207,7 @@ This table shows valid states for Data Rights Requests, along with the criteria 
 | denied      | no_match               | CB could not match user identity to data subject                    | processing_details                           | x      |
 | denied      | claim_not_covered      | user requesting data not covered under legal bases[2]             | processing_details                           | x      |
 | denied      | outside_jurisdiction   | user requesting data under bases they are not covered by[2]       | processing_details                           | x      |
-| denied      | too_many_requests      | user has submitted more requests than the CB is legally obliged to process | details?
+| denied      | too_many_requests      | user has submitted more requests than the CB is legally obliged to process | processing_details
 | denied      | other                  | some other unspecified failure state reached                        | processing_details                           | x      |
 | expired     |                        | the time is currently after the `expires_at` in the request.        |                                              | x      |
 
