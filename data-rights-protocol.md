@@ -1,16 +1,21 @@
-# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol) v.0.9.1
+# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol) v.0.9.2
 
 **DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/pulls) in this repository or you may provide feedback by emailing <b>datarightsprotocol@cr.consumer.org</b>.
 
-Protocol Changes from 0.9 to 0.9.1:
+### Protocol Changes from 0.9.1 to 0.9.2:
+
+- Introduce field "supported_verifications" in Business Discovery Document Schema
+
+### Protocol Changes from 0.9 to 0.9.1:
 
 - Change verify key encoding from Hex to Base64
 
-Protocol Changes from 0.8 to 0.9:
+### Protocol Changes from 0.8 to 0.9:
 
 - Remove obsolete references to JWT/IANA specification for identity attributes in favor of schema.org
 - Specify the shape of Business and Authorized Agent entities in the DRP Service Directory
 - Remove obsolete Data Rights Discovery endpoint (`/.well-known/data-rights.json`)
+
 
 ## 1.0 Introduction
 
@@ -377,7 +382,8 @@ Here is an example of the JSON document with description of each entity:
     "name": "Consumer Legible Business Name",
     "logo": "https link to hi-res or vector image square logo suitable for display in agent app",
     "api_base": "URL to DRP API base",
-    "supported_actions": ["list", "of", "drp", "request types"],
+    "supported_actions": [ "list", "of", "drp", "request types" ],
+    "supported_verifications":  [ "list", "of", "verification", "methods" ],
     "web_url": "business's homepage",
     "technical_contact": "an email contact for the techical integration. this may be a contact at a PIP which the business has delegated to",
     "business_contact": "an email address for contacting a person within the business who is knowledgeable about the privacy program and DRP integration"
@@ -399,11 +405,14 @@ Here is a JSON-Schema document describing a single entry in the Covered Business
             "type": "array",
             "items": {
                 "type": "string",
-                "enum": [
-                    "access", "deletion",
-                    "sale:opt_out", "sale:opt_in",
-                    "access:categories", "access:specific"
-                ]
+                "enum": [ "access", "deletion", "sale:opt_out", "sale:opt_in", "access:categories", "access:specific" ]
+            }
+        },
+        "supported_verifications": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [ "email", "phone_number", "address" ]
             }
         },
         "privacy_policy_url": { "type": "string", "pattern": "https://[a-z/.-]+" },
