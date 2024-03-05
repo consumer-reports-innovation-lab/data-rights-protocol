@@ -1,10 +1,17 @@
-# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip) v.0.9.1.PS
+# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip) v.0.9.2.PS
 
 **DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/issues/new) or [pull request](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/pulls) in this repository or you may provide feedback by emailing <b>datarightsprotocol@cr.consumer.org</b>.
 
 ### About the version numbering system:
 
 Permision Slip API (PS API) is a subset, or "profile" of the Data Rights Protocol (https://github.com/consumer-reports-innovation-lab/data-rights-protocol).  As such the version number for the PS API tracks with the corresponding version of the DRP, with ".PS" suffixed.
+
+### Protocol Changes from 0.9.1 to 0.9.2:
+
+- Introduce field "supported_verifications" in Business Discovery Document Schema
+- Reintroduce Service Directory for Covered Businesses as optional
+- Introduce optional field "cb_request_id" in Status of a Data Subject Exercise Request Schema
+
 
 ### Protocol Changes from 0.9.PS to 0.9.1.PS:
 
@@ -207,7 +214,7 @@ This table shows valid states for Data Rights Requests, along with the criteria 
 | denied      | no_match               | CB could not match user identity to data subject                    | processing_details                           | x      |
 | denied      | claim_not_covered      | user requesting data not covered under legal bases[2]             | processing_details                           | x      |
 | denied      | outside_jurisdiction   | user requesting data under bases they are not covered by[2]       | processing_details                           | x      |
-| denied      | too_many_requests      | user has submitted more requests than the CB is legally obliged to process | details?
+| denied      | too_many_requests      | user has submitted more requests than the CB is legally obliged to process | processing_details
 | denied      | other                  | some other unspecified failure state reached                        | processing_details                           | x      |
 | expired     |                        | the time is currently after the `expires_at` in the request.        |                                              | x      |
 
@@ -236,6 +243,7 @@ A single JSON object is used to describe any existing Data Exercise Request and 
 ```
 {
   "request_id": "c789ff35-7644-4ceb-9981-4b35c264aac3",
+  "cb_request_id": "foo",
   "received_at": "20210902T152725.403-0700",
   "expected_by": "20211015T152725.403-0700",
   "processing_details": "this user has many records",
@@ -246,6 +254,7 @@ A single JSON object is used to describe any existing Data Exercise Request and 
 ```
 
 * `request_id` MUST contain a string that is the globally unique ID returned in the initial [Data Rights Exercise request](#202-get-v1data-rights-requestrequest_id-data-rights-status-endpoint).[1]
+* `cb_request_id` MAY contain a string that is the globally unique ID to the Covered Business, identifying the request in their system.
 * `status` MUST contain a string which is one of the request states as defined in [Request Statuses](#302-request-statuses).
 * `reason` MAY contain a string containing additional information about the current state of the request according to the [Request Statuses](#302-request-statuses).
 * `received_at` SHOULD contain a string which is the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)-encoded time which the initial request was registered by the Covered Business.
@@ -327,6 +336,7 @@ Here is an example of the JSON document with description of each entity:
     "logo": "https link to hi-res or vector image square logo suitable for display in agent app",
     "api_base": "URL to DRP API base",
     "supported_actions": ["list", "of", "drp", "request types"],
+    "supported_verifications":  [ "list", "of", "verification", "methods" ],
     "web_url": "business's homepage",
     "technical_contact": "an email contact for the techical integration. this may be a contact at a CB which the business has delegated to",
     "business_contact": "an email address for contacting a person within the business who is knowledgeable about the privacy program and DRP integration"
@@ -348,11 +358,14 @@ Here is a JSON-Schema document describing a single entry in the Covered Business
             "type": "array",
             "items": {
                 "type": "string",
-                "enum": [
-                    "access", "deletion",
-                    "sale:opt_out", "sale:opt_in",
-                    "access:categories", "access:specific"
-                ]
+                "enum": [ "access", "deletion", "sale:opt_out", "sale:opt_in", "access:categories", "access:specific" ]
+            }
+        },
+        "supported_verifications": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [ "email", "phone_number", "address" ]
             }
         },
         "privacy_policy_url": { "type": "string", "pattern": "https://[a-z/.-]+" },
