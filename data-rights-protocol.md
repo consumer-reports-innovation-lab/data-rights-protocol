@@ -1,20 +1,12 @@
-# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol) v.0.9.2
+# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol) v.0.9.3
 
 **DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/pulls) in this repository or you may provide feedback by emailing <b>datarightsprotocol@cr.consumer.org</b>.
 
-### Protocol Changes from 0.9.1 to 0.9.2:
+### Protocol Changes from 0.9.2 to 0.9.3:
 
-- Introduce field "supported_verifications" in Business Discovery Document Schema
+- deprecate trailing slash in "exercise" url (Section 2.01)
+- clarifiaction on `expires-at` MAY vs MUST status in request respone object (Section 3.03)
 
-### Protocol Changes from 0.9 to 0.9.1:
-
-- Change verify key encoding from Hex to Base64
-
-### Protocol Changes from 0.8 to 0.9:
-
-- Remove obsolete references to JWT/IANA specification for identity attributes in favor of schema.org
-- Specify the shape of Business and Authorized Agent entities in the DRP Service Directory
-- Remove obsolete Data Rights Discovery endpoint (`/.well-known/data-rights.json`)
 
 
 ## 1.0 Introduction
@@ -34,7 +26,7 @@ By providing a shared protocol and vocabulary for expressing these data rights, 
 
 In this initial phase of the Data Rights Protocol, we want to enable a group of peers to form a voluntary trust network while expanding the protocol to support wider trust models and additional data flows.
 
-Version 0.9.1 encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
+Version 0.9.3 encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
 
 ### 1.03 Terminology
 
@@ -50,13 +42,15 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 [note about including schemas by-reference from below.]
 
-DRP 0.9.1 implementors MUST support text/plain requests and application/json responses for signed POST an DELETE requests
+DRP 0.9.3 implementors MUST support text/plain requests and application/json responses for signed POST an DELETE requests
 
 [expand endpoints with their failure states]
 
-### 2.01 `POST /v1/data-rights-request/` ("Data Rights Exercise" endpoint)
+### 2.01 `POST /v1/data-rights-request` ("Data Rights Exercise" endpoint)
 
 This is the Data Rights Exercise endpoint which Users and Authorized Agents can use to exercise enumerated data rights.
+
+Note: in versions prior to 0.9.3, a trailing slash "/" was specified in the url for this endpoint.  Impelementors may continue to support the trailing slash at their option.
 
 A Data Rights Exercise request SHALL contain a JSON-encoded message body containing the following fields, with a `libsodium`/`NaCl`/`ED25119` binary signature immediately prepended to it[^1], and then base64 encoded. The decoded, verified JSON body SHALL be structured as follows:
 
@@ -66,11 +60,11 @@ A Data Rights Exercise request SHALL contain a JSON-encoded message body contain
   # 1
   "agent-id": "aa-id",
   "business-id": "cb-id",
-  "expires-at": "<ISO 8601 Timestamp>",
   "issued-at":  "<ISO 8601 Timestamp>",
+  "expires-at": "<ISO 8601 Timestamp>",
 
   # 2
-  "drp.version": "0.9.1"
+  "drp.version": "0.9.3"
   "exercise": "sale:opt-out",
   "regime": "ccpa",
   "relationships": ["customer", "marketing"],
@@ -85,11 +79,11 @@ A Data Rights Exercise request SHALL contain a JSON-encoded message body contain
 These keys identify the Authorized Agent making the request and the Covered Business of whom the request is being made, the time the request is being made, and the duration for which it will be valid.  Taken together, they describe where trust in the request is rooted (the AA), and aim to constrain the scope of the Data Rights Request to a single AA-CB relationship at a particular moment in time in order to prevent re-use or mis-use of the request by any party.
 - `agent-id` MUST contain a string identifying the Authorized Agent which is submitting the data rights request and attesting to its validity, particularly that they have validated the identity of the user submitting the request to the standards of the network.
 - `business-id` MUST contain a string identifying the *Covered Business* which the request is being sent to. These identifiers will be shared out-of-band by participants but will eventually be represented in a Service Directory managed by a DRP consortium or working group.
-- `expires-at` MUST contain an ISO 8601-encoded timestamp expressing when the request should no longer be considered viable. This should be kept short, we recommend no more than 15 minute time windows to prevent re-use while still allowing for backend-processing delays in the Privacy Infrastructure Provider pipeline. Privacy Infrastructure Providers SHOULD discard requests made at a time after this value and respond with a `fatal` Error State.
 - `issued-at` MUST contain an ISO 8601-encoded timestamp expressing when the request was *created*.
+- `expires-at` MUST contain an ISO 8601-encoded timestamp expressing when the request should no longer be considered viable. This should be kept short, we recommend no more than 10 minute time windows to prevent re-use while still allowing for backend-processing delays in the Privacy Infrastructure Provider pipeline. Privacy Infrastructure Providers SHOULD discard requests made at a time after this value and respond with a `fatal` Error State.
 
 The second grouping contains data about the Data Rights Request.
-- `drp.version` MUST contain a string referencing the current protocol version "0.9.1".
+- `drp.version` MUST contain a string referencing the current protocol version "0.9.3".
 - `exercise` MUST contain a string specifying the [Rights Action](#301-supported-rights-actions) which is to be taken by the Covered Business.
 - `regime` MAY contain a string specifying the legal regime under which the Data Request is being taken.  Requests which do not supply a `regime` MAY be considered for voluntary processing.
   - The legal regime is a system of applicable rules, whether enforceable by statute, regulations, voluntary contract, or other legal frameworks which prescribe data rights to the User. See [3.01 Supported Rights Actions](#301-supported-rights-actions) for more discussion.
@@ -160,9 +154,10 @@ This request consists of a single signed message following the same validation s
 ```
 {
   "agent-id": "aa-id",
-  "business-id": "cb-id",
-  "expires-at": "<ISO 8601 Timestamp>",
-  "issued-at":  "<ISO 8601 Timestamp>"
+  "business-id": "cb-id",  
+  "issued-at":  "<ISO 8601 Timestamp>",
+  "expires-at": "<ISO 8601 Timestamp>"
+
 }
 ```
 
@@ -211,7 +206,7 @@ These Schemas are referenced in Section 2 outlining the HTTP endpoints and their
 
 ### 3.01 Supported Rights Actions
 
-These are the CCPA rights which are encoded in v0.9.1 of the protocol:
+These are the CCPA rights which are encoded in v0.9.3 of the protocol:
 
 | Regime | Right               | Details                                                              |
 |--------|---------------------|----------------------------------------------------------------------|
@@ -277,8 +272,8 @@ A single JSON object is used to describe any existing Data Exercise Request and 
 ```
 {
   "request_id": "c789ff35-7644-4ceb-9981-4b35c264aac3",
-  "received_at": "20210902T152725.403-0700",
-  "expected_by": "20211015T152725.403-0700",
+  "received_at": "<ISO 8601 Timestamp>",
+  "expected_by": "<ISO 8601 Timestamp>",
   "processing_details": "this user has many records",
   "status": "in_progress",
   "reason": "need_user_verification",
@@ -294,7 +289,7 @@ A single JSON object is used to describe any existing Data Exercise Request and 
 * `expected_by` SHOULD contain a date before which the Authorized Agent can expect to see an update on the status of the Data Rights Request. This field should conform to the legal regime's deadline guidances, and may be amended by the PIP or Covered Business according to those same regulations. `processing_details` MUST be updated to reflect the reason for this extension.
 * `processing_details` MAY contain a string reflecting the state of the Data Rights Request so that the Agent may communicate this state to the End User.
 * `user_verification_url` MAY contain a URI which can be presented in a User Agent for identity verification.
-* `expires_at` MAY contain an [ISO 8601]-encoded time after which time the **Covered Business** will no longer oblige themselves to record-keep the request under consideration.
+* `expires_at` MAY contain an [ISO 8601]-encoded time after which time the **Covered Business** will no longer oblige themselves to record-keep the request under consideration.  For requests which have been acknowledged and entered "in progress" state, the expected_at field MUST be provided in the status response.
 
 [1]: `request_id` SHOULD be an UUID generated by the Covered Business or Privacy Infrastructure Provider immediately. This `request_id` SHOULD NOT be taken as an assumption that the **Covered Business** has received and is acting on the request, simply that the "middle layer" between has. If the Data Rights endpoints are operated directly by the Covered Business, requests SHOULD pass immediately from `open` to `in_progress`.
 
@@ -496,7 +491,21 @@ In steps:
 
 ## Specification Change Log
 
-In general, please put major change log items at the top of the file. When a new protocol version is "cut", move the previous versions' change log down here.
+In general, major change log items go at the top of the file. When a new protocol version is released, the previous versions' change log move down here.
+
+Protocol Changes from 0.9.1 to 0.9.2:
+
+- Introduce field "supported_verifications" in Business Discovery Document Schema
+
+Protocol Changes from 0.9 to 0.9.1:
+
+- Change verify key encoding from Hex to Base64
+
+Protocol Changes from 0.8 to 0.9:
+
+- Remove obsolete references to JWT/IANA specification for identity attributes in favor of schema.org
+- Specify the shape of Business and Authorized Agent entities in the DRP Service Directory
+- Remove obsolete Data Rights Discovery endpoint (`/.well-known/data-rights.json`)
 
 Protocol Changes from 0.7.1 to 0.8:
 
