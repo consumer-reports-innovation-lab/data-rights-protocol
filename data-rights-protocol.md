@@ -1,4 +1,4 @@
-# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip) v.0.9.2.PS
+# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip) v.0.9.3.PS
 
 **DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/issues/new) or [pull request](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/pulls) in this repository or you may provide feedback by emailing <b>datarightsprotocol@cr.consumer.org</b>.
 
@@ -6,24 +6,10 @@
 
 Permision Slip API (PS API) is a subset, or "profile" of the Data Rights Protocol (https://github.com/consumer-reports-innovation-lab/data-rights-protocol).  As such the version number for the PS API tracks with the corresponding version of the DRP, with ".PS" suffixed.
 
-### Protocol Changes from 0.9.1 to 0.9.2:
+### Protocol Changes from 0.9.2.PS to 0.9.3.PS:
 
-- Introduce field "supported_verifications" in Business Discovery Document Schema
-- Reintroduce Service Directory for Covered Businesses as optional
-- Introduce optional field "cb_request_id" in Status of a Data Subject Exercise Request Schema
-
-
-### Protocol Changes from 0.9.PS to 0.9.1.PS:
-
-- Change verify key encoding from Hex to Base64
-
-### Protocol Changes from 0.9 to 0.9.PS:
-
-- Deprecate role of Privacy Infrasctructure Provider (PIP) - the Covered Business now takes on aspects of the sytstem that were formerly delegated to the PIP.
-- Deprecate role of System Operator and Service Directory - Permission Slip takes on the role of System Operator as well as Authorized Agent, and the Service Directory is replaced by private out-of-band exchange of discoverable information between Permission Slip and the Covered Business.
-- Authorized Agent now sends a request_id as part of the initial POST request to exercise data rights (#201-post-v1data-rights-request-data-rights-exercise-endpoint)
-- Deprecate Status Callback
-- Deprecate /Delete endpoint
+- deprecate trailing slash in "exercise" url (Section 2.01)
+- clarifiaction on `expires-at` MAY vs MUST status in request respone object (Section 3.03)
 
 
 ## 1.0 Introduction
@@ -40,7 +26,7 @@ By providing a shared protocol and vocabulary for expressing these data rights, 
 
 ### 1.02 Scope
 
-In Version 0.9.1.PS, we want to make the data rights protocol interoperatble between the PermissionSlip app in the role of an Authorized Agent and a Covered Business who wished to recieve and respond to Users' data rights requests via a lightweight API.  This version encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
+In Version 0.9.3.PS, we want to make the data rights protocol interoperatble between the PermissionSlip app in the role of an Authorized Agent and a Covered Business who wished to recieve and respond to Users' data rights requests via a lightweight API.  This version encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
 
 ### 1.03 Terminology
 
@@ -54,13 +40,15 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 ## 2.0 HTTP Endpoint Specification
 
-DRP 0.9.1.PS implementors MUST support text/plain requests and application/json responses for signed POST requests
+DRP 0.9.3.PS implementors MUST support text/plain requests and application/json responses for signed POST requests
 
 [expand endpoints with their failure states]
 
-### 2.01 `POST /v1/data-rights-request/` ("Data Rights Exercise" endpoint)
+### 2.01 `POST /v1/data-rights-request` ("Data Rights Exercise" endpoint)
 
 This is the Data Rights Exercise endpoint which Users and Authorized Agents can use to exercise enumerated data rights.
+
+Note: in versions prior to 0.9.3, a trailing slash "/" was specified in the url for this endpoint.  Impelementors may continue to support the trailing slash at their option.
 
 A Data Rights Exercise request SHALL contain a JSON-encoded message body containing the following fields, with a `libsodium`/`NaCl`/`ED25119` binary signature immediately prepended to it[^1], and then base64 encoded. The decoded, verified JSON body SHALL be structured as follows:
 
@@ -70,11 +58,11 @@ A Data Rights Exercise request SHALL contain a JSON-encoded message body contain
   "agent-id": "aa-id",
   "business-id": "cb-id",
   "request_id": ""
-  "expires-at": "<ISO 8601 Timestamp>",
   "issued-at":  "<ISO 8601 Timestamp>",
+  "expires-at": "<ISO 8601 Timestamp>",
 
   # 2
-  "drp.version": "0.9.1.PS"
+  "drp.version": "0.9.3.PS"
   "exercise": "sale:opt-out",
   "regime": "ccpa",
 
@@ -88,11 +76,11 @@ These keys identify the Authorized Agent making the request and the Covered Busi
 - `agent-id` MUST contain a string identifying the Authorized Agent which is submitting the data rights request and attesting to its validity, particularly that they have validated the identity of the user submitting the request to the standards of the network.
 - `business-id` MUST contain a string identifying the *Covered Business* which the request is being sent to. These identifiers will be shared out-of-band by participants.
 - `request_id` MUST contain a string that is the globally unique ID returned in the initial [Data Rights Exercise request](#202-get-v1data-rights-requestrequest_id-data-rights-status-endpoint).
-- `expires-at` MUST contain an ISO 8601-encoded timestamp expressing when the request should no longer be considered viable. This should be kept short, we recommend no more than 15 minute time windows to prevent re-use while still allowing for backend-processing delays in the Covered Business pipeline. Covered Businesses SHOULD discard requests made at a time after this value and respond with a `fatal` Error State.
 - `issued-at` MUST contain an ISO 8601-encoded timestamp expressing when the request was *created*.
+- `expires-at` MUST contain an ISO 8601-encoded timestamp expressing when the request should no longer be considered viable. This should be kept short, we recommend no more than 15 minute time windows to prevent re-use while still allowing for backend-processing delays in the Covered Business pipeline. Covered Businesses SHOULD discard requests made at a time after this value and respond with a `fatal` Error State.
 
 The second grouping contains data about the Data Rights Request.
-- `drp.version` MUST contain a string referencing the current protocol version "0.9.1.PS".
+- `drp.version` MUST contain a string referencing the current protocol version "0.9.3.PS".
 - `exercise` MUST contain a string specifying the [Rights Action](#301-supported-rights-actions) which is to be taken by the Covered Business.
 - `regime` MAY contain a string specifying the legal regime under which the Data Request is being taken.  Requests which do not supply a `regime` MAY be considered for voluntary processing.
   - The legal regime is a system of applicable rules, whether enforceable by statute, regulations, voluntary contract, or other legal frameworks which prescribe data rights to the User. See [3.01 Supported Rights Actions](#301-supported-rights-actions) for more discussion.
@@ -137,8 +125,9 @@ This request consists of a single signed message following the same validation s
 {
   "agent-id": "aa-id",
   "business-id": "cb-id",
-  "expires-at": "<ISO 8601 Timestamp>",
-  "issued-at":  "<ISO 8601 Timestamp>"
+  "issued-at": "<ISO 8601 Timestamp>",
+  "expires-at": "<ISO 8601 Timestamp>"
+
 }
 ```
 
@@ -184,7 +173,7 @@ These Schemas are referenced in Section 2 outlining the HTTP endpoints and their
 
 ### 3.01 Supported Rights Actions
 
-These are the CCPA rights which are encoded in v0.9.1.PS of the protocol:
+These are the CCPA rights which are encoded in v0.9.3.PS of the protocol:
 
 | Regime | Right               | Details                                                              |
 |--------|---------------------|----------------------------------------------------------------------|
@@ -244,8 +233,8 @@ A single JSON object is used to describe any existing Data Exercise Request and 
 {
   "request_id": "c789ff35-7644-4ceb-9981-4b35c264aac3",
   "cb_request_id": "foo",
-  "received_at": "20210902T152725.403-0700",
-  "expected_by": "20211015T152725.403-0700",
+  "received_at": "<ISO 8601 Timestamp>",
+  "expected_by": "<ISO 8601 Timestamp>",
   "processing_details": "this user has many records",
   "status": "in_progress",
   "reason": "need_user_verification",
@@ -262,7 +251,7 @@ A single JSON object is used to describe any existing Data Exercise Request and 
 * `expected_by` SHOULD contain a date before which the Authorized Agent can expect to see an update on the status of the Data Rights Request. This field should conform to the legal regime's deadline guidances, and may be amended by the CB or Covered Business according to those same regulations. `processing_details` MUST be updated to reflect the reason for this extension.
 * `processing_details` MAY contain a string reflecting the state of the Data Rights Request so that the Agent may communicate this state to the End User.
 * `user_verification_url` MAY contain a URI which can be presented in a User Agent for identity verification.
-* `expires_at` MAY contain an [ISO 8601]-encoded time after which time the **Covered Business** will no longer oblige themselves to record-keep the request under consideration.
+* `expires_at` MAY contain an [ISO 8601]-encoded time after which time the **Covered Business** will no longer oblige themselves to record-keep the request under consideration.  For requests which have been acknowledged and entered "in progress" state, the expected_at field MUST be provided int he status endpoint.
 
 [1]: `request_id` SHOULD be an UUID generated by the Authorized Agent. This `request_id` SHOULD NOT be taken as an assumption that the **Covered Business** has received and is acting on the request, simply that the "middle layer" between has. If the Data Rights endpoints are operated directly by the Covered Business, requests SHOULD pass immediately from `open` to `in_progress`.
 
@@ -435,3 +424,27 @@ When applying changes to Data Rights Requests in this fashion, the Covered Busin
 ### 3.09 Request State Flow Diagram
 
 ![Sequence Diagram showing Data Rights Request event flow](https://github.com/consumer-reports-innovation-lab/data-rights-protocol-lite-permissionslip/blob/main/files/drp0.9.PS_sequence_diagram.svg)
+
+
+## Specification Change Log
+
+In general, major change log items go at the top of the file. When a new protocol version is released, the previous versions' change log move down here.
+ 
+
+Protocol Changes from 0.9.1.PS to 0.9.2.PS:
+
+- Introduce field "supported_verifications" in Business Discovery Document Schema
+- Reintroduce Service Directory for Covered Businesses as optional
+- Introduce optional field "cb_request_id" in Status of a Data Subject Exercise Request Schema
+
+Protocol Changes from 0.9.PS to 0.9.1.PS:
+
+- Change verify key encoding from Hex to Base64
+
+Protocol Changes from 0.9 to 0.9.PS:
+
+- Deprecate role of Privacy Infrasctructure Provider (PIP) - the Covered Business now takes on aspects of the sytstem that were formerly delegated to the PIP.
+- Deprecate role of System Operator and Service Directory - Permission Slip takes on the role of System Operator as well as Authorized Agent, and the Service Directory is replaced by private out-of-band exchange of discoverable information between Permission Slip and the Covered Business.
+- Authorized Agent now sends a request_id as part of the initial POST request to exercise data rights (#201-post-v1data-rights-request-data-rights-exercise-endpoint)
+- Deprecate Status Callback
+- Deprecate /Delete endpoint
