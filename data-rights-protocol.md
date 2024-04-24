@@ -493,6 +493,11 @@ In steps:
 
 In general, major change log items go at the top of the file. When a new protocol version is released, the previous versions' change log move down here.
 
+Protocol Changes from 0.9.2 to 0.9.3:
+
+- deprecate trailing slash in "exercise" url (Section 2.01)
+- clarifiaction on `expires-at` MAY vs MUST status in request respone object (Section 3.03)
+
 Protocol Changes from 0.9.1 to 0.9.2:
 
 - Introduce field "supported_verifications" in Business Discovery Document Schema
