@@ -340,7 +340,7 @@ Here is an example of the JSON document with description of each entity:
     "id": "unique identifier matching [A-Z_]+ regular expression",
     "name": "Consumer Legible Agent App Name",
     "verify_key": "Base64 encoded Libsodium public verifying key for signed requests",
-    "web_url": "business's homepage",
+    "web_url": "agent's homepage",
     "technical_contact": "an email contact for the techical integration",
     "business_contact": "an email address for contacting a person within the business who is knowledgeable about the privacy program and DRP integration",
     "identity_assurance_url": "a link to an HTML or PDF document describing the process the agent enacts to verify a consumer's identity; a signed request containing these identities should be understood to have gone through this process."
