@@ -4,12 +4,13 @@
 
 ### About the version numbering system:
 
-Permision Slip API (PS API) is a subset, or "profile" of the Data Rights Protocol (https://github.com/consumer-reports-innovation-lab/data-rights-protocol).  As such the version number for the PS API tracks with the corresponding version of the DRP, with ".PS" suffixed.
+Permision Slip API (PS API, or DRP-PS) is a subset, or "profile" of the Data Rights Protocol (https://github.com/consumer-reports-innovation-lab/data-rights-protocol).  As such the version number for the PS API tracks with the corresponding version of the DRP, with ".PS" suffixed.
 
-### Protocol Changes from 0.9.2.PS to 0.9.3.PS:
+### Protocol Changes from 0.9.3.PS to 0.9.4.PS:
 
-- deprecate trailing slash in "exercise" url (Section 2.01)
-- clarifiaction on `expires-at` MAY vs MUST status in request respone object (Section 3.03)
+- add field `drp.version` to api pairwise setup request so the recieving Covered Business can know what version of the procol the sending Authorized Agent is using (Section 2.05).
+- add field `agent-request-id` to drp api excercise request to uniquely identify the request by the Agent.  This replaces the field `request_id` to provide greater consistancy betweeen 0.9.4.PS and 0.9.4 (Section 2.01).
+- clarificaion of required identity fields in request payload by a Covered Business' supported verifications (Section 3.04).
 
 
 ## 1.0 Introduction
@@ -26,7 +27,7 @@ By providing a shared protocol and vocabulary for expressing these data rights, 
 
 ### 1.02 Scope
 
-In Version 0.9.3.PS, we want to make the data rights protocol interoperatble between the PermissionSlip app in the role of an Authorized Agent and a Covered Business who wished to recieve and respond to Users' data rights requests via a lightweight API.  This version encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
+In DRP-PS, we want to make the data rights protocol interoperatble between the PermissionSlip app in the role of an Authorized Agent and a Covered Business who wished to recieve and respond to Users' data rights requests via a lightweight API.  This version encodes the rights as specified in the California Consumer Privacy act of 2018, referred herein as the “CCPA”. This is further enumerated in the [Supported Rights Actions](#301-supported-rights-actions) section of this document below.
 
 ### 1.03 Terminology
 
@@ -40,7 +41,7 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 ## 2.0 HTTP Endpoint Specification
 
-DRP 0.9.3.PS implementors MUST support text/plain requests and application/json responses for signed POST requests
+PS API implementors MUST support text/plain requests and application/json responses for signed POST requests
 
 [expand endpoints with their failure states]
 
@@ -48,7 +49,7 @@ DRP 0.9.3.PS implementors MUST support text/plain requests and application/json 
 
 This is the Data Rights Exercise endpoint which Users and Authorized Agents can use to exercise enumerated data rights.
 
-Note: in versions prior to 0.9.3, a trailing slash "/" was specified in the url for this endpoint.  Impelementors may continue to support the trailing slash at their option.
+Note: in versions prior to 0.9.3.PS, a trailing slash "/" was specified in the url for this endpoint.  Impelementors may continue to support the trailing slash at their option.
 
 A Data Rights Exercise request SHALL contain a JSON-encoded message body containing the following fields, with a `libsodium`/`NaCl`/`ED25119` binary signature immediately prepended to it[^1], and then base64 encoded. The decoded, verified JSON body SHALL be structured as follows:
 
@@ -57,12 +58,12 @@ A Data Rights Exercise request SHALL contain a JSON-encoded message body contain
   # 1
   "agent-id": "aa-id",
   "business-id": "cb-id",
-  "request_id": ""
   "issued-at":  "<ISO 8601 Timestamp>",
   "expires-at": "<ISO 8601 Timestamp>",
+  "agent-request-id": "foo",
 
   # 2
-  "drp.version": "0.9.3.PS"
+  "drp.version": "0.9.4.PS"
   "exercise": "sale:opt-out",
   "regime": "ccpa",
 
@@ -75,12 +76,12 @@ A Data Rights Exercise request SHALL contain a JSON-encoded message body contain
 These keys identify the Authorized Agent making the request and the Covered Business of whom the request is being made, the time the request is being made, and the duration for which it will be valid.  Taken together, they describe where trust in the request is rooted (the AA), and constrain the scope of the Data Rights Request to a single AA-CB relationship at a particular moment in time, in order to prevent re-use or mis-use of the request by any party.
 - `agent-id` MUST contain a string identifying the Authorized Agent which is submitting the data rights request and attesting to its validity, particularly that they have validated the identity of the user submitting the request to the standards of the network.
 - `business-id` MUST contain a string identifying the *Covered Business* which the request is being sent to. These identifiers will be shared out-of-band by participants.
-- `request_id` MUST contain a string that is the globally unique ID returned in the initial [Data Rights Exercise request](#202-get-v1data-rights-requestrequest_id-data-rights-status-endpoint).
+- `agent-request-id` MUST contain a string that is the globally unique ID returned in the initial [Data Rights Exercise request](#202-get-v1data-rights-requestrequest_id-data-rights-status-endpoint).
 - `issued-at` MUST contain an ISO 8601-encoded timestamp expressing when the request was *created*.
 - `expires-at` MUST contain an ISO 8601-encoded timestamp expressing when the request should no longer be considered viable. This should be kept short, we recommend no more than 15 minute time windows to prevent re-use while still allowing for backend-processing delays in the Covered Business pipeline. Covered Businesses SHOULD discard requests made at a time after this value and respond with a `fatal` Error State.
 
 The second grouping contains data about the Data Rights Request.
-- `drp.version` MUST contain a string referencing the current protocol version "0.9.3.PS".
+- `drp.version` MUST contain a string referencing the current protocol version "0.9.4.PS".
 - `exercise` MUST contain a string specifying the [Rights Action](#301-supported-rights-actions) which is to be taken by the Covered Business.
 - `regime` MAY contain a string specifying the legal regime under which the Data Request is being taken.  Requests which do not supply a `regime` MAY be considered for voluntary processing.
   - The legal regime is a system of applicable rules, whether enforceable by statute, regulations, voluntary contract, or other legal frameworks which prescribe data rights to the User. See [3.01 Supported Rights Actions](#301-supported-rights-actions) for more discussion.
@@ -126,12 +127,14 @@ This request consists of a single signed message following the same validation s
   "agent-id": "aa-id",
   "business-id": "cb-id",
   "issued-at": "<ISO 8601 Timestamp>",
-  "expires-at": "<ISO 8601 Timestamp>"
-
+  "expires-at": "<ISO 8601 Timestamp>",
+  "drp.version": "0.9.4.PS"
 }
 ```
 
 These keys listed in this message MUST follow the same semantics outlined in section 2.0, and SHALL be validated using the same chain as described in section 3.07, with the following proviso: Because there will be no Bearer Token associated with this request, presenting an agent-id in the request will necessistate callers to disambiguate to a single public key with which to validate the message. The `agent-id` presented in the URL parameters MUST match the `agent-id` key within the signed message, and the signing identity MUST map back to the `agent-id`. Once the signature has been verified in this manner, the rest of the keys will be validated in the fashion outlined in 3.07.
+
+Note that when an Authorized Agent chagnes the DRP version they are using to send requests, they SHOULD also create a new agent-id and public verify key.  This will make easier for Covered Businesses to receive and repsond to requests correctly and to support multiple versions of the protocal more easily.
 
 #### 2.05.1 `POST /v1/agent/{agent-id}` Response
 
@@ -173,7 +176,7 @@ These Schemas are referenced in Section 2 outlining the HTTP endpoints and their
 
 ### 3.01 Supported Rights Actions
 
-These are the CCPA rights which are encoded in v0.9.3.PS of the protocol:
+These are the CCPA rights which are encoded in the protocol:
 
 | Regime | Right               | Details                                                              |
 |--------|---------------------|----------------------------------------------------------------------|
@@ -271,6 +274,9 @@ Requests SHOULD contain the following [schema.org/Person](https://schema.org/Per
 | `power_of_attorney`     | str     | this custom claim MAY contain a reference to a User-signed document delegating power of attorney to the submitting AA. Implementation details of this claim will be defined later.                       |
 
 Covered Businesses SHALL determine for themselves the level of reliance they will place on a given token. Authorized Agents SHALL make reasonable efforts to provide trustworthy tokens, by verifying user-attested claims according to the practices agreed under the System Agreement, by attaching user-attested claims as available, and by ensuring their envelopes are signed by a key which the Covered Businesses and CBs can verify against.
+
+Note that for a Covered Business that specifies one or more supported_verifications, the corresponding user identity fields SHOULD be in the request, and SHOULD be verified if possible.  Other identity fields SHOULD be omitted to limit unnecessary personal information transmitted.  If the Covered Business specifies no supported_verifications, it is up the discression of the Authorized Igent as to what identity fields to include in the reuquest.
+
 
 ### 3.05 Schema: Agent/Business Discovery Documents
 
@@ -430,6 +436,10 @@ When applying changes to Data Rights Requests in this fashion, the Covered Busin
 
 In general, major change log items go at the top of the file. When a new protocol version is released, the previous versions' change log move down here.
  
+Protocol Changes from 0.9.2.PS to 0.9.3.PS:
+
+- deprecate trailing slash in "exercise" url (Section 2.01)
+- clarifiaction on `expires-at` MAY vs MUST status in request respone object (Section 3.03)
 
 Protocol Changes from 0.9.1.PS to 0.9.2.PS:
 
