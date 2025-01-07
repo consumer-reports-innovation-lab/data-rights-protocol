@@ -4,9 +4,9 @@
 
 ### Protocol Changes from 0.9.3 to 0.9.4:
 
-- add field `drp.version` to api pairwise setup request so the recieving Covered Business can know what version of the procol the sending Authorized Agent is using (Section 2.05).
-- add optional field `agent-request-id` to drp api excercise request to uniquely identify the request by the Agent (Section 2.01).
-- clarificaion of required identity fields in request payload by a Covered Business' supported verifications (Section 3.04).
+- Add field `drp.version` to api pairwise setup request so the recieving Covered Business can know what version of the protocol the sending Authorized Agent is using (Section 2.05).
+- Add optional field `agent-request-id` to api exercise request to uniquely identify the request by the Agent (Section 2.01).
+- Clarification of required identity fields in request payload by a Covered Business' supported verifications (Section 3.04).
 
 ## 1.0 Introduction
 
@@ -504,8 +504,8 @@ In general, major change log items go at the top of the file. When a new protoco
 
 Protocol Changes from 0.9.2 to 0.9.3:
 
-- deprecate trailing slash in "exercise" url (Section 2.01)
-- clarifiaction on `expires-at` MAY vs MUST status in request respone object (Section 3.03)
+- Deprecate trailing slash in "exercise" url (Section 2.01)
+- Clarification on expires-at MAY vs MUST status in request response object (Section 3.03)
 
 Protocol Changes from 0.9.1 to 0.9.2:
 
