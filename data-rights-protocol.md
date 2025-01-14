@@ -1,12 +1,10 @@
-# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol) v.0.9.4
+# [Data Rights Protocol](https://github.com/consumer-reports-innovation-lab/data-rights-protocol) v.1.0
 
 **DRAFT FOR COMMENT**: To provide feedback on this draft protocol, make a [new issue](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/issues/new) or [pull request](https://github.com/consumer-reports-innovation-lab/data-rights-protocol/pulls) in this repository or you may provide feedback by emailing <b>datarightsprotocol@cr.consumer.org</b>.
 
-### Protocol Changes from 0.9.3 to 0.9.4:
+### Protocol Changes from 0.9.4 to 1.0:
 
-- Add field `drp.version` to api pairwise setup request so the recieving Covered Business can know what version of the protocol the sending Authorized Agent is using (Section 2.05).
-- Add optional field `agent-request-id` to api exercise request to uniquely identify the request by the Agent (Section 2.01).
-- Clarification of required identity fields in request payload by a Covered Business' supported verifications (Section 3.04).
+- We are proud to announce version 1.0 of the Data Rights Protocol.  No changes to the spec have been made since the previous version (0.9.4). but the version number now signifies the first production-ready release.
 
 ## 1.0 Introduction
 
@@ -64,7 +62,7 @@ A Data Rights Exercise request SHALL contain a JSON-encoded message body contain
   "agent-request-id": "foo",
 
   # 2
-  "drp.version": "0.9.4"
+  "drp.version": "1.0"
   "exercise": "sale:opt-out",
   "regime": "ccpa",
   "relationships": ["customer", "marketing"],
@@ -84,7 +82,7 @@ These keys identify the Authorized Agent making the request and the Covered Busi
 - `expires-at` MUST contain an ISO 8601-encoded timestamp expressing when the request should no longer be considered viable. This should be kept short, we recommend no more than 10 minute time windows to prevent re-use while still allowing for backend-processing delays in the Privacy Infrastructure Provider pipeline. Privacy Infrastructure Providers SHOULD discard requests made at a time after this value and respond with a `fatal` Error State.
 
 The second grouping contains data about the Data Rights Request.
-- `drp.version` MUST contain a string referencing the current protocol version "0.9.4".
+- `drp.version` MUST contain a string referencing the current protocol version "1.0".
 - `exercise` MUST contain a string specifying the [Rights Action](#301-supported-rights-actions) which is to be taken by the Covered Business.
 - `regime` MAY contain a string specifying the legal regime under which the Data Request is being taken.  Requests which do not supply a `regime` MAY be considered for voluntary processing.
   - The legal regime is a system of applicable rules, whether enforceable by statute, regulations, voluntary contract, or other legal frameworks which prescribe data rights to the User. See [3.01 Supported Rights Actions](#301-supported-rights-actions) for more discussion.
@@ -158,7 +156,7 @@ This request consists of a single signed message following the same validation s
   "business-id": "cb-id",  
   "issued-at":  "<ISO 8601 Timestamp>",
   "expires-at": "<ISO 8601 Timestamp>",
-  "drp.version": "0.9.4"
+  "drp.version": "1.0"
 }
 ```
 
@@ -209,7 +207,7 @@ These Schemas are referenced in Section 2 outlining the HTTP endpoints and their
 
 ### 3.01 Supported Rights Actions
 
-These are the CCPA rights which are encoded in v0.9.4 of the protocol:
+These are the CCPA rights which are encoded in v1.0 of the protocol:
 
 | Regime | Right               | Details                                                              |
 |--------|---------------------|----------------------------------------------------------------------|
@@ -500,7 +498,13 @@ In steps:
 
 ## Specification Change Log
 
-In general, major change log items go at the top of the file. When a new protocol version is released, the previous versions' change log move down here.
+Most recent change log items go at the top of the file. When a new protocol version is released, the previous versions' change log move down here.
+
+Protocol Changes from 0.9.3 to 0.9.4:
+
+- Add field `drp.version` to api pairwise setup request so the recieving Covered Business can know what version of the protocol the sending Authorized Agent is using (Section 2.05).
+- Add optional field `agent-request-id` to api exercise request to uniquely identify the request by the Agent (Section 2.01).
+- Clarification of required identity fields in request payload by a Covered Business' supported verifications (Section 3.04).
 
 Protocol Changes from 0.9.2 to 0.9.3:
 
