@@ -211,8 +211,8 @@ These are the CCPA rights which are encoded in v1.0 of the protocol:
 
 | Regime | Right               | Details                                                              |
 |--------|---------------------|----------------------------------------------------------------------|
-| ccpa   | `sale:opt_out`      | [RIGHT TO OPT-OUT OF SALE](https://oag.ca.gov/privacy/ccpa#sectionb) |
-| ccpa   | `sale:opt_in`       | RECONSENT OR OPT-IN TO DATA SALE                                     |
+| ccpa   | `sale:opt-out`      | [RIGHT TO OPT-OUT OF SALE](https://oag.ca.gov/privacy/ccpa#sectionb) |
+| ccpa   | `sale:opt-in`       | RECONSENT OR OPT-IN TO DATA SALE                                     |
 | ccpa   | `deletion`          | [RIGHT TO DELETE](https://oag.ca.gov/privacy/ccpa#sectione)          |
 | ccpa   | `access`            | [RIGHT TO KNOW](https://oag.ca.gov/privacy/ccpa#sectionc)            |
 | ccpa   | `access:categories` | [RIGHT TO KNOW](https://oag.ca.gov/privacy/ccpa#sectionc)[☆]         |
@@ -407,7 +407,7 @@ Here is a JSON-Schema document describing a single entry in the Covered Business
             "type": "array",
             "items": {
                 "type": "string",
-                "enum": [ "access", "deletion", "sale:opt_out", "sale:opt_in", "access:categories", "access:specific" ]
+                "enum": [ "access", "deletion", "sale:opt-out", "sale:opt-in", "access:categories", "access:specific" ]
             }
         },
         "supported_verifications": {
